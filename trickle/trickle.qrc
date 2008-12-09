@@ -1,0 +1,14 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+	<file>images/new.png</file>
+	<file>images/open.png</file>
+	<file>images/trickle.png</file>
+	<file>images/trickle_logo.png</file>
+	<file>images/start.png</file>
+	<file>images/stop.png</file>
+	<file>images/remove.png</file>
+	<file>images/file.png</file>
+	<file>images/folder.png</file>
+	<file>images/server.png</file>
+</qresource>
+</RCC>

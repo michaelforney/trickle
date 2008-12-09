@@ -1,0 +1,14 @@
+[CMake]
+BuildDirs[$e]=$HOME/projects/trickle/build
+CMakeDir=/usr/share/cmake/Modules
+Current CMake Binary=file:///usr/bin/cmake
+CurrentBuildDir=file:///home/michael/projects/trickle/build
+CurrentInstallDir=file:///home/michael/.kdesvn
+
+[Run Options]
+Arguments=--
+Environment=default
+Executable=file:///home/michael/projects/trickle/build/src/trickle
+Run Targets=Project Default
+Start In Terminal=true
+Working Directory=file:///home/michael/projects/trickle/build/src

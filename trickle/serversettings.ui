@@ -1,0 +1,96 @@
+<ui version="4.0" >
+ <class>ServerSettings</class>
+ <widget class="QWidget" name="ServerSettings" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>568</width>
+    <height>522</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Server Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <layout class="QHBoxLayout" >
+     <item>
+      <widget class="QTreeWidget" name="serverList" >
+       <property name="indentation" >
+        <number>0</number>
+       </property>
+       <column>
+        <property name="text" >
+         <string>Name</string>
+        </property>
+       </column>
+       <column>
+        <property name="text" >
+         <string>Host</string>
+        </property>
+       </column>
+       <column>
+        <property name="text" >
+         <string>Port</string>
+        </property>
+       </column>
+       <column>
+        <property name="text" >
+         <string>Type</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" >
+       <item>
+        <widget class="KPushButton" name="addButton" >
+         <property name="text" >
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KPushButton" name="editButton" >
+         <property name="text" >
+          <string>Edit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="KPushButton" name="removeButton" >
+         <property name="text" >
+          <string>Remove</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KPushButton</class>
+   <extends>QPushButton</extends>
+   <header>kpushbutton.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,5 @@
+File=trickle.kcfg
+ClassName=Settings
+Singleton=true
+Inherits=SettingsBase
+IncludeFiles="settingsbase.h"

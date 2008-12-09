@@ -1,0 +1,17 @@
+<!DOCTYPE kpartgui SYSTEM "kpartgui.dtd">
+<kpartgui name="trickle" version="1">
+<MenuBar>
+	<Menu name="view"><text>&amp;View</text>
+		<Action name="view_torrentinfo" />
+	</Menu>
+</MenuBar>
+<ToolBar name="mainToolBar" fullWidth="true" newline="true">
+	<Action name="file_new" />
+	<Action name="file_open" />
+	<Separator />
+	<Action name="torrent_start" />
+	<Action name="torrent_stop" />
+	<Action name="torrent_remove" />
+</ToolBar>
+	
+</kpartgui>

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+X-KDE-ServiceTypes=Trickle/Interface
+X-KDE-Library=trickle_utorrent
+X-KDE-PluginInfo-Author=Michael Forney
+X-KDE-PluginInfo-Email=michael@obberon.com
+X-KDE-PluginInfo-Name=trickle_utorrent
+Name=uTorrent WebUI Interface
+Comment=Interface to connect to uTorrent through the WebUI
