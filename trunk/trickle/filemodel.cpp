@@ -20,7 +20,7 @@
 #include "filemodel.h"
 
 #include "filemodelitem.h"
-#include "torrentitem.h"
+#include "torrent.h"
 #include "xmlrpc.h"
 #include "fileitem.h"
 #include "directoryitem.h"
@@ -36,7 +36,7 @@ FileModel::FileModel()
 	headers << "File" << "Size" << "Complete" << "Priority";
 	mainItem = 0;
 	
-	connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem *)), this, SLOT(newUpdate()));
+	connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(newUpdate()));
 	connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
 }
 
@@ -214,7 +214,7 @@ void FileModel::update()
 	if (SelectedTorrent::instance()->hasTorrent())
 	{
 		QVariantList args;
-		args << SelectedTorrent::torrentInstance()->hash();
+		//args << SelectedTorrent::torrentInstance()->hash();
 		args << "";
 		args << "f.get_path=";
 		args << "f.get_size_chunks=";
@@ -253,7 +253,7 @@ void FileModel::result(const QString & method, const QVariant & resultVariant)
 		}
 		else
 		{
-			if (result.size() == 1 && !result[0].value<QVariantList>()[0].toString().contains("/") && result[0].value<QVariantList>()[0].toString() == SelectedTorrent::torrentInstance()->name())
+			/*if (result.size() == 1 && !result[0].value<QVariantList>()[0].toString().contains("/") && result[0].value<QVariantList>()[0].toString() == SelectedTorrent::torrentInstance()->name())
 			{
 				mainItem = new FileItem();
 				updateItem(mainItem->toFile(), result[0].value<QVariantList>(), 0);
@@ -275,7 +275,7 @@ void FileModel::result(const QString & method, const QVariant & resultVariant)
 					updateItem(item, file, i);
 					dir->addChild(item);
 				}
-			}
+			}*/
 			emit layoutChanged();
 		}
 	}

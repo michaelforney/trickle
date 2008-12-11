@@ -22,14 +22,14 @@
 #include <QRegExp>
 #include <QDebug>
 
-#include "xmlrpc.h"
-#include "updatetimer.h"
+//#include "xmlrpc.h"
+//#include "updatetimer.h"
 
 Torrent::Torrent(const QString & hash)
  : QObject()
 {
 	setHash(hash);
-	setState(Closed);
+	setState(Stopped);
 	setSeedsConnected(0);
 	setSeedsTotal(0);
 	setLeechsConnected(0);
@@ -142,7 +142,7 @@ int Torrent::priority() const
 
 Torrent::TorrentState Torrent::state() const
 {
-	if (m_state == Open)
+	if (m_state == Seeding)
 	{
 		if (completedChunks() == chunks())
 		{
@@ -280,4 +280,4 @@ void Torrent::setPriority(int priority)
 	m_priority = priority;
 }
 
-#include "torrentitem.moc"
+#include "torrent.moc"

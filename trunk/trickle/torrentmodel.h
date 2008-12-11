@@ -31,7 +31,7 @@
 #include <QStringList>
 #include <QtAlgorithms>
 
-#include "torrentitem.h"
+#include "torrent.h"
 
 class TorrentModel : public QAbstractItemModel
 {
@@ -60,16 +60,16 @@ class TorrentModel : public QAbstractItemModel
 	public slots:
 		void clear();
 		void update();
-		void updateItem(TorrentItem * item);
+		void updateItem(Torrent * item);
 		void result(const QString & method, const QVariant & result);
 	signals:
 		void logInfo(const QString & info);
 		void updated();
 	private:
-		TorrentItem * item(const QString & hash) const;
+		Torrent * item(const QString & hash) const;
 		
 		QList<QVariant> headers;
-		QList<TorrentItem *> torrents;
+		QList<Torrent *> torrents;
 		QStringList units;
 };
 

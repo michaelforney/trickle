@@ -29,7 +29,7 @@
 #include <QVariantList>
 
 class ByteSize;
-class XmlRpc;
+class QHttp;
 
 class uTorrentInterface : public Interface
 {
@@ -47,11 +47,11 @@ class uTorrentInterface : public Interface
 		void setUploadLimit(const ByteSize & size);
 		void startTorrent(const QString & hash);
 		void stopTorrent(const QString & hash);
+		void updateTorrentList();
+		void updateFileList(const QString & hash);
 		void update();
 		bool connectToServer();
 		void clear();
-		
-		void updateTorrentList();
 	private:
 		QVariantMap config;
 		Server m_server;

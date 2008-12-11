@@ -29,11 +29,12 @@
 #include "trickle_export.h"
 #include "server.h"
 
+#include "file.h"
+#include "torrent.h"
+
 class InterfaceConfigWidget;
 class Server;
 class ByteSize;
-class Torrent;
-class File;
 
 class QTimer;
 
@@ -68,12 +69,12 @@ class TRICKLE_EXPORT Interface : public QObject
 	signals:
 		void torrentListUpdated(const QList<Torrent> & torrents);
 		void filesUpdated(const QString & hash, QList<File> & files);
-		void torrentPriorityChanged(const QString & hash, TorrentPriority priority);
-		void filePriorityChanged(const QString & hash, const QStringList & path, FilePriority priority);
+		void torrentPriorityChanged(const QString & hash, Torrent::TorrentPriority priority);
+		void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
 		void uploadLimitChanged(const ByteSize & limit);
 		void downloadLimitChanged(const ByteSize & limit);
 		void torrentStarted(const QString & hash);
-		void torrentStopped(const QStringg & hash);
+		void torrentStopped(const QString & hash);
 		void cleared();
 		//void torrentsAdded(QStringList hashes); //Need this?
 		//void torrentsRemoved(QStringList hashes); //Need this?

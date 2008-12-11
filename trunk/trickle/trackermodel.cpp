@@ -23,15 +23,15 @@
 #include <QModelIndex>
 
 #include "trackeritem.h"
-#include "torrentitem.h"
-#include "selectedtorrent.h"
+#include "torrent.h"
+//#include "selectedtorrent.h"
 #include "xmlrpc.h"
 
 TrackerModel::TrackerModel()
  : QAbstractItemModel()
 {
 	headers << "Tracker Url";
-	connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem*)), this, SLOT(update()));
+	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem*)), this, SLOT(update()));
 }
 
 
@@ -120,14 +120,14 @@ QVariant TrackerModel::headerData(int section, Qt::Orientation orientation, int 
 
 void TrackerModel::update()
 {
-	if (SelectedTorrent::instance()->hasTorrent())
+	/*if (SelectedTorrent::instance()->hasTorrent())
 	{
 		QVariantList args;
 		args << SelectedTorrent::torrentInstance()->hash();
 		args << "";
 		args << "t.get_url=";
 		//XmlRpc::instance()->call("t.multicall", args, this, "result");
-	}
+	}*/
 }
 
 void TrackerModel::result(const QString & method, const QVariant & valueVariant)

@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "torrentsortmodel.h"
 
-#include "torrentitem.h"
+#include "torrent.h"
 #include "torrentmodel.h"
 
 TorrentSortModel::TorrentSortModel()
@@ -35,8 +35,8 @@ TorrentSortModel::~TorrentSortModel()
 
 bool TorrentSortModel::lessThan(const QModelIndex & left, const QModelIndex & right) const
 {
-	TorrentItem * leftItem = static_cast<TorrentItem *>(left.internalPointer());
-	TorrentItem * rightItem = static_cast<TorrentItem *>(right.internalPointer());
+	Torrent * leftItem = static_cast<Torrent *>(left.internalPointer());
+	Torrent * rightItem = static_cast<Torrent *>(right.internalPointer());
 	
 	if (left.column() == right.column())
 	{

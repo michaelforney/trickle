@@ -23,6 +23,7 @@
 #include <QModelIndex>
 #include <QDebug>
 
+#include "torrent.h"
 #include "torrentmodel.h"
 #include "torrentsortmodel.h"
 
@@ -40,7 +41,7 @@ QWidget * TorrentDelegate::createEditor(QWidget * parent, const QStyleOptionView
 {
 	if (index.column() == TorrentModel::Priority)
 	{
-		TorrentItem * item = static_cast<TorrentItem *>(static_cast<const QSortFilterProxyModel *>(index.model())->mapToSource(index).internalPointer());
+		Torrent * item = static_cast<Torrent *>(static_cast<const QSortFilterProxyModel *>(index.model())->mapToSource(index).internalPointer());
 		QComboBox * prioritySelector = new QComboBox(parent);
 		prioritySelector->addItems(QStringList() << "Off" << "Low" << "Normal" << "High");
 		prioritySelector->setCurrentIndex(item->priority());

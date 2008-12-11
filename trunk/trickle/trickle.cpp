@@ -74,6 +74,7 @@
 #include "servermanager.h"
 #include "interfacemanager.h"
 #include "configdialog.h"
+#include "interface.h"
 
 Trickle::Trickle()
  : KXmlGuiWindow()
@@ -194,21 +195,21 @@ void Trickle::createDockWidgets()
 	addDockWidget(Qt::BottomDockWidgetArea, statsDock);
 }
 
-void Trickle::updateControls(TorrentItem * torrent)
+void Trickle::updateControls(Torrent * torrent)
 {
 	if (torrent)
 	{
 		switch(torrent->state())
 		{
-			case TorrentItem::Completed:
-			case TorrentItem::Stopped:
+			case Torrent::Completed:
+			case Torrent::Stopped:
 			{
 				//startAct->setEnabled(true);
 				//stopAct->setEnabled(false);
 				break;
 			}
-			case TorrentItem::Seeding:
-			case TorrentItem::Downloading:
+			case Torrent::Seeding:
+			case Torrent::Downloading:
 			{
 				//stopAct->setEnabled(true);
 				//startAct->setEnabled(false);
@@ -230,8 +231,8 @@ void Trickle::stopTorrent()
 	QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
 	if (selected.size() > 0)
 	{
-		TorrentItem * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
-		item->stop();
+		//Torrent * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
+		//item->stop();
 	}
 }
 
@@ -240,8 +241,8 @@ void Trickle::startTorrent()
 	QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
 	if (selected.size() > 0)
 	{
-		TorrentItem * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
-		item->start();
+		//TorrentItem * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
+		//item->start();
 	}
 }
 

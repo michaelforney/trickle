@@ -26,11 +26,12 @@
 
 #include "trickle_export.h"
 
+#include "bytesize.h"
+
 #include <QMap>
+#include <QVariantList>
 
-typedef QMap<QString, Torrent *> TorrentMap;
-
-class Torrent : public QObject
+class TRICKLE_EXPORT Torrent : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(int seedsConnected READ seedsConnected WRITE setSeedsConnected)
@@ -53,8 +54,8 @@ class Torrent : public QObject
 	Q_ENUMS(TorrentState)
 	
 	public:
-		TorrentItem(const QString & hash);
-		~TorrentItem();
+		Torrent(const QString & hash);
+		~Torrent();
 		
 		enum Attribute { Hash, Name, Status, ChunkSize, Chunks, Size, Uploaded, UploadRate, Downloaded, DownloadRate, State, Ratio, Seeders, SeedersConnected, Leechers, LeechersConnected };
 		enum TorrentState { Downloading, Seeding, Stopped, Completed };
@@ -72,7 +73,7 @@ class Torrent : public QObject
 		ByteSize size() const;
 		ByteSize uploaded() const;
 		ByteSize downloaded() const;
-		TorrentItem::TorrentState state() const;
+		Torrent::TorrentState state() const;
 		double ratio() const;
 		QString name() const;
 		QString hash() const;
@@ -95,8 +96,8 @@ class Torrent : public QObject
 		void setState(int state);
 		void setPriority(int priority);
 		void setRatio(double ratio);
-		bool operator==(const TorrentItem & other);
-		bool operator<(const TorrentItem & other);
+		bool operator==(const Torrent & other);
+		bool operator<(const Torrent & other);
 	public slots:
 		void update();
 		void result(const QString & method, const QVariant & result);
@@ -122,8 +123,10 @@ class Torrent : public QObject
 		ByteSize m_size;
 	signals:
 		void call(const QString & method, const QVariantList & args, QObject * sender, const QString & member);
-		void dataChanged(TorrentItem * item);
+		void dataChanged(Torrent * item);
 		void updated();
 };
+
+typedef QMap<QString, Torrent *> TorrentMap;
 
 #endif

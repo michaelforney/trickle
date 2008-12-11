@@ -32,7 +32,7 @@ class QPushButton;
 
 class TrackerModel;
 class TrackerView;
-class TorrentItem;
+class Torrent;
 
 class TrackerInfo : public QWidget
 {
@@ -41,7 +41,7 @@ class TrackerInfo : public QWidget
 		TrackerInfo();
 		~TrackerInfo();
 		
-		void setTorrent(TorrentItem * torrent);
+		void setTorrent(Torrent * torrent);
 	public slots:
 		void update();
 	private:

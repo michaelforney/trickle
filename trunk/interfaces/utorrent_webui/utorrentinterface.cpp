@@ -69,10 +69,18 @@ void uTorrentInterface::update()
 
 bool uTorrentInterface::connectToServer()
 {
-	http = new QHttp(server.host(), server.port(), this);
+	http = new QHttp(m_server.host(), m_server.port(), this);
 }
 
 void uTorrentInterface::clear()
+{
+}
+
+void uTorrentInterface::updateTorrentList()
+{
+}
+
+void uTorrentInterface::updateFileList(const QString & hash)
 {
 }
 

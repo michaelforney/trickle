@@ -23,7 +23,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-#include "selectedtorrent.h"
+//#include "selectedtorrent.h"
 #include "torrentitem.h"
 
 TorrentInfo::TorrentInfo()
@@ -31,8 +31,8 @@ TorrentInfo::TorrentInfo()
 {
 	ui.setupUi(this);
 
-	connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem *)), this, SLOT(update()));
-	connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
+	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(update()));
+	//connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
 }
 
 TorrentInfo::~TorrentInfo()
@@ -41,12 +41,12 @@ TorrentInfo::~TorrentInfo()
 
 void TorrentInfo::update() const
 {
-	if (SelectedTorrent::instance()->hasTorrent())
+	/*if (SelectedTorrent::instance()->hasTorrent())
 	{
 		ui.progress->setMaximum(SelectedTorrent::torrentInstance()->chunks());
 		ui.progress->setValue(SelectedTorrent::torrentInstance()->completedChunks());
 		ui.torrentName->setText(SelectedTorrent::torrentInstance()->name());
-	}
+	}*/
 }
 
 #include "torrentinfo.moc"

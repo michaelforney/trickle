@@ -46,7 +46,7 @@ class TorrentSortModel;
 class TorrentView;
 class TorrentWidget;
 class TorrentInfo;
-class TorrentItem;
+class Torrent;
 class Log;
 class FileInfo;
 class FileModel;
@@ -67,7 +67,7 @@ class Trickle : public KXmlGuiWindow
 		void createStatusBar();
 		void createDockWidgets();
 	public slots:
-		void updateControls(TorrentItem * torrent);
+		void updateControls(Torrent * torrent);
 		void update();
 		
 		void newTorrent();

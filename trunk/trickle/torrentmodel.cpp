@@ -79,7 +79,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 	{
 		return QVariant();
 	}
-	TorrentItem * item = static_cast<TorrentItem *>(index.internalPointer());
+	Torrent * item = static_cast<Torrent *>(index.internalPointer());
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -94,13 +94,13 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 					{
 						switch (item->state())
 						{
-							case TorrentItem::Downloading:
+							case Torrent::Downloading:
 								return QString("Downloading");
-							case TorrentItem::Seeding:
+							case Torrent::Seeding:
 								return QString("Seeding");
-							case TorrentItem::Stopped:
+							case Torrent::Stopped:
 								return QString("Stopped");
-							case TorrentItem::Completed:
+							case Torrent::Completed:
 								return QString("Completed");
 							default:
 								return QVariant();
@@ -126,13 +126,13 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 					{
 						switch (item->priority())
 						{
-							case TorrentItem::Off:
+							case Torrent::Off:
 								return QString("Off");
-							case TorrentItem::Low:
+							case Torrent::Low:
 								return QString("Low");
-							case TorrentItem::Medium:
+							case Torrent::Medium:
 								return QString("Medium");
-							case TorrentItem::High:
+							case Torrent::High:
 								return QString("High");
 							default:
 								return QVariant();
@@ -179,13 +179,13 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 				{
 					switch(item->state())
 					{
-						case TorrentItem::Downloading:
+						case Torrent::Downloading:
 							return Qt::darkBlue;
-						case TorrentItem::Seeding:
+						case Torrent::Seeding:
 							return Qt::darkGreen;
-						case TorrentItem::Stopped:
+						case Torrent::Stopped:
 							return QVariant();
-						case TorrentItem::Completed:
+						case Torrent::Completed:
 							return QVariant();
 						default:
 							return QVariant();
@@ -207,7 +207,7 @@ QModelIndex TorrentModel::index(int row, int column, const QModelIndex & parent)
 		return QModelIndex();
 	}
 	
-	TorrentItem * item = torrents[row];
+	Torrent * item = torrents[row];
 
 	return createIndex(row, column, item);
 }
@@ -223,9 +223,9 @@ void TorrentModel::clear()
 	emit layoutChanged();
 }
 
-TorrentItem * TorrentModel::item(const QString & hash) const
+Torrent * TorrentModel::item(const QString & hash) const
 {
-	foreach(TorrentItem * item, torrents)
+	foreach(Torrent * item, torrents)
 	{
 		if (item->hash() == hash)
 		{
@@ -256,7 +256,7 @@ void TorrentModel::update()
 		args << "d.get_peers_complete=";
 		args << "d.get_priority=";
 		//XmlRpc::instance()->call("d.multicall", args, this, "result");
-		foreach(TorrentItem * item, torrents)
+		foreach(Torrent * item, torrents)
 		{
 			item->update();
 		}
@@ -275,7 +275,7 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 		QVariantList resultList = result.value<QVariantList>();
 		//clear();
 		int i = 0;
-		for (QList<TorrentItem *>::iterator it = torrents.begin(); it != torrents.end(); ++it)
+		for (QList<Torrent *>::iterator it = torrents.begin(); it != torrents.end(); ++it)
 		{
 			bool found = false;
 			foreach (QVariant downloadVariant, resultList)
@@ -294,7 +294,7 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 			}
 			i++;
 		}
-		QList<TorrentItem *> newTorrents;
+		QList<Torrent *> newTorrents;
 		foreach (QVariant downloadVariant, resultList)
 		{
 
@@ -315,9 +315,9 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 			int seedsConnected = download[12].toInt();
 			int priority = download[13].toInt();
 			
-			TorrentItem * item;
+			Torrent * item;
 			bool found = false;
-			foreach (TorrentItem * oldItem, torrents)
+			foreach (Torrent * oldItem, torrents)
 			{
 				if (hash == oldItem->hash())
 				{
@@ -328,7 +328,7 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 			}
 			if (!found)
 			{
-				item = new TorrentItem(hash);
+				item = new Torrent(hash);
 				newTorrents.append(item);
 			}
 			item->setName(name);
@@ -368,7 +368,7 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 			item->setPriority(priority);
 			
 			
-			//connect(item, SIGNAL(dataChanged(TorrentItem *)), this, SLOT(updateItem(TorrentItem *)));
+			//connect(item, SIGNAL(dataChanged(Torrent *)), this, SLOT(updateItem(Torrent *)));
 		}
 		if (torrents.size() > 0)
 		{
@@ -387,7 +387,7 @@ void TorrentModel::result(const QString & method, const QVariant & result)
 ByteSize TorrentModel::totalDownloadRate() const
 {
 	ByteSize total;
-	foreach(TorrentItem * item, torrents)
+	foreach(Torrent * item, torrents)
 	{
 		total += item->downloadRate();
 	}
@@ -397,7 +397,7 @@ ByteSize TorrentModel::totalDownloadRate() const
 ByteSize TorrentModel::totalUploadRate() const
 {
 	ByteSize total;
-	foreach(TorrentItem * item, torrents)
+	foreach(Torrent * item, torrents)
 	{
 		total += item->uploadRate();
 	}
@@ -414,7 +414,7 @@ Qt::ItemFlags TorrentModel::flags(const QModelIndex & index) const
 	return itemFlags;
 }
 
-void TorrentModel::updateItem(TorrentItem * item)
+void TorrentModel::updateItem(Torrent * item)
 {
 	int row = torrents.indexOf(item);
 	//emit dataChanged(createIndex(row, 0, item), createIndex(row, headers.count(), item));

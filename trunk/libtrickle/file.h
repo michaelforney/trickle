@@ -26,19 +26,24 @@
 
 #include "trickle_export.h"
 
+#include "bytesize.h"
+
+#include <QStringList>
+
 class TRICKLE_EXPORT File
 {
-	public:
+	public:		
+		enum FilePriority { Off, Low, Medium, High };
+
 		File(const ByteSize & size, int index, int completedChunks, FilePriority priority);
 		~File();
 		
-		enum FilePriority { Off, Low, Medium, High };
 		
 		inline ByteSize size() const { return m_size; };
 		inline int index() const { return m_index; };
 		inline int completedChunks() const { return m_completedChunks; };
 		inline FilePriority priority() const { return m_priority; };
-		inline QStringList path() const { return m_path };
+		inline QStringList path() const { return m_path; };
 	private:
 		inline void setCompletedChunks(int completedChunks) { m_completedChunks = completedChunks; };
 		inline void setSize(const ByteSize & size) { m_size = size; };
