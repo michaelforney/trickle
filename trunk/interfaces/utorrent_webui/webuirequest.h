@@ -17,51 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef UTORRENTINTERFACE_H
-#define UTORRENTINTERFACE_H
-
-#include "interface.h"
+#ifndef WEBUIREQUEST_H
+#define WEBUIREQUEST_H
 
 /**
 	@author Michael Forney <michael@obberon.com>
 */
 
-#include "webuirequest.h"
+#include <QString>
 
-#include <QVariantList>
-
-class ByteSize;
-class QHttp;
-
-class uTorrentInterface : public Interface
+class WebUIRequest
 {
-	Q_OBJECT
 	public:
-		uTorrentInterface(QObject * parent, const QVariantList & args);
-		~uTorrentInterface();
-		InterfaceConfigWidget * configWidget();
-		QString title() const { return "uTorrent WebUI Interface"; }
-		QString description() const { return "Interface to connect to uTorrent through the WebUI"; }
-	public slots:
-		void setServer(const Server & server);
+		enum Type { TorrentList };
+		WebUIRequest(int id, Type type);
+		WebUIRequest();
+		~WebUIRequest();
 		
-		void setDownloadLimit(const ByteSize & size);
-		void setUploadLimit(const ByteSize & size);
-		void startTorrent(const QString & hash);
-		void stopTorrent(const QString & hash);
-		void updateTorrentList();
-		void updateFileList(const QString & hash);
-		void update();
-		bool connectToServer();
-		void clear();
-	private slots:
-		void requestFinished(int id, bool error);
-		void authenticationRequired(QString hostname, quint16 port, QAuthenticator * authenticator);
+		Type type();
 	private:
-		QVariantMap config;
-		Server m_server;
-		QHttp * http;
-		QMap<int, WebUIRequest> requests;
+		int m_id;
+		Type m_type;
+};
+
+class TorrentListRequest : public WebUIRequest
+{
+	public:
+		TorrentListRequest(int id) : WebUIRequest(id, TorrentList) {};
+		~TorrentListRequest() {};
+};
+
+class FileListRequest : public WebUIRequest
+{
+	private:
+		QString hash;
 };
 
 #endif

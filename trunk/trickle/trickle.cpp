@@ -278,7 +278,7 @@ void Trickle::update()
 
 void Trickle::authenticate(QAuthenticator * authenticator)
 {
-	KPasswordDialog * authenticationDialog = new KPasswordDialog(this);
+	KPasswordDialog * authenticationDialog = new KPasswordDialog(this, KPasswordDialog::ShowUsernameLine);
 	authenticationDialog->setPrompt("This server requires authentification");
 	
 	if (authenticationDialog->exec() == QDialog::Accepted)

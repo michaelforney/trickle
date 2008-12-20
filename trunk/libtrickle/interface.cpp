@@ -23,6 +23,7 @@
 
 #include <QTimer>
 #include <QStringList>
+#include <KDebug>
 
 Interface::Interface(QObject * parent)
  : QObject(parent)
@@ -48,6 +49,7 @@ void Interface::setInterval(int interval)
 
 bool Interface::start()
 {
+	kdDebug() << "Interface::start()";
 	if (connectToServer())
 	{
 		m_timer->start();

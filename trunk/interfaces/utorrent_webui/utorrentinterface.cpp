@@ -24,6 +24,7 @@
 #include "bytesize.h"
 
 #include <KGenericFactory>
+#include <QAuthenticator>
 
 K_PLUGIN_FACTORY(uTorrentInterfaceFactory, registerPlugin<uTorrentInterface>();)
 K_EXPORT_PLUGIN(uTorrentInterfaceFactory("trickle_utorrent"))
@@ -70,6 +71,8 @@ void uTorrentInterface::update()
 bool uTorrentInterface::connectToServer()
 {
 	http = new QHttp(m_server.host(), m_server.port(), this);
+	connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
+	connect(http, SIGNAL(authenticationRequired(const QString &, quint16, QAuthenticator *)), this, SLOT(authenticationRequired(const QString &, quint16, QAuthenticator *)));
 }
 
 void uTorrentInterface::clear()
@@ -78,10 +81,42 @@ void uTorrentInterface::clear()
 
 void uTorrentInterface::updateTorrentList()
 {
+	if (!requests.isEmpty())
+	{
+		return;
+	}
+	
+	QHttpRequestHeader requestHeader("GET", "/gui/?list=1");
+	int id = http->request(requestHeader);
+	requests.insert(id, TorrentListRequest(id));
 }
 
 void uTorrentInterface::updateFileList(const QString & hash)
 {
+}
+
+void uTorrentInterface::requestFinished(int id, bool error)
+{
+	if (error)
+	{
+		kdDebug() << "ERROR!!! Run for your lives!!!";
+		kdDebug() << http->errorString();
+		return;
+	}
+	
+	if (requests.contains(id))
+	{
+		WebUIRequest request = requests.take(id);
+		if (request.type() == WebUIRequest::TorrentList)
+		{
+			kdDebug() << http->readAll();
+		}
+	}
+}
+
+void uTorrentInterface::authenticationRequired(QString hostname, quint16 port, QAuthenticator * authenticator)
+{
+	emit authenticate(authenticator);
 }
 
 #include "utorrentinterface.moc"

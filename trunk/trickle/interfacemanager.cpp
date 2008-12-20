@@ -52,7 +52,7 @@ void InterfaceManager::load()
 		factories.insert(service->desktopEntryName(), KPluginLoader(*service).factory());
 	}
 	
-	qDebug() << Settings::self()->defaultServer();
+	qDebug() << "Default server: " << Settings::self()->defaultServer();
 	setServer(Settings::self()->server(Settings::self()->defaultServer()));
 }
 
@@ -101,6 +101,7 @@ void InterfaceManager::setServer(const Server & server)
 		m_interface = factories.value(server.type())->create<Interface>();
 		m_interface->setServer(server);
 		m_server = server;
+		connect(m_interface, SIGNAL(authenticate(QAuthenticator *)), this, SIGNAL(authenticate(QAuthenticator *)));
 	}
 }
 

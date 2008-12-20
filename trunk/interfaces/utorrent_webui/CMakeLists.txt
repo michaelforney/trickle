@@ -1,4 +1,4 @@
-SET(uTorrentSources utorrentinterface.cpp utorrentconfig.cpp)
+SET(uTorrentSources utorrentinterface.cpp utorrentconfig.cpp webuirequest.cpp)
 SET(uTorrentUi utorrentconfig.ui)
 
 KDE4_ADD_UI_FILES(uTorrentSources ${uTorrentUi})
