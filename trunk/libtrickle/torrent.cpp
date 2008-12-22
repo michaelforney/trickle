@@ -26,7 +26,6 @@
 //#include "updatetimer.h"
 
 Torrent::Torrent(const QString & hash)
- : QObject()
 {
 	setHash(hash);
 	setState(Stopped);
@@ -43,6 +42,9 @@ Torrent::Torrent(const QString & hash)
 	setDownloaded(0);
 }
 
+Torrent::Torrent()
+{
+}
 
 Torrent::~Torrent()
 {
@@ -53,7 +55,7 @@ bool Torrent::operator==(const Torrent & other)
 	return hash() == other.hash();
 }
 
-void Torrent::stop()
+/*void Torrent::stop()
 {
 	//XmlRpc::instance()->call("d.stop", QVariantList() << m_hash, this, "result");
 }
@@ -71,7 +73,7 @@ void Torrent::update()
 	args << "t.get_scrape_complete=";
 	args << "t.get_scrape_incomplete=";
 	//XmlRpc::instance()->call("t.multicall", args, this, "result");
-}
+}*/
 
 //Data Get Functions
 
@@ -181,7 +183,7 @@ int Torrent::chunks() const
 	return m_chunks;
 }
 
-void Torrent::result(const QString & method, const QVariant & result)
+/*void Torrent::result(const QString & method, const QVariant & result)
 {
 	if (method == "t.multicall")
 	{
@@ -191,7 +193,7 @@ void Torrent::result(const QString & method, const QVariant & result)
 		emit dataChanged(this);
 		emit updated();
 	}
-}
+}*/
 		
 //Data Set Functions
 		
@@ -280,4 +282,4 @@ void Torrent::setPriority(int priority)
 	m_priority = priority;
 }
 
-#include "torrent.moc"
+//#include "torrent.moc"

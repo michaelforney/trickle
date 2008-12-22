@@ -31,9 +31,9 @@
 #include <QMap>
 #include <QVariantList>
 
-class TRICKLE_EXPORT Torrent : public QObject
+class TRICKLE_EXPORT Torrent
 {
-	Q_OBJECT
+	/*Q_OBJECT
 	Q_PROPERTY(int seedsConnected READ seedsConnected WRITE setSeedsConnected)
 	Q_PROPERTY(int seedsTotal READ seedsTotal WRITE setSeedsTotal)
 	Q_PROPERTY(int leechsConnected READ leechsConnected WRITE setLeechsConnected)
@@ -51,10 +51,11 @@ class TRICKLE_EXPORT Torrent : public QObject
 	Q_PROPERTY(QString name READ name WRITE setName)
 	Q_PROPERTY(QString hash READ hash WRITE setHash)
 	Q_PROPERTY(int priority READ priority WRITE setPriority)
-	Q_ENUMS(TorrentState)
+	Q_ENUMS(TorrentState)*/
 	
 	public:
 		Torrent(const QString & hash);
+		Torrent();
 		~Torrent();
 		
 		enum Attribute { Hash, Name, Status, ChunkSize, Chunks, Size, Uploaded, UploadRate, Downloaded, DownloadRate, State, Ratio, Seeders, SeedersConnected, Leechers, LeechersConnected };
@@ -98,11 +99,11 @@ class TRICKLE_EXPORT Torrent : public QObject
 		void setRatio(double ratio);
 		bool operator==(const Torrent & other);
 		bool operator<(const Torrent & other);
-	public slots:
+	/*public slots:
 		void update();
 		void result(const QString & method, const QVariant & result);
 		void stop();
-		void start();
+		void start();*/
 	private:
 		int m_seedsConnected;
 		int m_seedsTotal;
@@ -121,10 +122,10 @@ class TRICKLE_EXPORT Torrent : public QObject
 		QString m_name;
 		QString m_hash;
 		ByteSize m_size;
-	signals:
+	/*signals:
 		void call(const QString & method, const QVariantList & args, QObject * sender, const QString & member);
 		void dataChanged(Torrent * item);
-		void updated();
+		void updated();*/
 };
 
 typedef QMap<QString, Torrent *> TorrentMap;

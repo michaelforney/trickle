@@ -110,8 +110,8 @@ void uTorrentInterface::requestFinished(int id, bool error)
 		WebUIRequest request = requests.take(id);
 		if (request.type() == WebUIRequest::TorrentList)
 		{
-			QVariantList torrents = CSVCodec::decode(http->readAll()).toMap().value("torrents");
-			QList<Torrent> torrents;
+			QVariantList torrents = CSVCodec::decode(http->readAll()).toMap().value("torrents").toList();
+			QMap<QString, Torrent> torrentMap;
 			foreach(QVariant torrentVariant, torrents)
 			{
 				QVariantList webuiTorrent = torrentVariant.toList();
@@ -119,10 +119,11 @@ void uTorrentInterface::requestFinished(int id, bool error)
 				torrent.setName(webuiTorrent.at(2).toString());
 				torrent.setSize(webuiTorrent.at(3).toLongLong());
 				torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
-				torrent.setUploaded(weuiTorrent.at(6).toLongLong());
-				torrents.append(torrent);
+				torrent.setUploaded(webuiTorrent.at(6).toLongLong());
+				torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
 			}
-			emit torrentListUpdated(torrents);
+			qDebug() << "emitting";
+			emit torrentMapUpdated(torrentMap);
 		}
 	}
 }

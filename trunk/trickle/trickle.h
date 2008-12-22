@@ -55,6 +55,7 @@ class Server;
 class ServerModel;
 class GeneralInfo;
 class ServerInfo;
+class Interface;
 
 class Trickle : public KXmlGuiWindow
 {
@@ -83,6 +84,8 @@ class Trickle : public KXmlGuiWindow
 		void setUploadLimit(int limit);
 		
 		void result(const QString & method, const QVariant & result);
+		
+		void setupInterfaceConnections(Interface * interface);
 	private:
 		TorrentView * torrentView;
 		TorrentSortModel * torrentSortModel;

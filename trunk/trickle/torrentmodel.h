@@ -33,6 +33,8 @@
 
 #include "torrent.h"
 
+class Interface;
+
 class TorrentModel : public QAbstractItemModel
 {
 	Q_OBJECT
@@ -51,7 +53,6 @@ class TorrentModel : public QAbstractItemModel
 		QModelIndex parent(const QModelIndex & index) const;
 		QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
 		QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
-		bool canFetchMore() const;
 		Qt::ItemFlags flags(const QModelIndex & index) const;
 		
 		ByteSize totalDownloadRate() const;
@@ -61,15 +62,14 @@ class TorrentModel : public QAbstractItemModel
 		void clear();
 		void update();
 		void updateItem(Torrent * item);
-		void result(const QString & method, const QVariant & result);
+		void torrentsUpdated(const QMap<QString, Torrent> & torrentMap);
+		void setupInterfaceConnections(Interface * interface);
 	signals:
 		void logInfo(const QString & info);
 		void updated();
 	private:
-		Torrent item(const QString & hash) const;
-		
 		QList<QVariant> headers;
-		QList<Torrent> torrents;
+		QMap<QString, Torrent> torrents;
 		QStringList units;
 };
 

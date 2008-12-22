@@ -57,7 +57,7 @@ class InterfaceManager : public QObject
 	public slots:
 		void setServer(const Server & server);
 	signals:
-		void authenticate(QAuthenticator * authenticator);
+		void interfaceChanged(Interface * interface);
 	private:
 		Interface * m_interface;
 		Server m_server;

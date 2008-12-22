@@ -64,7 +64,7 @@
 #include "trackerinfo.h"
 #include "server.h"
 #include "servermodel.h"
-#include "selectedtorrent.h"
+//#include "selectedtorrent.h"
 #include "generalinfo.h"
 #include "serverinfo.h"
 #include "serverstatus.h"
@@ -80,7 +80,6 @@ Trickle::Trickle()
  : KXmlGuiWindow()
 {
 	//ServerManager::self()->load();
-	InterfaceManager::self()->load();
 	
 	torrentModel = new TorrentModel();
 	torrentSortModel = new TorrentSortModel();
@@ -108,9 +107,10 @@ Trickle::Trickle()
 	connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
 	//connect(XmlRpc::instance(), SIGNAL(authenticate(QAuthenticator *)), this, SLOT(authenticate(QAuthenticator *)));
 	connect(UpdateTimer::instance(), SIGNAL(timeout()), this, SLOT(update()));
-	connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem *)), this, SLOT(updateControls(TorrentItem *)));
-	connect(InterfaceManager::self(), SIGNAL(authenticate(QAuthenticator *)), this, SLOT(authenticate(QAuthenticator *)));
+	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem *)), this, SLOT(updateControls(TorrentItem *)));
+	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
 	
+	InterfaceManager::self()->load();
 	InterfaceManager::interface()->start();
 }
 
@@ -308,6 +308,11 @@ void Trickle::newTorrent()
 
 void Trickle::openTorrent()
 {
+}
+
+void Trickle::setupInterfaceConnections(Interface * interface)
+{
+	connect(interface, SIGNAL(authenticate(QAuthenticator *)), this, SLOT(authenticate(QAuthenticator *)));
 }
 
 #include "trickle.moc"
