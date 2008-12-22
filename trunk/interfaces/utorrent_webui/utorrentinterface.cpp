@@ -20,11 +20,12 @@
 #include "utorrentinterface.h"
 
 #include "utorrentconfig.h"
-#include "xmlrpc.h"
 #include "bytesize.h"
+#include "csvcodec.h"
 
 #include <KGenericFactory>
 #include <QAuthenticator>
+#include <QHttp>
 
 K_PLUGIN_FACTORY(uTorrentInterfaceFactory, registerPlugin<uTorrentInterface>();)
 K_EXPORT_PLUGIN(uTorrentInterfaceFactory("trickle_utorrent"))
@@ -109,7 +110,19 @@ void uTorrentInterface::requestFinished(int id, bool error)
 		WebUIRequest request = requests.take(id);
 		if (request.type() == WebUIRequest::TorrentList)
 		{
-			kdDebug() << http->readAll();
+			QVariantList torrents = CSVCodec::decode(http->readAll()).toMap().value("torrents");
+			QList<Torrent> torrents;
+			foreach(QVariant torrentVariant, torrents)
+			{
+				QVariantList webuiTorrent = torrentVariant.toList();
+				Torrent torrent(webuiTorrent.at(0).toString());
+				torrent.setName(webuiTorrent.at(2).toString());
+				torrent.setSize(webuiTorrent.at(3).toLongLong());
+				torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
+				torrent.setUploaded(weuiTorrent.at(6).toLongLong());
+				torrents.append(torrent);
+			}
+			emit torrentListUpdated(torrents);
 		}
 	}
 }

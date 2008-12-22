@@ -66,10 +66,10 @@ class TorrentModel : public QAbstractItemModel
 		void logInfo(const QString & info);
 		void updated();
 	private:
-		Torrent * item(const QString & hash) const;
+		Torrent item(const QString & hash) const;
 		
 		QList<QVariant> headers;
-		QList<Torrent *> torrents;
+		QList<Torrent> torrents;
 		QStringList units;
 };
 

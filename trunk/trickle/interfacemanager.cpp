@@ -100,6 +100,7 @@ void InterfaceManager::setServer(const Server & server)
 	{
 		m_interface = factories.value(server.type())->create<Interface>();
 		m_interface->setServer(server);
+		m_interface->setInterval(Settings::self()->interval());
 		m_server = server;
 		connect(m_interface, SIGNAL(authenticate(QAuthenticator *)), this, SIGNAL(authenticate(QAuthenticator *)));
 	}
