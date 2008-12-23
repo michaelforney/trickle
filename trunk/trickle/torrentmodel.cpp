@@ -81,7 +81,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 	{
 		return QVariant();
 	}
-	Torrent item = torrents.value(torrents.keys().at(index.row()));
+	Torrent item = torrents.value(*static_cast<QString *>(index.internalPointer()));
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -203,8 +203,9 @@ QModelIndex TorrentModel::index(int row, int column, const QModelIndex & parent)
 	}
 	
 	//Torrent * item = torrents[row];
+	QString * hash = new QString(torrents.keys().at(row));
 
-	return createIndex(row, column);
+	return createIndex(row, column, hash);
 }
 
 void TorrentModel::clear()
@@ -307,6 +308,7 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 		{
 			torrents.insert(hash, torrentMap.value(hash));
 			int index = torrents.keys().indexOf(hash);
+			qDebug() << index;
 			beginInsertRows(QModelIndex(), index, index);
 			endInsertRows();
 		}
@@ -321,6 +323,11 @@ void TorrentModel::setupInterfaceConnections(Interface * interface)
 {
 	kdDebug() << "setupInterfaceConnections()";
 	connect(interface, SIGNAL(torrentMapUpdated(const QMap<QString, Torrent> &)), this, SLOT(torrentsUpdated(const QMap<QString, Torrent> &)));
+}
+
+Torrent TorrentModel::torrent(const QString & hash) const
+{
+	return torrents.value(hash);
 }
 
 #include "torrentmodel.moc"

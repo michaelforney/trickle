@@ -35,7 +35,7 @@ TorrentView::TorrentView()
 	setIndentation(0);
 	
 	connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(setCurrentTorrent(const QModelIndex &)));
-	connect(this, SIGNAL(torrentChanged(TorrentItem *)), SelectedTorrent::instance(), SLOT(setTorrent(TorrentItem *)));
+	//connect(this, SIGNAL(torrentChanged(TorrentItem *)), SelectedTorrent::instance(), SLOT(setTorrent(TorrentItem *)));
 }
 
 TorrentView::~TorrentView()
@@ -44,7 +44,7 @@ TorrentView::~TorrentView()
 
 void TorrentView::setCurrentTorrent(const QModelIndex & index)
 {
-	emit torrentChanged(static_cast<TorrentItem *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
+	//emit torrentChanged(static_cast<TorrentItem *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
 }
 
 #include "torrentview.moc"

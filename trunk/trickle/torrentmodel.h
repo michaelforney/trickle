@@ -58,6 +58,7 @@ class TorrentModel : public QAbstractItemModel
 		ByteSize totalDownloadRate() const;
 		ByteSize totalUploadRate() const;
 		
+		Torrent torrent(const QString & hash) const;
 	public slots:
 		void clear();
 		void update();

@@ -35,8 +35,8 @@ TorrentSortModel::~TorrentSortModel()
 
 bool TorrentSortModel::lessThan(const QModelIndex & left, const QModelIndex & right) const
 {
-	Torrent * leftItem = static_cast<Torrent *>(left.internalPointer());
-	Torrent * rightItem = static_cast<Torrent *>(right.internalPointer());
+	Torrent leftItem = static_cast<TorrentModel *>(sourceModel())->torrent(*static_cast<QString *>(left.internalPointer()));
+	Torrent rightItem = static_cast<TorrentModel *>(sourceModel())->torrent(*static_cast<QString *>(right.internalPointer()));
 	
 	if (left.column() == right.column())
 	{
@@ -44,27 +44,27 @@ bool TorrentSortModel::lessThan(const QModelIndex & left, const QModelIndex & ri
 		switch (column)
 		{
 			case TorrentModel::Name:
-				return leftItem->name().toLower() < rightItem->name().toLower();
+				return leftItem.name().toLower() < rightItem.name().toLower();
 			case TorrentModel::State:
-				return leftItem->state() < rightItem->state();
+				return leftItem.state() < rightItem.state();
 			case TorrentModel::Size:
-				return leftItem->size() < rightItem->size();
+				return leftItem.size() < rightItem.size();
 			case TorrentModel::Seeders:
-				return leftItem->seedsConnected() < rightItem->seedsConnected();
+				return leftItem.seedsConnected() < rightItem.seedsConnected();
 			case TorrentModel::Leechers:
-				return leftItem->leechsConnected() < rightItem->leechsConnected();
+				return leftItem.leechsConnected() < rightItem.leechsConnected();
 			case TorrentModel::DownloadRate:
-				return leftItem->downloadRate() < rightItem->downloadRate();
+				return leftItem.downloadRate() < rightItem.downloadRate();
 			case TorrentModel::Downloaded:
-				return leftItem->downloaded() < rightItem->downloaded();
+				return leftItem.downloaded() < rightItem.downloaded();
 			case TorrentModel::UploadRate:
-				return leftItem->uploadRate() < rightItem->uploadRate();
+				return leftItem.uploadRate() < rightItem.uploadRate();
 			case TorrentModel::Uploaded:
-				return leftItem->uploaded() < rightItem->uploaded();
+				return leftItem.uploaded() < rightItem.uploaded();
 			case TorrentModel::Ratio:
-				return leftItem->ratio() < rightItem->ratio();
+				return leftItem.ratio() < rightItem.ratio();
 			case TorrentModel::Priority:
-				return leftItem->priority() < rightItem->priority();
+				return leftItem.priority() < rightItem.priority();
 			default:
 				return false;
 		}
