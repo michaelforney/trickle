@@ -62,7 +62,7 @@ class TRICKLE_EXPORT Interface : public QObject
 		virtual bool stop();
 		virtual void reset();
 		virtual void update() = 0;
-		virtual bool connectToServer() = 0;
+		//virtual bool connectToServer() = 0;
 		virtual void clear() = 0;
 	protected slots:
 		virtual void updateTorrentList() = 0;

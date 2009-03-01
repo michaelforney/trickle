@@ -31,7 +31,7 @@ K_PLUGIN_FACTORY(uTorrentInterfaceFactory, registerPlugin<uTorrentInterface>();)
 K_EXPORT_PLUGIN(uTorrentInterfaceFactory("trickle_utorrent"))
 
 uTorrentInterface::uTorrentInterface(QObject * parent, const QVariantList & /*args*/)
- : Interface(parent), http(0)
+ : Interface(parent)
 {
 }
 
@@ -69,68 +69,67 @@ void uTorrentInterface::update()
 {
 }
 
-bool uTorrentInterface::connectToServer()
-{
-	http = new QHttp(m_server.host(), m_server.port(), this);
-	connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
-	connect(http, SIGNAL(authenticationRequired(const QString &, quint16, QAuthenticator *)), this, SLOT(authenticationRequired(const QString &, quint16, QAuthenticator *)));
-}
-
 void uTorrentInterface::clear()
 {
 }
 
 void uTorrentInterface::updateTorrentList()
 {
-	if (!requests.isEmpty())
-	{
-		return;
-	}
-	
-	QHttpRequestHeader requestHeader("GET", "/gui/?list=1");
-	int id = http->request(requestHeader);
-	requests.insert(id, TorrentListRequest(id));
+    if (!jobs.isEmpty())
+    {
+        return;
+    }
+
+    KUrl url;
+    url.setScheme("http");
+    url.setHost(m_server.host());
+    url.setPort(m_server.port());
+    url.setPath("/gui/?list=1");
+
+    KIO::StoredTransferJob * job = KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
+    
+    jobs.insert(job, TorrentList);
 }
 
 void uTorrentInterface::updateFileList(const QString & hash)
 {
 }
 
-void uTorrentInterface::requestFinished(int id, bool error)
+void uTorrentInterface::jobFinished(KJob * job)
 {
-	if (error)
-	{
-		kdDebug() << "ERROR!!! Run for your lives!!!";
-		kdDebug() << http->errorString();
-		return;
-	}
-	
-	if (requests.contains(id))
-	{
-		WebUIRequest request = requests.take(id);
-		if (request.type() == WebUIRequest::TorrentList)
-		{
-			QVariantList torrents = CSVCodec::decode(http->readAll()).toMap().value("torrents").toList();
-			QMap<QString, Torrent> torrentMap;
-			foreach(QVariant torrentVariant, torrents)
-			{
-				QVariantList webuiTorrent = torrentVariant.toList();
-				Torrent torrent(webuiTorrent.at(0).toString());
-				torrent.setName(webuiTorrent.at(2).toString());
-				torrent.setSize(webuiTorrent.at(3).toLongLong());
-				torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
-				torrent.setUploaded(webuiTorrent.at(6).toLongLong());
-				torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
-			}
-			qDebug() << "emitting";
-			emit torrentMapUpdated(torrentMap);
-		}
-	}
-}
-
-void uTorrentInterface::authenticationRequired(QString hostname, quint16 port, QAuthenticator * authenticator)
-{
-	emit authenticate(authenticator);
+    KIO::StoredTransferJob * transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    if (transferJob)
+    {
+        if (transferJob->error())
+        {
+            kdDebug() << "ERROR!!! Run for your lives!!!";
+            kdDebug() << transferJob->errorString();
+            return;
+        }
+        
+        if (jobs.contains(transferJob))
+        {
+            WebUIRequest requestType = jobs.value(transferJob);
+            if (requestType == TorrentList)
+            {
+                QVariantMap response = CSVCodec::decode(transferJob->data()).toMap();
+                QVariantList torrents = response.value("torrents").toList();
+                QMap<QString, Torrent> torrentMap;
+                foreach(QVariant torrentVariant, torrents)
+                {
+                    QVariantList webuiTorrent = torrentVariant.toList();
+                    Torrent torrent(webuiTorrent.at(0).toString());
+                    torrent.setName(webuiTorrent.at(2).toString());
+                    torrent.setSize(webuiTorrent.at(3).toLongLong());
+                    torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
+                    torrent.setUploaded(webuiTorrent.at(6).toLongLong());
+                    torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
+                }
+                qDebug() << "emitting";
+                emit torrentMapUpdated(torrentMap);
+            }
+        }
+    }
 }
 
 #include "utorrentinterface.moc"

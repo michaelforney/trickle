@@ -22,7 +22,6 @@
 #include <QHeaderView>
 
 #include "torrentmodel.h"
-#include "selectedtorrent.h"
 #include "torrentsortmodel.h"
 
 TorrentView::TorrentView()

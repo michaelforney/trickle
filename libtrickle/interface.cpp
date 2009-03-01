@@ -49,16 +49,9 @@ void Interface::setInterval(int interval)
 
 bool Interface::start()
 {
-	kdDebug() << "Interface::start()";
-	if (connectToServer())
-	{
-		m_timer->start();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    kdDebug() << "Interface::start()";
+    m_timer->start();
+    return true;
 }
 
 bool Interface::stop()

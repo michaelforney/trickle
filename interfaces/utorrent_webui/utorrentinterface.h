@@ -26,8 +26,7 @@
 	@author Michael Forney <michael@obberon.com>
 */
 
-#include "webuirequest.h"
-
+#include <KIO/Job>
 #include <QVariantList>
 
 class ByteSize;
@@ -37,6 +36,8 @@ class uTorrentInterface : public Interface
 {
 	Q_OBJECT
 	public:
+        enum WebUIRequest { TorrentList, FileList };
+        
 		uTorrentInterface(QObject * parent, const QVariantList & args);
 		~uTorrentInterface();
 		InterfaceConfigWidget * configWidget();
@@ -52,16 +53,13 @@ class uTorrentInterface : public Interface
 		void updateTorrentList();
 		void updateFileList(const QString & hash);
 		void update();
-		bool connectToServer();
 		void clear();
 	private slots:
-		void requestFinished(int id, bool error);
-		void authenticationRequired(QString hostname, quint16 port, QAuthenticator * authenticator);
+		void jobFinished(KJob * job);
 	private:
 		QVariantMap config;
 		Server m_server;
-		QHttp * http;
-		QMap<int, WebUIRequest> requests;
+		QMap<KIO::StoredTransferJob *, WebUIRequest> jobs;
 };
 
 #endif
