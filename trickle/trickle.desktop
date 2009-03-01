@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Trickle
+GenericName=Torrent Client Frontend
+Comment=Torrent Client Frontend
+Exec=trickle
+Type=Application
+Terminal=false
+Icon=trickle
+Categories=Qt;KDE;Network;BitTorrent;
