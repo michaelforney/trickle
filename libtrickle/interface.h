@@ -77,7 +77,6 @@ class TRICKLE_EXPORT Interface : public QObject
 		void torrentStarted(const QString & hash);
 		void torrentStopped(const QString & hash);
 		void cleared();
-		void authenticate(QAuthenticator * authenticator);
 		//void torrentsAdded(QStringList hashes); //Need this?
 		//void torrentsRemoved(QStringList hashes); //Need this?
 		//void filesAdded(const QString & hash, QList<File *>); //Need this?

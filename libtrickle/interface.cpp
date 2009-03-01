@@ -45,6 +45,7 @@ void Interface::setServer(const Server & server)
 void Interface::setInterval(int interval)
 {
 	m_timer->setInterval(interval);
+    qDebug() << interval;
 }
 
 bool Interface::start()

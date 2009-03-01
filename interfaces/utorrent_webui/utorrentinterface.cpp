@@ -75,20 +75,20 @@ void uTorrentInterface::clear()
 
 void uTorrentInterface::updateTorrentList()
 {
+    kdDebug() << "updateTorrentList()";
     if (!jobs.isEmpty())
     {
         return;
     }
-
     KUrl url;
     url.setScheme("http");
     url.setHost(m_server.host());
     url.setPort(m_server.port());
     url.setPath("/gui/?list=1");
 
-    KIO::StoredTransferJob * job = KIO::storedGet(url, KIO::Reload, KIO::HideProgressInfo);
+    //KIO::StoredTransferJob * job = KIO::storedGet(url, KIO::Reload/*, KIO::HideProgressInfo*/);
     
-    jobs.insert(job, TorrentList);
+    //jobs.insert(job, TorrentList);
 }
 
 void uTorrentInterface::updateFileList(const QString & hash)
@@ -120,6 +120,7 @@ void uTorrentInterface::jobFinished(KJob * job)
                     QVariantList webuiTorrent = torrentVariant.toList();
                     Torrent torrent(webuiTorrent.at(0).toString());
                     torrent.setName(webuiTorrent.at(2).toString());
+                    qDebug() << webuiTorrent.at(2).toString();
                     torrent.setSize(webuiTorrent.at(3).toLongLong());
                     torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
                     torrent.setUploaded(webuiTorrent.at(6).toLongLong());

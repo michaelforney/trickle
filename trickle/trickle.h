@@ -68,15 +68,10 @@ class Trickle : public KXmlGuiWindow
 		void createStatusBar();
 		void createDockWidgets();
 	public slots:
-		void updateControls(Torrent * torrent);
-		void update();
-		
-		void newTorrent();
+        void newTorrent();
 		void openTorrent();
 		
 		void optionsPreferences();
-		
-		void authenticate(QAuthenticator * authenticator);
 		
 		void stopTorrent();
 		void startTorrent();

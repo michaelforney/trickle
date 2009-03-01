@@ -79,8 +79,6 @@
 Trickle::Trickle()
  : KXmlGuiWindow()
 {
-	//ServerManager::self()->load();
-	
 	torrentModel = new TorrentModel();
 	torrentSortModel = new TorrentSortModel();
 	{
@@ -105,13 +103,13 @@ Trickle::Trickle()
 	createDockWidgets();
 	setupGUI();
 	connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
-	//connect(XmlRpc::instance(), SIGNAL(authenticate(QAuthenticator *)), this, SLOT(authenticate(QAuthenticator *)));
-	connect(UpdateTimer::instance(), SIGNAL(timeout()), this, SLOT(update()));
-	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem *)), this, SLOT(updateControls(TorrentItem *)));
 	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
 	
 	InterfaceManager::self()->load();
-	InterfaceManager::interface()->start();
+    if (InterfaceManager::interface())
+    {
+        InterfaceManager::interface()->start();
+    }
 }
 
 
@@ -195,37 +193,6 @@ void Trickle::createDockWidgets()
 	addDockWidget(Qt::BottomDockWidgetArea, statsDock);
 }
 
-void Trickle::updateControls(Torrent * torrent)
-{
-	if (torrent)
-	{
-		switch(torrent->state())
-		{
-			case Torrent::Completed:
-			case Torrent::Stopped:
-			{
-				//startAct->setEnabled(true);
-				//stopAct->setEnabled(false);
-				break;
-			}
-			case Torrent::Seeding:
-			case Torrent::Downloading:
-			{
-				//stopAct->setEnabled(true);
-				//startAct->setEnabled(false);
-				break;
-			}
-		}
-		//removeAct->setEnabled(true);
-	}
-	else
-	{
-		//startAct->setEnabled(false);
-		//stopAct->setEnabled(false);
-		//removeAct->setEnabled(false);
-	}
-}
-
 void Trickle::stopTorrent()
 {
 	QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
@@ -266,34 +233,6 @@ void Trickle::result(const QString & method, const QVariant & result)
 	}*/
 }
 
-void Trickle::update()
-{
-	torrentModel->update();
-	fileInfo->update();
-	trackerInfo->update();
-
-	totalDownloadRate->setText(QString("Down: %1/s").arg(torrentModel->totalDownloadRate().toString()));
-	totalUploadRate->setText(QString("Up: %1/s").arg(torrentModel->totalUploadRate().toString()));
-}
-
-void Trickle::authenticate(QAuthenticator * authenticator)
-{
-	KPasswordDialog * authenticationDialog = new KPasswordDialog(this, KPasswordDialog::ShowUsernameLine);
-	authenticationDialog->setPrompt("This server requires authentification");
-	
-	if (authenticationDialog->exec() == QDialog::Accepted)
-	{
-		authenticator->setUser(authenticationDialog->username());
-		authenticator->setPassword(authenticationDialog->password());
-		UpdateTimer::instance()->startTimer();
-	}
-	else
-	{
-		//ServerStatus::instance()->setCurrentServer(-1);
-	}
-	//XmlRpc::instance()->doneAuthenticating();
-}
-
 void Trickle::optionsPreferences()
 {
 	ConfigDialog * configDialog = new ConfigDialog(this, "settings", Settings::self());
@@ -312,7 +251,6 @@ void Trickle::openTorrent()
 
 void Trickle::setupInterfaceConnections(Interface * interface)
 {
-	connect(interface, SIGNAL(authenticate(QAuthenticator *)), this, SLOT(authenticate(QAuthenticator *)));
 }
 
 #include "trickle.moc"
