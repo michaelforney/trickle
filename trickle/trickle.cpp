@@ -108,6 +108,7 @@ Trickle::Trickle()
 	InterfaceManager::self()->load();
     if (InterfaceManager::interface())
     {
+        qDebug() << InterfaceManager::interface()->title();
         InterfaceManager::interface()->start();
     }
 }

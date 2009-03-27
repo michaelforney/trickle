@@ -40,11 +40,10 @@ SET(TrickleKcfg settings.kcfgc)
 KDE4_ADD_UI_FILES(TrickleSources ${TrickleUi})
 KDE4_ADD_KCFG_FILES(TrickleSources ${TrickleKcfg})
 
-KDE4_ADD_EXECUTABLE(trickle_bin ${TrickleSources})
-SET_TARGET_PROPERTIES(trickle_bin PROPERTIES OUTPUT_NAME trickle)
+KDE4_ADD_EXECUTABLE(trickle ${TrickleSources})
 
-TARGET_LINK_LIBRARIES(trickle_bin ${KDE4_KDEUI_LIBS} trickle)
+TARGET_LINK_LIBRARIES(trickle ${KDE4_KDEUI_LIBS} libtrickle)
 
 INSTALL(FILES trickleui.rc DESTINATION ${DATA_INSTALL_DIR}/trickle)
 INSTALL(FILES trickle.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-INSTALL(TARGETS trickle_bin  ${INSTALL_TARGETS_DEFAULT_ARGS})
+INSTALL(TARGETS trickle  ${INSTALL_TARGETS_DEFAULT_ARGS})
