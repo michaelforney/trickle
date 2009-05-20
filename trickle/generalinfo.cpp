@@ -92,22 +92,22 @@ void GeneralInfo::update()
 	//XmlRpc::instance()->call("get_upload_rate", QVariantList(), this, "result");
 }
 
-void GeneralInfo::result(const QString & method, const QVariant & result)
-{
-	if (method == "get_upload_rate")
-	{
-		if (!uploadLimitEdit->hasFocus())
-		{
-			uploadLimitEdit->setValue(result.toInt() / 1024);
-		}
-	}
-	else if (method == "get_download_rate")
-	{
-		if (!downloadLimitEdit->hasFocus())
-		{
-			downloadLimitEdit->setValue(result.toInt() / 1024);
-		}
-	}
-}
+// void GeneralInfo::result(const QString & method, const QVariant & result)
+// {
+// 	if (method == "get_upload_rate")
+// 	{
+// 		if (!uploadLimitEdit->hasFocus())
+// 		{
+// 			uploadLimitEdit->setValue(result.toInt() / 1024);
+// 		}
+// 	}
+// 	else if (method == "get_download_rate")
+// 	{
+// 		if (!downloadLimitEdit->hasFocus())
+// 		{
+// 			downloadLimitEdit->setValue(result.toInt() / 1024);
+// 		}
+// 	}
+// }
 
 #include "generalinfo.moc"

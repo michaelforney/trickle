@@ -39,8 +39,6 @@ class GeneralInfo : public QWidget
 		void changeDownloadLimit();
 		
 		void update();
-		
-		void result(const QString & member, const QVariant & result);
 	private:
 		QSpinBox * uploadLimitEdit;
 		QSpinBox * downloadLimitEdit;

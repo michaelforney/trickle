@@ -36,7 +36,19 @@ class uTorrentInterface : public Interface
 {
 	Q_OBJECT
 	public:
-        enum WebUIRequest { TorrentList, FileList };
+        enum WebUiRequest { TorrentList, FileList };
+        enum WebUiState
+        {
+            Started = 0x01,
+            Checking = 0x02,
+            StartAfterCheck = 0x04,
+            Checked = 0x08,
+            Error = 0x10,
+            Paused = 0x20,
+            Queued = 0x40,
+            Loaded = 0x80
+        };
+        Q_DECLARE_FLAGS(WebUiStates, WebUiState)
         
 		uTorrentInterface(QObject * parent, const QVariantList & args);
 		~uTorrentInterface();
@@ -59,7 +71,9 @@ class uTorrentInterface : public Interface
 	private:
 		QVariantMap config;
 		Server m_server;
-		QMap<KIO::StoredTransferJob *, WebUIRequest> jobs;
+		QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(uTorrentInterface::WebUiStates)
 
 #endif

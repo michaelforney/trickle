@@ -52,7 +52,13 @@ class rTorrentInterface : public Interface
 		void update();
 		bool connectToServer();
 		void clear();
-	private:
+    protected slots:
+        void updateTorrentList();
+        void updateFileList(const QString & hash);
+    protected:
+        QDomDocument generateDocument(const QString & method, const QVariantList & args);
+    private:
+        QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
 		QVariantMap config;
 		TorrentMap torrents;
 		XmlRpc * xmlRpc;

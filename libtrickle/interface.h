@@ -70,7 +70,7 @@ class TRICKLE_EXPORT Interface : public QObject
 	signals:
 		void torrentMapUpdated(const QMap<QString, Torrent> & torrents);
 		void filesUpdated(const QString & hash, QList<File> & files);
-		void torrentPriorityChanged(const QString & hash, Torrent::TorrentPriority priority);
+        void torrentPriorityChanged(const QString & hash, Torrent::TorrentState priority);
 		void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
 		void uploadLimitChanged(const ByteSize & limit);
 		void downloadLimitChanged(const ByteSize & limit);

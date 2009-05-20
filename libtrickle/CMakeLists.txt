@@ -1,4 +1,4 @@
-SET(LibTrickleSources interface.cpp interfaceconfigwidget.cpp server.cpp xmlrpc.cpp bytesize.cpp bcodec.cpp csvcodec.cpp torrent.cpp)
+SET(LibTrickleSources interface.cpp interfaceconfigwidget.cpp server.cpp bytesize.cpp bcodec.cpp csvcodec.cpp torrent.cpp)
 
 KDE4_ADD_LIBRARY(libtrickle SHARED ${LibTrickleSources})
 

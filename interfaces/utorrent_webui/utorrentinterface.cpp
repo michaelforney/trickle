@@ -84,11 +84,14 @@ void uTorrentInterface::updateTorrentList()
     url.setScheme("http");
     url.setHost(m_server.host());
     url.setPort(m_server.port());
-    url.setPath("/gui/?list=1");
+    url.setPath("/gui/");
+    url.addQueryItem("list", "1");
+    kdDebug() << url;
 
-    //KIO::StoredTransferJob * job = KIO::storedGet(url, KIO::Reload/*, KIO::HideProgressInfo*/);
+    KIO::StoredTransferJob * job = KIO::storedGet(url, KIO::Reload/*, KIO::HideProgressInfo*/);
+    connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
     
-    //jobs.insert(job, TorrentList);
+    jobs.insert(job, TorrentList);
 }
 
 void uTorrentInterface::updateFileList(const QString & hash)
@@ -98,6 +101,7 @@ void uTorrentInterface::updateFileList(const QString & hash)
 void uTorrentInterface::jobFinished(KJob * job)
 {
     KIO::StoredTransferJob * transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    kdDebug() << "Job finished";
     if (transferJob)
     {
         if (transferJob->error())
@@ -109,7 +113,7 @@ void uTorrentInterface::jobFinished(KJob * job)
         
         if (jobs.contains(transferJob))
         {
-            WebUIRequest requestType = jobs.value(transferJob);
+            WebUiRequest requestType = jobs.value(transferJob);
             if (requestType == TorrentList)
             {
                 QVariantMap response = CSVCodec::decode(transferJob->data()).toMap();
@@ -118,9 +122,31 @@ void uTorrentInterface::jobFinished(KJob * job)
                 foreach(QVariant torrentVariant, torrents)
                 {
                     QVariantList webuiTorrent = torrentVariant.toList();
+                    //qDebug() << webuiTorrent;
                     Torrent torrent(webuiTorrent.at(0).toString());
+                    Torrent::TorrentState state;
+                    WebUiStates webUiState(webuiTorrent.at(1).toInt());
+                    qDebug() << webUiState;
+                    qDebug() << webuiTorrent.at(4).toInt();
+                    if (webUiState & Started && webuiTorrent.at(4).toInt() == 1000)
+                    {
+                        state = Torrent::Seeding;
+                    }
+                    else if (webUiState & Started && webuiTorrent.at(4).toInt() < 1000)
+                    {
+                        state = Torrent::Downloading;
+                    }
+                    else if (!webUiState & Started && webuiTorrent.at(4).toInt() == 1000)
+                    {
+                        state = Torrent::Completed;
+                    }
+                    else if (!webUiState & Started && webuiTorrent.at(4).toInt() < 1000)
+                    {
+                        state = Torrent::Stopped;
+                    }
+                    qDebug() << state;
+                    torrent.setState(state);
                     torrent.setName(webuiTorrent.at(2).toString());
-                    qDebug() << webuiTorrent.at(2).toString();
                     torrent.setSize(webuiTorrent.at(3).toLongLong());
                     torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
                     torrent.setUploaded(webuiTorrent.at(6).toLongLong());

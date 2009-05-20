@@ -51,7 +51,8 @@ void Interface::setInterval(int interval)
 bool Interface::start()
 {
     kdDebug() << "Interface::start()";
-    m_timer->start();
+    updateTorrentList();
+    //m_timer->start();
     return true;
 }
 

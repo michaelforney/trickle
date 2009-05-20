@@ -60,7 +60,7 @@ class TRICKLE_EXPORT Torrent
 		
 		enum Attribute { Hash, Name, Status, ChunkSize, Chunks, Size, Uploaded, UploadRate, Downloaded, DownloadRate, State, Ratio, Seeders, SeedersConnected, Leechers, LeechersConnected };
 		enum TorrentState { Downloading, Seeding, Stopped, Completed };
-		enum TorrentPriority { Off, Low, Medium, High };
+		enum Priority { Off, Low, Medium, High };
 		
 		int seedsConnected() const;
 		int seedsTotal() const;
@@ -74,7 +74,7 @@ class TRICKLE_EXPORT Torrent
 		ByteSize size() const;
 		ByteSize uploaded() const;
 		ByteSize downloaded() const;
-		Torrent::TorrentState state() const;
+        Torrent::TorrentState state() const;
 		double ratio() const;
 		QString name() const;
 		QString hash() const;

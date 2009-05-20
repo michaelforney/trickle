@@ -77,4 +77,12 @@ void rTorrentInterface::clear()
 {
 }
 
+void updateTorrentList()
+{
+}
+
+void updateFileList(const QString & hash)
+{
+}
+
 #include "rtorrentinterface.moc"
