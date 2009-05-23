@@ -1,5 +1,5 @@
-SET(rTorrentSources rtorrentinterface.cpp rtorrentconfig.cpp xmlrpc.cpp)
-SET(rTorrentUi rtorrentconfig.ui)
+SET(rTorrentSources rtorrentinterface.cpp rtorrentconfig.cpp rtorrentconfigwidget.cpp)
+SET(rTorrentUi rtorrentconfigwidget.ui)
 
 KDE4_ADD_UI_FILES(rTorrentSources ${rTorrentUi})
 

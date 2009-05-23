@@ -18,28 +18,15 @@
     Copyright (C) 2009, Michael Forney <michael@obberon.com>
  */
 
-#ifndef RTORRENTCONFIG_H
-#define RTORRENTCONFIG_H
-
 #include "interfaceconfig.h"
 
-#include <QVariantList>
-
-class rTorrentConfig : public InterfaceConfig
+InterfaceConfig::InterfaceConfig(QObject * parent)
+ : QObject(parent)
 {
-    Q_OBJECT
-    public:
-        rTorrentConfig(QObject * parent, const QVariantList & args);
-        rTorrentConfig();
-        virtual ~rTorrentConfig();
+}
 
-        QString path() const;
-        void setPath(const QString & path);
+InterfaceConfig::~InterfaceConfig()
+{
+}
 
-        QByteArray data() const;
-        void setData(const QByteArray & data);
-    private:
-        QString m_path;
-};
-
-#endif // RTORRENTCONFIG_H
+#include "interfaceconfig.moc"

@@ -19,11 +19,23 @@
  ***************************************************************************/
 #include "interfaceconfigwidget.h"
 
-InterfaceConfigWidget::InterfaceConfigWidget(QWidget * parent)
- : QWidget(parent)
+InterfaceConfigWidget::InterfaceConfigWidget(QObject * parent, const QVariantList & args)
+ : QWidget(qobject_cast<QWidget *>(parent)), m_config(0)
 {
 }
 
 InterfaceConfigWidget::~InterfaceConfigWidget()
 {
 }
+
+InterfaceConfig * InterfaceConfigWidget::genericConfig() const
+{
+    return m_config;
+}
+
+void InterfaceConfigWidget::setConfig(InterfaceConfig * config)
+{
+    m_config = config;
+}
+
+#include "interfaceconfigwidget.h"

@@ -25,11 +25,16 @@
 #include <QStringList>
 #include <KDebug>
 
-Interface::Interface(QObject * parent)
- : QObject(parent)
+Interface::Interface(InterfaceConfig * config, QObject * parent)
+ : QObject(parent), m_timer(new QTimer()), m_config(config)
 {
-	m_timer = new QTimer();
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(updateTorrentList()));
+}
+
+Interface::Interface(QObject * parent)
+: QObject(parent), m_timer(new QTimer()), m_config(0)
+{
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(updateTorrentList()));
 }
 
 Interface::~Interface()
@@ -38,8 +43,8 @@ Interface::~Interface()
 
 void Interface::setServer(const Server & server)
 {
-	reset();
-	m_server = server;
+    m_server = server;
+    reset();
 }
 
 void Interface::setInterval(int interval)
@@ -71,6 +76,17 @@ void Interface::reset()
 Server Interface::server() const
 {
 	return m_server;
+}
+
+void Interface::setConfig(InterfaceConfig * config)
+{
+    m_config = config;
+    reset();
+}
+
+InterfaceConfig * Interface::genericConfig() const
+{
+    return m_config;
 }
 
 #include "interface.moc"

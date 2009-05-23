@@ -44,11 +44,6 @@ InterfaceConfigWidget * uTorrentInterface::configWidget()
 	return new uTorrentConfig();
 }
 
-void uTorrentInterface::setServer(const Server & server)
-{
-	m_server = server;
-}
-		
 void uTorrentInterface::setDownloadLimit(const ByteSize & size)
 {
 }

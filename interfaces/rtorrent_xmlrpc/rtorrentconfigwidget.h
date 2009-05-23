@@ -17,25 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "utorrentskeleton.h"
+#ifndef RTORRENTCONFIGWIDGET_H
+#define RTORRENTCONFIGWIDGET_H
 
-UTorrentSkeleton::UTorrentSkeleton()
-{
-}
+#include "interfaceconfigwidget.h"
 
-UTorrentSkeleton::~UTorrentSkeleton()
-{
-}
+/**
+	@author Michael Forney <michael@obberon.com>
+*/
 
-UTorrentSkeleton * UTorrentSkeleton::instance()
+#include "ui_rtorrentconfigwidget.h"
+
+class rTorrentConfig;
+
+class rTorrentConfigWidget : public InterfaceConfigWidget
 {
-	if (m_instance)
-	{
-		return m_instance;
-	}
-	else
-	{
-		m_instance = new UTorrentSkeleton();
-		return m_instance;
-	}
-}
+	public:
+        rTorrentConfigWidget(QObject * parent, const QVariantList & args);
+        ~rTorrentConfigWidget();
+
+		QByteArray data() const;
+		void setData(const QByteArray & data);
+        void setConfig(InterfaceConfig * config);
+        rTorrentConfig * config() const;
+		void clear();
+    protected:
+        void updateWidgets();
+	private:
+		Ui::rTorrentConfigWidget ui;
+};
+
+#endif

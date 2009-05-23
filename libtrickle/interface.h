@@ -33,6 +33,7 @@
 #include "torrent.h"
 
 class InterfaceConfigWidget;
+class InterfaceConfig;
 class Server;
 class ByteSize;
 
@@ -43,11 +44,11 @@ class TRICKLE_EXPORT Interface : public QObject
 {
 	Q_OBJECT
 	public:
-		Interface(QObject * parent);
+		Interface(InterfaceConfig * config, QObject * parent = 0);
+        Interface(QObject * parent = 0);
 		virtual ~Interface();
 		virtual QString title() const = 0;
 		virtual QString description() const = 0;
-		virtual InterfaceConfigWidget * configWidget() = 0;
 		
 		//enum UpdateType { TorrentList, TorrentFiles, Trackers };
 	public slots:
@@ -67,6 +68,8 @@ class TRICKLE_EXPORT Interface : public QObject
 	protected slots:
 		virtual void updateTorrentList() = 0;
 		virtual void updateFileList(const QString & hash) = 0;
+
+        virtual void setConfig(InterfaceConfig * config);
 	signals:
 		void torrentMapUpdated(const QMap<QString, Torrent> & torrents);
 		void filesUpdated(const QString & hash, QList<File> & files);
@@ -84,8 +87,11 @@ class TRICKLE_EXPORT Interface : public QObject
 		//void updated(UpdateType type);
 	protected:
 		Server server() const;
+        InterfaceConfig * genericConfig() const;
+        bool configValid() const;
 	private:
 		QTimer * m_timer;
+        InterfaceConfig * m_config;
 		Server m_server;
 };
 

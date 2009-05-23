@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>rTorrentConfig</class>
- <widget class="QWidget" name="rTorrentConfig" >
+ <class>rTorrentConfigWidget</class>
+ <widget class="QWidget" name="rTorrentConfigWidget" >
   <property name="geometry" >
    <rect>
     <x>0</x>

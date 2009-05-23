@@ -28,23 +28,24 @@
 
 #include "torrent.h"
 
+#include <KIO/Job>
 #include <QVariantList>
+#include <QDomDocument>
 
 class ByteSize;
 class XmlRpc;
+class rTorrentConfig;
 
 class rTorrentInterface : public Interface
 {
 	Q_OBJECT
-	public:
+    public:
+        enum rTorrentRequest { TorrentList, FileList };
 		rTorrentInterface(QObject * parent, const QVariantList & args);
 		~rTorrentInterface();
-		InterfaceConfigWidget * configWidget();
 		QString title() const { return "rTorrent XmlRpc Interface"; }
 		QString description() const { return "Interface to connect to rTorrent through XmlRpc"; }
 	public slots:
-		void setServer(Server * server);
-		
 		void setDownloadLimit(const ByteSize & size);
 		void setUploadLimit(const ByteSize & size);
 		void startTorrent(const QString & hash);
@@ -55,13 +56,16 @@ class rTorrentInterface : public Interface
     protected slots:
         void updateTorrentList();
         void updateFileList(const QString & hash);
+        void jobFinished(KJob * job);
     protected:
-        QDomDocument generateDocument(const QString & method, const QVariantList & args);
+        KIO::StoredTransferJob * call(const QString & method, const QVariantList & args);
+        QVariant toVariant(const QDomElement & value);
+        QDomElement toElement(const QVariant & value, QDomDocument document);
+        rTorrentConfig * config() const;
     private:
-        QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
-		QVariantMap config;
+        QMap<KIO::StoredTransferJob *, rTorrentRequest> jobs;
 		TorrentMap torrents;
-		XmlRpc * xmlRpc;
+		//XmlRpc * xmlRpc;
 };
 
 #endif

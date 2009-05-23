@@ -52,12 +52,9 @@ class uTorrentInterface : public Interface
         
 		uTorrentInterface(QObject * parent, const QVariantList & args);
 		~uTorrentInterface();
-		InterfaceConfigWidget * configWidget();
 		QString title() const { return "uTorrent WebUI Interface"; }
 		QString description() const { return "Interface to connect to uTorrent through the WebUI"; }
 	public slots:
-		void setServer(const Server & server);
-		
 		void setDownloadLimit(const ByteSize & size);
 		void setUploadLimit(const ByteSize & size);
 		void startTorrent(const QString & hash);
@@ -70,7 +67,6 @@ class uTorrentInterface : public Interface
 		void jobFinished(KJob * job);
 	private:
 		QVariantMap config;
-		Server m_server;
 		QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
 };
 

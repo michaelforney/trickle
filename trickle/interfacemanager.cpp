@@ -20,6 +20,8 @@
 #include "interfacemanager.h"
 
 #include "interface.h"
+#include "interfaceconfig.h"
+#include "interfaceconfigwidget.h"
 #include "server.h"
 #include "settings.h"
 
@@ -56,17 +58,25 @@ void InterfaceManager::load()
 	setServer(Settings::self()->server(Settings::self()->defaultServer()));
 }
 
-QStringList InterfaceManager::names()
+QStringList InterfaceManager::names() const
 {
 	return factories.keys();
 }
 
+InterfaceConfig * InterfaceManager::config(const QString & name)
+{
+    if (factories.contains(name))
+    {
+        return factories.value(name)->create<InterfaceConfig>();
+    }
+    return 0;
+}
 
 InterfaceConfigWidget * InterfaceManager::configWidget(const QString & name)
 {
 	if (factories.contains(name))
 	{
-		return factories.value(name)->create<Interface>()->configWidget();
+		return factories.value(name)->create<InterfaceConfigWidget>();
 	}
 	return 0;
 }

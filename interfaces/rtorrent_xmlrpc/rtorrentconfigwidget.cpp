@@ -17,17 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef UTORRENTSKELETON_H
-#define UTORRENTSKELETON_H
+#include "rtorrentconfigwidget.h"
 
-class UTorrentSkeleton
+#include "rtorrentconfig.h"
+#include "bcodec.h"
+
+#include <KDebug>
+
+rTorrentConfigWidget::rTorrentConfigWidget(QObject * parent, const QVariantList & args)
+ : InterfaceConfigWidget(parent, args)
 {
-	public:
-		UTorrentSkeleton();
-		~UTorrentSkeleton();
-		static UTorrentSkeleton * instance();
-	private:
-		static UTorrentSkeleton * m_instance = 0;
-};
+	ui.setupUi(this);
+}
 
-#endif
+rTorrentConfigWidget::~rTorrentConfigWidget()
+{
+}
+
+void rTorrentConfigWidget::clear()
+{
+	ui.pathEdit->setText("/RPC2");
+}
+
+void rTorrentConfigWidget::setConfig(InterfaceConfig * config)
+{
+    InterfaceConfigWidget::setConfig(config);
+    updateWidgets();
+}
+
+rTorrentConfig * rTorrentConfigWidget::config() const
+{
+    return qobject_cast<rTorrentConfig *>(genericConfig());
+}
+
+void rTorrentConfigWidget::updateWidgets()
+{
+    rTorrentConfig * rconfig = config();
+    if (rconfig)
+    {
+        ui.pathEdit->setText(rconfig->path());
+    }
+}

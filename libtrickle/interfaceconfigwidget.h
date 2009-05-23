@@ -28,15 +28,23 @@
 
 #include "trickle_export.h"
 
+#include <QVariantList>
+
+class InterfaceConfig;
+
 class TRICKLE_EXPORT InterfaceConfigWidget : public QWidget
 {
+    Q_OBJECT
 	public:
-		InterfaceConfigWidget(QWidget * parent = 0);
+        InterfaceConfigWidget(QObject * parent, const QVariantList & args);
 		virtual ~InterfaceConfigWidget();
 		
-		virtual QByteArray save() const = 0;
-		virtual void load(const QByteArray & data) = 0;
-		virtual void clear() = 0;
+		//virtual QByteArray data() const = 0;
+		virtual void setConfig(InterfaceConfig * config);
+        virtual void clear() = 0;
+        InterfaceConfig * genericConfig() const;
+    private:
+        InterfaceConfig * m_config;
 };
 
 #endif

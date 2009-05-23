@@ -18,28 +18,22 @@
     Copyright (C) 2009, Michael Forney <michael@obberon.com>
  */
 
-#ifndef RTORRENTCONFIG_H
-#define RTORRENTCONFIG_H
+#ifndef INTERFACECONFIG_H
+#define INTERFACECONFIG_H
 
-#include "interfaceconfig.h"
+#include "trickle_export.h"
 
-#include <QVariantList>
+#include <QObject>
 
-class rTorrentConfig : public InterfaceConfig
+class TRICKLE_EXPORT InterfaceConfig : public QObject
 {
     Q_OBJECT
     public:
-        rTorrentConfig(QObject * parent, const QVariantList & args);
-        rTorrentConfig();
-        virtual ~rTorrentConfig();
+        InterfaceConfig(QObject * parent = 0);
+        virtual ~InterfaceConfig();
 
-        QString path() const;
-        void setPath(const QString & path);
-
-        QByteArray data() const;
-        void setData(const QByteArray & data);
-    private:
-        QString m_path;
+        virtual QByteArray data() const = 0;
+        virtual void setData(const QByteArray & data) = 0;
 };
 
-#endif // RTORRENTCONFIG_H
+#endif // INTERFACECONFIG_H

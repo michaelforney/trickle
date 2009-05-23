@@ -22,6 +22,7 @@
 #include "server.h"
 #include "interfacemanager.h"
 #include "interfaceconfigwidget.h"
+#include "interfaceconfig.h"
 
 #include <KDebug>
 
@@ -42,7 +43,7 @@ ServerEditDialog::ServerEditDialog(QWidget * parent)
 		if (configWidget)
 		{
 			ui.interfaceConfig->addWidget(configWidget);
-			ui.typeEdit->addItem(InterfaceManager::self()->title(name));
+			ui.typeEdit->addItem(InterfaceManager::self()->title(name), name);
 		}
 	}
 	ui.typeEdit->setCurrentIndex(0);
@@ -54,7 +55,7 @@ ServerEditDialog::~ServerEditDialog()
 
 Server ServerEditDialog::server() const
 {
-	return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.portEdit->value(), InterfaceManager::self()->names().at(ui.typeEdit->currentIndex()), static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->currentWidget())->save());
+	return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.portEdit->value(), InterfaceManager::self()->names().at(ui.typeEdit->currentIndex()), static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->currentWidget())->genericConfig()->data());
 }
 
 void ServerEditDialog::clear()
@@ -73,7 +74,9 @@ void ServerEditDialog::setServer(const Server & server)
 	InterfaceConfigWidget * widget = static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->widget(InterfaceManager::self()->names().indexOf(server.type())));
 	if (widget)
 	{
-		widget->load(server.typeConfig());
+        InterfaceConfig * config = InterfaceManager::self()->config(server.type());
+        config->setData(server.typeConfig());
+		widget->setConfig(config);
 	}
 	else
 	{

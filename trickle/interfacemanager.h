@@ -31,6 +31,7 @@
 #include <QMap>
 
 class Interface;
+class InterfaceConfig;
 class InterfaceConfigWidget;
 class Server;
 
@@ -47,8 +48,9 @@ class InterfaceManager : public QObject
 		static InterfaceManager * self();
 
 		void load();
-		QStringList names();
+		QStringList names() const;
 		InterfaceConfigWidget * configWidget(const QString & name);
+        InterfaceConfig * config(const QString & name);
 		QString title(const QString & name);
 		QString description(const QString & name);
 		
