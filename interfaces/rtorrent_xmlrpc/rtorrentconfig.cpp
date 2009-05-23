@@ -23,7 +23,7 @@
 rTorrentConfig::rTorrentConfig(QObject * parent, const QVariantList & args)
  : InterfaceConfig(parent)
 {
-    
+    setPath("/RPC2");
 }
 
 rTorrentConfig::~rTorrentConfig()

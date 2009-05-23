@@ -57,6 +57,7 @@ class rTorrentInterface : public Interface
         void updateTorrentList();
         void updateFileList(const QString & hash);
         void jobFinished(KJob * job);
+        void setConfig(InterfaceConfig * config);
     protected:
         KIO::StoredTransferJob * call(const QString & method, const QVariantList & args);
         QVariant toVariant(const QDomElement & value);

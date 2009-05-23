@@ -55,7 +55,12 @@ ServerEditDialog::~ServerEditDialog()
 
 Server ServerEditDialog::server() const
 {
-	return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.portEdit->value(), InterfaceManager::self()->names().at(ui.typeEdit->currentIndex()), static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->currentWidget())->genericConfig()->data());
+    InterfaceConfigWidget * widget = static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->currentWidget());
+    if (widget && widget->genericConfig())
+    {
+        return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.portEdit->value(), InterfaceManager::self()->names().at(ui.typeEdit->currentIndex()), widget->genericConfig()->data());
+    }
+    return Server();
 }
 
 void ServerEditDialog::clear()

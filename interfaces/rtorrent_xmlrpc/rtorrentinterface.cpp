@@ -35,6 +35,7 @@ K_EXPORT_PLUGIN(rTorrentInterfaceFactory("trickle_rtorrent"))
 rTorrentInterface::rTorrentInterface(QObject * parent, const QVariantList & /*args*/)
  : Interface(parent)
 {
+     setConfig(new rTorrentConfig(this, QVariantList()));
 }
 
 rTorrentInterface::~rTorrentInterface()
@@ -99,19 +100,24 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
     url.setHost(server().host());
     url.setPort(server().port());
     url.setPath(config()->path());
+
+    kDebug() << url;
     
     QByteArray requestData = document.toByteArray();
+    kDebug() << requestData;
     KIO::StoredTransferJob * job = KIO::storedHttpPost(requestData, url, KIO::HideProgressInfo);
-    job->addMetaData("content-type", "text/xml");
-    job->addMetaData("User-Agent", "Trickle/0.01");
+    job->addMetaData("content-type", "Content-Type: text/xml");
+    job->addMetaData("user-agent", "User-Agent: Trickle/0.01");
     return job;
 }
 
 void rTorrentInterface::updateTorrentList()
 {
+    kDebug() << "updateTorrentList()";
     KIO::StoredTransferJob * job = call("d.multicall", QVariantList() <<
         "" <<
-        "d.get_hash=");
+        "d.get_hash=" <<
+        "d.get_name=");
     jobs.insert(job, TorrentList);
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
@@ -123,6 +129,74 @@ void rTorrentInterface::updateFileList(const QString & hash)
 
 void rTorrentInterface::jobFinished(KJob * job)
 {
+    KIO::StoredTransferJob * transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
+    kdDebug() << "Job finished";
+    if (transferJob)
+    {
+        if (transferJob->error())
+        {
+            kDebug() << "ERROR!!! Run for your lives!!!";
+            kDebug() << transferJob->errorString();
+            return;
+        }
+        
+        if (jobs.contains(transferJob))
+        {
+            rTorrentRequest requestType = jobs.value(transferJob);
+            switch(requestType)
+            {
+                case TorrentList:
+                {
+                    kDebug() << transferJob->data();
+                    kDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FINDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+                    /*QVariantMap response = CSVCodec::decode(transferJob->data()).toMap();
+                    QVariantList torrents = response.value("torrents").toList();
+                    QMap<QString, Torrent> torrentMap;
+                    foreach(QVariant torrentVariant, torrents)
+                    {
+                        QVariantList webuiTorrent = torrentVariant.toList();
+                        //qDebug() << webuiTorrent;
+                        Torrent torrent(webuiTorrent.at(0).toString());
+                        Torrent::TorrentState state;
+                        WebUiStates webUiState(webuiTorrent.at(1).toInt());
+                        qDebug() << webUiState;
+                        qDebug() << webuiTorrent.at(4).toInt();
+                        if (webUiState & Started && webuiTorrent.at(4).toInt() == 1000)
+                        {
+                            state = Torrent::Seeding;
+                        }
+                        else if (webUiState & Started && webuiTorrent.at(4).toInt() < 1000)
+                        {
+                            state = Torrent::Downloading;
+                        }
+                        else if (!webUiState & Started && webuiTorrent.at(4).toInt() == 1000)
+                        {
+                            state = Torrent::Completed;
+                        }
+                        else if (!webUiState & Started && webuiTorrent.at(4).toInt() < 1000)
+                        {
+                            state = Torrent::Stopped;
+                        }
+                        qDebug() << state;
+                        torrent.setState(state);
+                        torrent.setName(webuiTorrent.at(2).toString());
+                        torrent.setSize(webuiTorrent.at(3).toLongLong());
+                        torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
+                        torrent.setUploaded(webuiTorrent.at(6).toLongLong());
+                        torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
+                    }
+                    qDebug() << "emitting";
+                    emit torrentMapUpdated(torrentMap);*/
+                    jobs.remove(transferJob);
+                    break;
+                }
+                default:
+                {
+                    kDebug() << "Unknown request type: " << requestType;
+                }
+            }
+        }
+    }
 }
 
 QVariant rTorrentInterface::toVariant(const QDomElement & value)
@@ -203,6 +277,22 @@ QDomElement rTorrentInterface::toElement(const QVariant & value, QDomDocument do
 rTorrentConfig * rTorrentInterface::config() const
 {
     return static_cast<rTorrentConfig *>(genericConfig());
+}
+
+void rTorrentInterface::setConfig(InterfaceConfig * rconfig)
+{
+    if (!rconfig || config() == rconfig)
+    {
+        return;
+    }
+    
+    if (config())
+    {
+        config()->deleteLater();
+    }
+
+    Interface::setConfig(rconfig);
+    reset();
 }
 
 #include "rtorrentinterface.moc"

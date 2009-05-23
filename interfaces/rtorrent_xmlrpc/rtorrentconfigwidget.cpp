@@ -27,7 +27,8 @@
 rTorrentConfigWidget::rTorrentConfigWidget(QObject * parent, const QVariantList & args)
  : InterfaceConfigWidget(parent, args)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
+    setConfig(new rTorrentConfig(this, QVariantList()));
 }
 
 rTorrentConfigWidget::~rTorrentConfigWidget()
@@ -39,9 +40,19 @@ void rTorrentConfigWidget::clear()
 	ui.pathEdit->setText("/RPC2");
 }
 
-void rTorrentConfigWidget::setConfig(InterfaceConfig * config)
+void rTorrentConfigWidget::setConfig(InterfaceConfig * rconfig)
 {
-    InterfaceConfigWidget::setConfig(config);
+    if (!rconfig || config() == rconfig)
+    {
+        return;
+    }
+
+    if (config())
+    {
+        config()->deleteLater();
+    }
+    //delete config();
+    InterfaceConfigWidget::setConfig(rconfig);
     updateWidgets();
 }
 
@@ -53,6 +64,7 @@ rTorrentConfig * rTorrentConfigWidget::config() const
 void rTorrentConfigWidget::updateWidgets()
 {
     rTorrentConfig * rconfig = config();
+    kDebug() << rconfig;
     if (rconfig)
     {
         ui.pathEdit->setText(rconfig->path());
