@@ -81,7 +81,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 	{
 		return QVariant();
 	}
-	Torrent item = torrents.value(*static_cast<QString *>(index.internalPointer()));
+	Torrent torrent = torrents.value(*static_cast<QString *>(index.internalPointer()));
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -89,10 +89,10 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 			switch (index.column())
 			{
 				case Name:
-				return item.name();
+                    return torrent.name();
 				case State:
 				{
-					switch (item.state())
+                    switch (torrent.state())
 					{
 						case Torrent::Downloading:
 							return QString("Downloading");
@@ -107,24 +107,24 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 					}
 				}
 				case Size:
-					return ByteSize(item.chunks(), item.chunkSize()).toString();
+                    return ByteSize(torrent.size()).toString();
 				case DownloadRate:
-					return QString("%1/s").arg(item.downloadRate().toString());
+                    return QString("%1/s").arg(torrent.downloadRate().toString());
 				case Downloaded:
-					return item.downloaded().toString();
+                    return torrent.downloaded().toString();
 				case UploadRate:
-					return QString("%1/s").arg(item.uploadRate().toString());
+                    return QString("%1/s").arg(torrent.uploadRate().toString());
 				case Uploaded:
-					return item.uploaded().toString();
+                    return torrent.uploaded().toString();
 				case Seeders:
-					return QString("%1 (%2)").arg(item.seedsConnected()).arg(item.seedsTotal());
+                    return QString("%1 (%2)").arg(torrent.seedsConnected()).arg(torrent.seedsTotal());
 				case Leechers:
-					return QString("%1 (%2)").arg(item.leechsConnected()).arg(item.leechsTotal());
+                    return QString("%1 (%2)").arg(torrent.leechsConnected()).arg(torrent.leechsTotal());
 				case Ratio:
-					return QString::number(item.ratio(), 'f', 3);
+                    return QString::number(torrent.ratio(), 'f', 3);
 				case Priority:
 				{
-					switch (item.priority())
+                    switch (torrent.priority())
 					{
 						case Torrent::Off:
 							return QString("Off");
@@ -139,7 +139,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 					}
 				}
 				case Hash:
-					return item.hash();
+                    return torrent.hash();
 				default:
 					return QVariant();
 			}
@@ -161,7 +161,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 			{
 				case Ratio:
 				{
-					if (item.ratio() < 0.85)
+                    if (torrent.ratio() < 0.85)
 					{
 						return Qt::red;
 					}
@@ -172,7 +172,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
 				}
 				case State:
 				{
-					switch(item.state())
+                    switch(torrent.state())
 					{
 						case Torrent::Downloading:
 							return Qt::darkBlue;
@@ -287,7 +287,7 @@ void TorrentModel::updateItem(Torrent * item)
 
 void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 {
-	kdDebug() << "torrentsUpdated()";
+	kDebug() << "torrentsUpdated()";
 	for (int index = 0; index < torrents.keys().size(); index++)
 	{
 		QString key = torrents.keys().at(index);
@@ -308,7 +308,7 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 		{
 			torrents.insert(hash, torrentMap.value(hash));
 			int index = torrents.keys().indexOf(hash);
-			qDebug() << index;
+			//qDebug() << index;
 			beginInsertRows(QModelIndex(), index, index);
 			endInsertRows();
 		}
@@ -322,7 +322,7 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 void TorrentModel::setupInterfaceConnections(Interface * interface)
 {
 	kdDebug() << "setupInterfaceConnections()";
-	connect(interface, SIGNAL(torrentMapUpdated(const QMap<QString, Torrent> &)), this, SLOT(torrentsUpdated(const QMap<QString, Torrent> &)));
+	connect(interface, SIGNAL(torrentsUpdated(const QMap<QString, Torrent> &)), this, SLOT(torrentsUpdated(const QMap<QString, Torrent> &)));
 }
 
 Torrent TorrentModel::torrent(const QString & hash) const

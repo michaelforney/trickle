@@ -137,7 +137,7 @@ int Torrent::completedChunks() const
 	return m_completedChunks;
 }
 
-int Torrent::priority() const
+Torrent::Priority Torrent::priority() const
 {
 	return m_priority;
 }
@@ -170,7 +170,7 @@ Torrent::TorrentState Torrent::state() const
 
 double Torrent::ratio() const
 {
-	return m_ratio;
+	return m_uploaded / m_downloaded;
 }
 
 ByteSize Torrent::chunkSize() const
@@ -267,17 +267,17 @@ void Torrent::setState(int state)
 	m_state = state;
 }
 
-void Torrent::setRatio(double ratio)
+/*void Torrent::setRatio(double ratio)
 {
 	m_ratio = ratio;
-}
+}*/
 
 void Torrent::setCompletedChunks(int completedChunks)
 {
 	m_completedChunks = completedChunks;
 }
 
-void Torrent::setPriority(int priority)
+void Torrent::setPriority(Priority priority)
 {
 	m_priority = priority;
 }

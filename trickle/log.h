@@ -26,14 +26,16 @@
 	@author Michael Forney <michael@obberon.com>
 */
 
+#include "logentry.h"
+
 class Log : public QTextEdit
 {
 	Q_OBJECT
 	public:
 		Log();
 		~Log();
-	public slots:
-		void logInfo(const QString & info);
+	private slots:
+        void logEntry(const LogEntry & entry);
 
 };
 

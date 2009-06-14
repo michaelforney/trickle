@@ -57,7 +57,7 @@ bool Interface::start()
 {
     kdDebug() << "Interface::start()";
     updateTorrentList();
-    //m_timer->start();
+    m_timer->start();
     return true;
 }
 
@@ -87,6 +87,49 @@ void Interface::setConfig(InterfaceConfig * config)
 InterfaceConfig * Interface::genericConfig() const
 {
     return m_config;
+}
+
+QSet<QString> Interface::watchedTorrents() const
+{
+    return m_watchedTorrents;
+}
+
+void Interface::watchTorrent(const QString & hash)
+{
+    m_watchedTorrents.insert(hash);
+    updateWatchedTorrent(hash);
+}
+
+void Interface::stopWatchingTorrent(const QString & hash)
+{
+    m_watchedTorrents.remove(hash);
+}
+
+void Interface::updateWatchedTorrent(const QString & hash)
+{
+    if (hash.isNull() || hash.isEmpty())
+    {
+        kDebug() << "Trying to watch an empty hash!";
+        return;
+    }
+    updateFileInfo(hash);
+    updatePeerInfo(hash);
+    updateTrackerInfo(hash);
+    //updateChunkInfo(hash);
+}
+
+void Interface::updateWatchedTorrents()
+{
+    foreach(QString hash, m_watchedTorrents)
+    {
+        updateWatchedTorrent(hash);
+    }
+}
+
+void Interface::update()
+{
+    updateTorrentList();
+    updateWatchedTorrents();
 }
 
 #include "interface.moc"

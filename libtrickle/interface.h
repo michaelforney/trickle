@@ -31,6 +31,10 @@
 
 #include "file.h"
 #include "torrent.h"
+#include "peer.h"
+#include "tracker.h"
+
+#include <QSet>
 
 class InterfaceConfigWidget;
 class InterfaceConfig;
@@ -56,23 +60,39 @@ class TRICKLE_EXPORT Interface : public QObject
 		
 		virtual void setDownloadLimit(const ByteSize & size) = 0;
 		virtual void setUploadLimit(const ByteSize & size) = 0;
+
 		virtual void startTorrent(const QString & hash) = 0;
 		virtual void stopTorrent(const QString & hash) = 0;
+
+    
 		virtual void setInterval(int interval);
 		virtual bool start();
 		virtual bool stop();
 		virtual void reset();
-		virtual void update() = 0;
+
+        virtual void watchTorrent(const QString & hash);
+        virtual void stopWatchingTorrent(const QString & hash);
+        virtual void updateWatchedTorrent(const QString & hash);
+        virtual void updateWatchedTorrents();
+
+        virtual void update();
 		//virtual bool connectToServer() = 0;
 		virtual void clear() = 0;
 	protected slots:
 		virtual void updateTorrentList() = 0;
-		virtual void updateFileList(const QString & hash) = 0;
+        virtual void updateFileInfo(const QString & hash) = 0;
+        virtual void updatePeerInfo(const QString & hash) = 0;
+        virtual void updateTrackerInfo(const QString & hash) = 0;
+        //virtual void updateChunkInfo(const QString & hash) = 0;
 
         virtual void setConfig(InterfaceConfig * config);
 	signals:
-		void torrentMapUpdated(const QMap<QString, Torrent> & torrents);
-		void filesUpdated(const QString & hash, QList<File> & files);
+		void torrentsUpdated(const QMap<QString, Torrent> & torrents);
+		void filesUpdated(const QString & hash, QSet<File> & files);
+        void peersUpdated(const QString & hash, QSet<Peer> & peers);
+        void trackersUpdated(const QString & hash, QSet<Tracker> & trackers);
+        //void chunksUpdated(const QString & hash, QList<)
+        
         void torrentPriorityChanged(const QString & hash, Torrent::TorrentState priority);
 		void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
 		void uploadLimitChanged(const ByteSize & limit);
@@ -80,19 +100,16 @@ class TRICKLE_EXPORT Interface : public QObject
 		void torrentStarted(const QString & hash);
 		void torrentStopped(const QString & hash);
 		void cleared();
-		//void torrentsAdded(QStringList hashes); //Need this?
-		//void torrentsRemoved(QStringList hashes); //Need this?
-		//void filesAdded(const QString & hash, QList<File *>); //Need this?
-		//void filesRemoved(const QString & hash, QList<File *>); //Need this?
-		//void updated(UpdateType type);
 	protected:
 		Server server() const;
         InterfaceConfig * genericConfig() const;
         bool configValid() const;
+        QSet<QString> watchedTorrents() const;
 	private:
 		QTimer * m_timer;
         InterfaceConfig * m_config;
 		Server m_server;
+        QSet<QString> m_watchedTorrents;
 };
 
 #endif

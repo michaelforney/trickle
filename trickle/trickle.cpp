@@ -102,7 +102,7 @@ Trickle::Trickle()
 	createStatusBar();
 	createDockWidgets();
 	setupGUI();
-	connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
+	//connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
 	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
 	
 	InterfaceManager::self()->load();

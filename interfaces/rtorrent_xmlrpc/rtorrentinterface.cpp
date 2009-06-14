@@ -23,6 +23,7 @@
 #include "rtorrentconfigwidget.h"
 #include "xmlrpc.h"
 #include "bytesize.h"
+#include "logdata.h"
 
 #include <KGenericFactory>
 
@@ -62,10 +63,6 @@ void rTorrentInterface::startTorrent(const QString & hash)
 void rTorrentInterface::stopTorrent(const QString & hash)
 {
     Q_UNUSED(hash); //TODO: Remove when implemented
-}
-
-void rTorrentInterface::update()
-{
 }
 
 bool rTorrentInterface::connectToServer()
@@ -114,15 +111,36 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
 void rTorrentInterface::updateTorrentList()
 {
     kDebug() << "updateTorrentList()";
+    
+    LogData::self()->logMessage("Updating torrent list");
     KIO::StoredTransferJob * job = call("d.multicall", QVariantList() <<
         "" <<
         "d.get_hash=" <<
-        "d.get_name=");
+        "d.get_name=" <<
+        "d.get_state=" <<
+        "d.get_size_bytes=" <<
+        "d.get_peers_accounted=" <<
+        "d.get_peers_complete=" <<
+        "d.get_down_rate=" <<
+        "d.get_completed_bytes=" <<
+        "d.get_up_rate=" <<
+        "d.get_up_total=" <<
+        "d.get_priority=");
     jobs.insert(job, TorrentList);
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
-void rTorrentInterface::updateFileList(const QString & hash)
+void rTorrentInterface::updateFileInfo(const QString & hash)
+{
+    Q_UNUSED(hash); //TODO: Remove when implemented
+}
+
+void rTorrentInterface::updatePeerInfo(const QString & hash)
+{
+    Q_UNUSED(hash); //TODO: Remove when implemented
+}
+
+void rTorrentInterface::updateTrackerInfo(const QString & hash)
 {
     Q_UNUSED(hash); //TODO: Remove when implemented
 }
@@ -147,8 +165,63 @@ void rTorrentInterface::jobFinished(KJob * job)
             {
                 case TorrentList:
                 {
-                    kDebug() << transferJob->data();
-                    kDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FINDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+                    LogData::self()->logMessage("Torrent list update finished");
+                    //kDebug() << transferJob->data();
+                    //kDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FINDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+                    QDomDocument document;
+                    document.setContent(transferJob->data());
+                    //kDebug() << document.toString();
+                    QVariant result = toVariant(document.documentElement().firstChildElement("params").firstChildElement("param").firstChildElement("value"));
+                    QVariantList torrents = result.toList();
+
+                    QMap<QString, Torrent> torrentMap;
+                    foreach(QVariant torrentVariant, torrents)
+                    {
+                        QVariantList torrentAttributes = torrentVariant.toList();
+                        Torrent torrent(torrentAttributes.at(0).toString());
+                        torrent.setName(torrentAttributes.at(1).toString());
+                        //kDebug() << torrentAttributes.at(2);
+                        //kDebug() << ByteSize(torrentAttributes.at(3).toLongLong()).toString();
+                        torrent.setSize(ByteSize(torrentAttributes.at(3).toLongLong()));
+                        torrent.setLeechsConnected(torrentAttributes.at(4).toLongLong());
+                        torrent.setSeedsConnected(torrentAttributes.at(5).toLongLong());
+                        torrent.setDownloadRate(ByteSize(torrentAttributes.at(6).toLongLong()));
+                        torrent.setDownloaded(ByteSize(torrentAttributes.at(7).toLongLong()));
+                        torrent.setUploadRate(ByteSize(torrentAttributes.at(8).toLongLong()));
+                        torrent.setUploaded(ByteSize(torrentAttributes.at(9).toLongLong()));
+                        int priorityInt = torrentAttributes.at(10).toInt();
+                        Torrent::Priority priority;
+                        switch(priorityInt)
+                        {
+                            case 0:
+                            {
+                                priority = Torrent::Off;
+                                break;
+                            }
+                            case 1:
+                            {
+                                priority = Torrent::Low;
+                                break;
+                            }
+                            case 2:
+                            {
+                                priority = Torrent::Medium;
+                                break;
+                            }
+                            case 3:
+                            {
+                                priority = Torrent::High;
+                                break;
+                            }
+                            default:
+                            {
+                                priority = Torrent::Off;
+                            }
+                        }
+                        torrent.setPriority(priority);
+                        //kDebug() << torrent.hash() << ", " << torrent.name();
+                        torrentMap.insert(torrent.hash(), torrent);
+                    }
                     /*QVariantMap response = CSVCodec::decode(transferJob->data()).toMap();
                     QVariantList torrents = response.value("torrents").toList();
                     QMap<QString, Torrent> torrentMap;
@@ -184,9 +257,9 @@ void rTorrentInterface::jobFinished(KJob * job)
                         torrent.setDownloaded(webuiTorrent.at(5).toLongLong());
                         torrent.setUploaded(webuiTorrent.at(6).toLongLong());
                         torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
-                    }
+                    }*/
                     qDebug() << "emitting";
-                    emit torrentMapUpdated(torrentMap);*/
+                    emit torrentsUpdated(torrentMap);
                     jobs.remove(transferJob);
                     break;
                 }
@@ -208,6 +281,7 @@ QVariant rTorrentInterface::toVariant(const QDomElement & value)
     
     QDomElement element = value.firstChildElement();
     QString type = element.tagName();
+    //kDebug() << type;
     if (type == "array")
     {
         QVariantList array;

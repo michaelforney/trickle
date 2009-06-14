@@ -46,6 +46,7 @@ class TRICKLE_EXPORT ByteSize
 		inline qint64 bytes() const { return m_bytes; };
 		
 		ByteSize operator*(const ByteSize & other);
+        qreal operator/(const ByteSize & other) const;
 		ByteSize operator-(const ByteSize & other);
 		ByteSize operator+(const ByteSize & other);
 		void operator+=(const ByteSize & other);

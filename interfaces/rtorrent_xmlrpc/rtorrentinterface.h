@@ -48,14 +48,18 @@ class rTorrentInterface : public Interface
 	public slots:
 		void setDownloadLimit(const ByteSize & size);
 		void setUploadLimit(const ByteSize & size);
+
 		void startTorrent(const QString & hash);
 		void stopTorrent(const QString & hash);
-		void update();
+
 		bool connectToServer();
 		void clear();
     protected slots:
         void updateTorrentList();
-        void updateFileList(const QString & hash);
+        void updateFileInfo(const QString & hash);
+        void updatePeerInfo(const QString & hash);
+        void updateTrackerInfo(const QString & hash);
+
         void jobFinished(KJob * job);
         void setConfig(InterfaceConfig * config);
     protected:
@@ -66,7 +70,6 @@ class rTorrentInterface : public Interface
     private:
         QMap<KIO::StoredTransferJob *, rTorrentRequest> jobs;
 		TorrentMap torrents;
-		//XmlRpc * xmlRpc;
 };
 
 #endif

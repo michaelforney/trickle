@@ -30,11 +30,11 @@
 static const char description[] =
     I18N_NOOP("Trickle is a frontend to rTorrent and uTorrent. It runs on all platforms supported by KDE 4, and can connect to any http server which is set up with XmlRpc and rTorrent, or to uTorrent's WebUI.");
 
-static const char version[] = "0.1";
+static const char version[] = "git devel";
 
 int main(int argc, char *argv[])
 {
-	KAboutData about("trickle", 0, ki18n("Trickle"), version, ki18n(description), KAboutData::License_GPL, ki18n("(C) 2007 Michael Forney"), KLocalizedString(), 0, "michael@obberon.com");
+	KAboutData about("trickle", 0, ki18n("Trickle"), version, ki18n(description), KAboutData::License_GPL, ki18n("(C) 2007-2009 Michael Forney"), KLocalizedString(), 0, "michael@obberon.com");
 	about.addAuthor( ki18n("Michael Forney"), KLocalizedString(), "michael@obberon.com" );
 	KCmdLineArgs::init(argc, argv, &about);
 	KApplication app;

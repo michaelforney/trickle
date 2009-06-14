@@ -78,7 +78,7 @@ class TRICKLE_EXPORT Torrent
 		double ratio() const;
 		QString name() const;
 		QString hash() const;
-		int priority() const;
+		Priority priority() const;
 		
 		void setSeedsConnected(int seedsConnected);
 		void setSeedsTotal(int seedsTotal);
@@ -95,8 +95,8 @@ class TRICKLE_EXPORT Torrent
 		void setHash(const QString & hash);
 		void setSize(ByteSize size);
 		void setState(int state);
-		void setPriority(int priority);
-		void setRatio(double ratio);
+		void setPriority(Priority priority);
+		//void setRatio(double ratio);
 		bool operator==(const Torrent & other);
 		bool operator<(const Torrent & other);
 	/*public slots:
@@ -117,8 +117,8 @@ class TRICKLE_EXPORT Torrent
 		ByteSize m_uploaded;
 		ByteSize m_downloaded;
 		int m_state;
-		int m_priority;
-		double m_ratio;
+		Priority m_priority;
+		//double m_ratio;
 		QString m_name;
 		QString m_hash;
 		ByteSize m_size;

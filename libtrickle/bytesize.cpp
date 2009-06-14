@@ -81,6 +81,11 @@ ByteSize ByteSize::operator*(const ByteSize & other)
 	return ByteSize(bytes() * other.bytes());
 }
 
+qreal ByteSize::operator/(const ByteSize & other) const
+{
+    return (qreal)(bytes()) / other.bytes();
+}
+
 ByteSize ByteSize::operator-(const ByteSize & other)
 {
 	return ByteSize(bytes() - other.bytes());

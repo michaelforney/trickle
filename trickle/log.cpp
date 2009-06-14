@@ -19,22 +19,24 @@
  ***************************************************************************/
 #include "log.h"
 
-#include <QTime>
+#include "logdata.h"
+
+#include <QDateTime>
 
 Log::Log()
  : QTextEdit()
 {
 	setReadOnly(true);
+    connect(LogData::self(), SIGNAL(entry(const LogEntry &)), this, SLOT(logEntry(const LogEntry &)));
 }
 
 Log::~Log()
 {
 }
 
-void Log::logInfo(const QString & info)
+void Log::logEntry(const LogEntry & entry)
 {
-	QTime current = QTime::currentTime();
-	append(QString("<b>[%1]</b> %2").arg(current.toString("hh:mm:ss")).arg(info));
+    append(QString("<b>[%1]</b> %2").arg(entry.dateTime().toString("hh:mm:ss")).arg(entry.message()));
 }
 
 #include "log.moc"
