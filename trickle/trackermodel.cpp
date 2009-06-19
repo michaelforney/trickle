@@ -19,24 +19,57 @@
  ***************************************************************************/
 #include "trackermodel.h"
 
-#include <QDebug>
+#include <KDebug>
 #include <QModelIndex>
 
 #include "trackeritem.h"
 #include "torrent.h"
-//#include "selectedtorrent.h"
-#include "xmlrpc.h"
+#include "interfacemanager.h"
+#include "interface.h"
 
 TrackerModel::TrackerModel()
  : QAbstractItemModel()
 {
 	headers << "Tracker Url";
-	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem*)), this, SLOT(update()));
+    //connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem*)), this, SLOT(update()));
+    connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    if (InterfaceManager::interface())
+    {
+        setupInterfaceConnections(InterfaceManager::interface());
+    }
 }
 
 
 TrackerModel::~TrackerModel()
 {
+}
+
+void TrackerModel::setTorrentHash(const QString & hash)
+{
+    if (m_hash == hash)
+    {
+        return;
+    }
+    
+    Q_ASSERT(InterfaceManager::interface());
+    InterfaceManager::interface()->stopWatchingTorrent(hash);
+    m_hash = hash;
+    InterfaceManager::interface()->watchTorrent(hash);
+}
+
+void TrackerModel::setupInterfaceConnections(Interface * interface)
+{
+    kDebug() << interface;
+    connect(interface, SIGNAL(trackersUpdated(const QSet<Tracker> &)), this, SLOT(torrentUpdated(const QSet<Tracker> &)));
+}
+
+void TrackerModel::trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers)
+{
+    kDebug() << "trackers updated";
+    if (m_hash == hash)
+    {
+        
+    }
 }
 
 QModelIndex TrackerModel::index(int row, int column, const QModelIndex & parent) const
@@ -47,12 +80,13 @@ QModelIndex TrackerModel::index(int row, int column, const QModelIndex & parent)
 	}
 	else
 	{
-		return createIndex(row, column, trackers[row]);
+		return createIndex(row, column, trackerMap.keys().at(row));
 	}
 }
 
-QModelIndex TrackerModel::parent(const QModelIndex & /*index*/) const
+QModelIndex TrackerModel::parent(const QModelIndex & index) const
 {
+    Q_UNUSED(index);
 	return QModelIndex();
 }
 
@@ -64,12 +98,13 @@ int TrackerModel::rowCount(const QModelIndex & parent) const
 	}
 	else
 	{
-		return trackers.size();
+		return trackerMap.size();
 	}
 }
 
-int TrackerModel::columnCount(const QModelIndex & /*parent*/) const
+int TrackerModel::columnCount(const QModelIndex & parent) const
 {
+    Q_UNUSED(parent);
 	return headers.size();
 }
 
@@ -77,11 +112,12 @@ QVariant TrackerModel::data(const QModelIndex & index, int role) const
 {
 	if (index.isValid())
 	{
+        //TODO: Put into switch statement
 		if (role == Qt::DisplayRole)
 		{
 			if (index.column() == TrackerModel::TrackerUrl)
 			{
-				return trackers[index.row()]->url();
+				return trackerMap.value(index.internalId()).url().url();
 			}
 			else
 			{
@@ -115,37 +151,6 @@ QVariant TrackerModel::headerData(int section, Qt::Orientation orientation, int 
 	else
 	{
 		return QVariant();
-	}
-}
-
-void TrackerModel::update()
-{
-	/*if (SelectedTorrent::instance()->hasTorrent())
-	{
-		QVariantList args;
-		args << SelectedTorrent::torrentInstance()->hash();
-		args << "";
-		args << "t.get_url=";
-		//XmlRpc::instance()->call("t.multicall", args, this, "result");
-	}*/
-}
-
-void TrackerModel::result(const QString & method, const QVariant & valueVariant)
-{
-	if (method == "t.multicall")
-	{
-		QVariantList value = valueVariant.value<QVariantList>();
-		trackers.clear();
-		foreach(QVariant trackerVariant, value)
-		{
-			QVariantList tracker = trackerVariant.value<QVariantList>();
-			TrackerItem * trackerItem = new TrackerItem();
-			{
-				trackerItem->setUrl(tracker[0].toString());
-			}
-			trackers.append(trackerItem);
-		}
-		emit layoutChanged();
 	}
 }
 

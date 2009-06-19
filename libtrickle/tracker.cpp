@@ -28,3 +28,94 @@ Tracker::Tracker()
 Tracker::~Tracker()
 {
 }
+
+int Tracker::id() const
+{
+    return m_id;
+}
+
+KUrl Tracker::url() const
+{
+    return m_url;
+}
+
+Tracker::Type Tracker::type() const
+{
+    return m_type;
+}
+
+bool Tracker::enabled() const
+{
+    return m_enabled;
+}
+
+bool Tracker::open() const
+{
+    return m_open;
+}
+
+int Tracker::announceInterval() const
+{
+    return m_announceInterval;
+}
+
+int Tracker::peersComplete() const
+{
+    return m_peersComplete;
+}
+
+int Tracker::peersIncomplete() const
+{
+    return m_peersIncomplete;
+}
+
+QDateTime Tracker::lastAnnounce() const
+{
+    return m_lastAnnounce;
+}
+
+
+void Tracker::setId(int id)
+{
+    m_id = id;
+}
+
+void Tracker::setUrl(const KUrl & url)
+{
+    m_url = url;
+}
+
+void Tracker::setType(Type type)
+{
+    m_type = type;
+}
+
+void Tracker::setEnabled(bool enabled)
+{
+    m_enabled = enabled;
+}
+
+void Tracker::setOpen(bool open)
+{
+    m_open = open;
+}
+
+void Tracker::setAnnounceInterval(int announceInterval)
+{
+    m_announceInterval = announceInterval;
+}
+
+void Tracker::setPeersComplete(int peersComplete)
+{
+    m_peersComplete = peersComplete;
+}
+
+void Tracker::setPeersIncomplete(int peersIncomplete)
+{
+    m_peersIncomplete = peersIncomplete;
+}
+
+void Tracker::setLastAnnounce(const QDateTime & lastAnnounce)
+{
+    m_lastAnnounce = lastAnnounce;
+}

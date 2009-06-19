@@ -21,11 +21,48 @@
 #ifndef TRACKER_H
 #define TRACKER_H
 
-class Tracker
+#include "trickle_export.h"
+
+#include <KUrl>
+#include <QDateTime>
+
+class TRICKLE_EXPORT Tracker
 {
     public:
+        enum Type { Http, Udp, Dht };
+
         Tracker();
         virtual ~Tracker();
+
+        int id() const;
+        KUrl url() const;
+        Type type() const;
+        bool enabled() const;
+        bool open() const;
+        int announceInterval() const;
+        int peersComplete() const;
+        int peersIncomplete() const;
+        QDateTime lastAnnounce() const;
+
+        void setId(int id);
+        void setUrl(const KUrl & url);
+        void setType(Type type);
+        void setEnabled(bool enabled);
+        void setOpen(bool open);
+        void setAnnounceInterval(int announceInterval);
+        void setPeersComplete(int peersComplete);
+        void setPeersIncomplete(int peersIncomplete);
+        void setLastAnnounce(const QDateTime & lastAnnounce);
+    private:
+        int m_id;
+        KUrl m_url;
+        Type m_type;
+        bool m_enabled;
+        bool m_open;
+        int m_announceInterval;
+        int m_peersComplete;
+        int m_peersIncomplete;
+        QDateTime m_lastAnnounce;
 };
 
 #endif // TRACKER_H

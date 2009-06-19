@@ -38,9 +38,4 @@ TrackerInfo::~TrackerInfo()
 {
 }
 
-void TrackerInfo::update()
-{
-	trackerModel->update();
-}
-
 #include "trackerinfo.moc"

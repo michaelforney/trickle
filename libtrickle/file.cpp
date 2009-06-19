@@ -21,7 +21,7 @@
 
 #include "torrent.h"
 
-File::File(const QStringList & path, const ByteSize & size, int index, int completedChunks, int priority)
+File::File(const QString & path, const ByteSize & size, int index, int completedChunks, FilePriority priority)
 {
 	setPath(path);
 	setSize(size);
@@ -35,6 +35,6 @@ File::~File()
 {
 }
 
-#include "fileitem.moc"
+#include "file.moc"
 
 

@@ -28,6 +28,10 @@
 
 #include "ui_torrentinfo.h"
 
+#include "torrent.h"
+
+class Interface;
+
 class QProgressBar;
 
 class TorrentInfo : public QWidget
@@ -37,10 +41,14 @@ class TorrentInfo : public QWidget
 		TorrentInfo();
 		~TorrentInfo();
 
-	public slots:
-		void update() const;
+    public slots:
+        void setTorrentHash(const QString & torrentHash);
+    private slots:
+        void torrentUpdated(const Torrent & torrent);
+        void setupInterfaceConnections(Interface * interface);
 	private:
 		Ui::TorrentInfo ui;
+        QString hash;
 };
 
 #endif

@@ -104,6 +104,7 @@ Trickle::Trickle()
 	setupGUI();
 	//connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
 	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), torrentInfo, SLOT(setTorrentHash(const QString &)));
 	
 	InterfaceManager::self()->load();
     if (InterfaceManager::interface())

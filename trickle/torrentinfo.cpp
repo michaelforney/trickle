@@ -19,34 +19,63 @@
  ***************************************************************************/
 #include "torrentinfo.h"
 
+#include "interfacemanager.h"
+#include "interface.h"
+
 #include <QProgressBar>
 #include <QVBoxLayout>
 #include <QLabel>
-
-//#include "selectedtorrent.h"
-#include "torrentitem.h"
+#include <KDebug>
 
 TorrentInfo::TorrentInfo()
  : QWidget()
 {
 	ui.setupUi(this);
 
+    
 	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(update()));
 	//connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
+    
+    connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    if (InterfaceManager::interface())
+    {
+        setupInterfaceConnections(InterfaceManager::interface());
+    }
 }
 
 TorrentInfo::~TorrentInfo()
 {
 }
 
-void TorrentInfo::update() const
+void TorrentInfo::setTorrentHash(const QString & torrentHash)
 {
-	/*if (SelectedTorrent::instance()->hasTorrent())
-	{
-		ui.progress->setMaximum(SelectedTorrent::torrentInstance()->chunks());
-		ui.progress->setValue(SelectedTorrent::torrentInstance()->completedChunks());
-		ui.torrentName->setText(SelectedTorrent::torrentInstance()->name());
-	}*/
+    if (hash == torrentHash)
+    {
+        return;
+    }
+
+    Q_ASSERT(InterfaceManager::interface());
+    InterfaceManager::interface()->stopWatchingTorrent(hash);
+    hash = torrentHash;
+    InterfaceManager::interface()->watchTorrent(hash);
+}
+
+void TorrentInfo::setupInterfaceConnections(Interface * interface)
+{
+    kDebug() << interface;
+    connect(interface, SIGNAL(watchedTorrentUpdated(const Torrent &)), this, SLOT(torrentUpdated(const Torrent &)));
+}
+
+void TorrentInfo::torrentUpdated(const Torrent & torrent)
+{
+    if (hash == torrent.hash())
+    {
+        ui.progress->setMaximum(torrent.chunks());
+        ui.progress->setValue(torrent.completedChunks());
+        ui.torrentName->setText(torrent.name());
+        ui.chunksCompleted->setText(QString("%1/%2").arg(torrent.completedChunks()).arg(torrent.chunks()));
+        ui.chunkSize->setText(torrent.chunkSize().toString());
+    }
 }
 
 #include "torrentinfo.moc"

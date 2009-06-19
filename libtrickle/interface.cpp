@@ -96,6 +96,7 @@ QSet<QString> Interface::watchedTorrents() const
 
 void Interface::watchTorrent(const QString & hash)
 {
+    kDebug() << hash;
     m_watchedTorrents.insert(hash);
     updateWatchedTorrent(hash);
 }

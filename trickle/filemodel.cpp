@@ -19,13 +19,9 @@
 ***************************************************************************/
 #include "filemodel.h"
 
-#include "filemodelitem.h"
 #include "torrent.h"
-#include "xmlrpc.h"
-#include "fileitem.h"
-#include "directoryitem.h"
 
-#include <QDebug>
+#include <KDebug>
 #include <QIcon>
 #include <QMenu>
 
@@ -33,7 +29,6 @@ FileModel::FileModel()
 : QAbstractItemModel()
 {
     headers << "File" << "Size" << "Complete" << "Priority";
-    mainItem = 0;
     
     //connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(newUpdate()));
     //connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
@@ -50,33 +45,22 @@ QModelIndex FileModel::index(int row, int column, const QModelIndex & parent) co
     {
         return QModelIndex();
     }
-    
-    if (parent.isValid())
-    {
-        FileModelItem * item = static_cast<FileModelItem *>(parent.internalPointer());
-        if (item->type() == FileModelItem::Directory)
-        {
-            return createIndex(row, column, static_cast<DirectoryItem *>(parent.internalPointer())->child(row));
-        }
-        else
-        {
-            return QModelIndex();
-        }
-    }
-    else
-    {
-        return createIndex(row, column, mainItem);
-    }
+
+    return createIndex(row, column);
 }
 
 QModelIndex FileModel::parent(const QModelIndex & index) const
 {
+    return QModelIndex();
     if (index.isValid())
     {
-        FileModelItem * parent = static_cast<FileModelItem *>(index.internalPointer())->parent();
-        if (parent)
+        QString path = *static_cast<QString *>(index.internalPointer());
+        QStringList components = path.split("/");
+        components.removeLast();
+        QString parentPath = components.join("/");
+        if (!parentPath.isEmpty())
         {
-            return createIndex(parent->row(), 0, parent);
+            //return createIndex(parent->row(), 0);
         }
         else
         {
@@ -117,8 +101,8 @@ int FileModel::rowCount(const QModelIndex & parent) const
     else
     {
         return 0;
-    }*/
-    return 0;
+}*/
+    return childDirectories(parent).count() + childFiles(parent).count();
 }
 
 int FileModel::columnCount(const QModelIndex &) const
@@ -225,62 +209,6 @@ void FileModel::update()
     }*/
 }
 
-void FileModel::result(const QString & method, const QVariant & resultVariant)
-{
-    if (method == "f.multicall")
-    {
-        QVariantList result = resultVariant.value<QVariantList>();
-        if (mainItem)
-        {
-            if (mainItem->isFile())
-            {
-                updateItem(mainItem->toFile(), result[0].value<QVariantList>(), 0);
-            }
-            else if (mainItem->isDirectory())
-            {
-                for(int i = 0; i < result.size(); i++)
-                {
-                    QVariantList file = result[i].value<QVariantList>();
-                    FileModelItem * item = findItem(file[0].toString());
-                    if (item && item->isFile())
-                    {
-                        updateItem(item->toFile(), file, i);
-                    }
-                }
-            }
-            
-            emit dataChanged(createIndex(0, 0, mainItem), createIndex(0, headers.size() - 1, mainItem));
-        }
-        else
-        {
-            /*if (result.size() == 1 && !result[0].value<QVariantList>()[0].toString().contains("/") && result[0].value<QVariantList>()[0].toString() == SelectedTorrent::torrentInstance()->name())
-            {
-                mainItem = new FileItem();
-                updateItem(mainItem->toFile(), result[0].value<QVariantList>(), 0);
-        }
-        else
-        {
-            mainItem = new DirectoryItem();
-            mainItem->setName(SelectedTorrent::torrentInstance()->name());
-            for(int i = 0; i < result.size(); i++)
-            {
-                QVariantList file = result[i].value<QVariantList>();
-                
-                QString namePath = file[0].toString();
-                QStringList folders = namePath.split("/");
-                folders.removeLast();
-                DirectoryItem * dir = mainItem->toDirectory()->directory(folders);
-                
-                FileItem * item = new FileItem();
-                updateItem(item, file, i);
-                dir->addChild(item);
-        }
-        }*/
-            emit layoutChanged();
-        }
-    }
-}
-
 Qt::ItemFlags FileModel::flags(const QModelIndex & index) const
 {
     if (!index.isValid())
@@ -295,7 +223,7 @@ Qt::ItemFlags FileModel::flags(const QModelIndex & index) const
 
 bool FileModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-    if (!index.isValid())
+    /*if (!index.isValid())
     {
         return false;
     }
@@ -310,10 +238,10 @@ bool FileModel::setData(const QModelIndex & index, const QVariant & value, int r
     else
     {
         return false;
-    }
+    }*/
 }
 
-void FileModel::updateItem(FileItem * item, const QVariantList & data, int index)
+/*void FileModel::updateItem(FileItem * item, const QVariantList & data, int index)
 {
     if (item)
     {
@@ -330,9 +258,9 @@ void FileModel::updateItem(FileItem * item, const QVariantList & data, int index
         item->setPriority(priority);
         item->setIndex(index);
     }
-}
+}*/
 
-FileModelItem * FileModel::findItem(const QString & path) const
+/*FileModelItem * FileModel::findItem(const QString & path) const
 {
     QStringList folders = path.split("/");
     if (folders.size() == 0)
@@ -341,13 +269,74 @@ FileModelItem * FileModel::findItem(const QString & path) const
     }
     
     return mainItem->toDirectory()->item(path);
+}*/
+
+QStringList FileModel::childDirectories(const QModelIndex & index) const
+{
+    if (!hasIndex(index.row(), index.column(), index))
+    {
+        return QStringList();
+    }
+
+    if (index.isValid())
+    {
+        QString parentPath = path(index);
+        QRegExp filter(QString("^(%1/[^/]+)/.*").arg(parentPath));
+        QStringList dirs = QStringList(fileMap.keys()).filter(filter).replaceInStrings(filter, "\\1");
+        dirs.removeDuplicates();
+        return dirs;
+    }
+    else
+    {
+        QRegExp filter("^([^/]+)/.*");
+        QStringList dirs = QStringList(fileMap.keys()).filter(filter).replaceInStrings(filter, "\\1");
+        dirs.removeDuplicates();
+        return dirs;
+    }
 }
 
-void FileModel::newUpdate()
+QStringList FileModel::childFiles(const QModelIndex & index) const
 {
-    qDebug("newUpdate()");
-    mainItem = 0;
-    update();
+    if (!hasIndex(index.row(), index.column(), index))
+    {
+        return QStringList();
+    }
+
+    if (index.isValid())
+    {
+        QString parentPath = path(index);
+        QRegExp filter(QString("^%1/[^/]+$").arg(parentPath));
+        return QStringList(fileMap.keys()).filter(filter);
+    }
+    else
+    {
+        return QStringList(fileMap.keys()).filter(QRegExp("^[^/]+$"));
+    }
+}
+
+QString FileModel::path(const QModelIndex & index) const
+{
+    if (!hasIndex(index.row(), index.column(), index))
+    {
+        return QString();
+    }
+
+    if (index.isValid())
+    {
+        QString parentPath = path(index.parent());
+        QStringList entries = fileMap.keys();
+        QRegExp filter(QString("^(%1/[^/]+)/.*").arg(parentPath));
+        entries.replaceInStrings(filter, "\\1");
+        return entries.at(index.row());
+    }
+    else
+    {
+        QString parentPath = path(index.parent());
+        QStringList entries = fileMap.keys();
+        QRegExp filter("^([^/]+)/.*");
+        entries.replaceInStrings(filter, "\\1");
+        return entries.at(index.row());
+    }
 }
 
 #include "filemodel.moc"

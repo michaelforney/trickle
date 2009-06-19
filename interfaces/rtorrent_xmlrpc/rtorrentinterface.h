@@ -40,7 +40,7 @@ class rTorrentInterface : public Interface
 {
 	Q_OBJECT
     public:
-        enum rTorrentRequest { TorrentList, FileList };
+        enum rTorrentRequest { TorrentList, FileList, TrackerList };
 		rTorrentInterface(QObject * parent, const QVariantList & args);
 		~rTorrentInterface();
 		QString title() const { return "rTorrent XmlRpc Interface"; }
@@ -68,7 +68,7 @@ class rTorrentInterface : public Interface
         QDomElement toElement(const QVariant & value, QDomDocument document);
         rTorrentConfig * config() const;
     private:
-        QMap<KIO::StoredTransferJob *, rTorrentRequest> jobs;
+        QMap<KIO::StoredTransferJob *, QPair<rTorrentRequest, QVariantList> > jobs;
 		TorrentMap torrents;
 };
 

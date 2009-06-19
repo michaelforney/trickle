@@ -43,7 +43,6 @@ class TrackerInfo : public QWidget
 		
 		void setTorrent(Torrent * torrent);
 	public slots:
-		void update();
 	private:
 		Ui::TrackerInfo ui;
 

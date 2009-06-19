@@ -26,10 +26,13 @@
 	@author Michael Forney <michael@obberon.com>
 */
 
+#include "tracker.h"
+
 #include <QStringList>
 
 class TorrentItem;
 class TrackerItem;
+class Interface;
 
 class TrackerModel : public QAbstractItemModel
 {
@@ -47,11 +50,13 @@ class TrackerModel : public QAbstractItemModel
 		QVariant data(const QModelIndex & item, int role) const;
 		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	public slots:
-		void update();
-		void result(const QString & method, const QVariant & value);
+        void setupInterfaceConnections(Interface * interface);
+        void setTorrentHash(const QString & hash);
+        void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
 	private:
 		QStringList headers;
-		QList<TrackerItem *> trackers;
+		QMap<int, Tracker> trackerMap;
+        QString m_hash;
 };
 
 #endif

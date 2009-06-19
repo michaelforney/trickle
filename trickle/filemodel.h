@@ -26,6 +26,8 @@
 	@author Michael Forney <michael@obberon.com>
 */
 
+#include "file.h"
+
 #include <QStringList>
 
 class FileModelItem;
@@ -50,16 +52,18 @@ class FileModel : public QAbstractItemModel
 		Qt::ItemFlags flags(const QModelIndex & index) const;
 		bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
 		
-		FileModelItem * findItem(const QString & path) const;
+        //FileModelItem * findItem(const QString & path) const;
+        QStringList childDirectories(const QModelIndex & index = QModelIndex()) const;
+        QStringList childFiles(const QModelIndex & index = QModelIndex()) const;
+        QString path(const QModelIndex & index = QModelIndex()) const;
 	public slots:
 		void update();
-		void newUpdate();
-		void result(const QString & method, const QVariant & result);
+        //void result(const QString & method, const QVariant & result);
 	private:
-		void updateItem(FileItem * item, const QVariantList & data, int index);
+		//void updateItem(FileItem * item, const QVariantList & data, int index);
 
 		QStringList headers;
-		FileModelItem * mainItem;
+        QMap<QString, File> fileMap;
 };
 
 #endif

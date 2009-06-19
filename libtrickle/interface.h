@@ -90,7 +90,8 @@ class TRICKLE_EXPORT Interface : public QObject
 		void torrentsUpdated(const QMap<QString, Torrent> & torrents);
 		void filesUpdated(const QString & hash, QSet<File> & files);
         void peersUpdated(const QString & hash, QSet<Peer> & peers);
-        void trackersUpdated(const QString & hash, QSet<Tracker> & trackers);
+        void trackersUpdated(const QString & hash, QMap<int, Tracker> & trackers);
+        void watchedTorrentUpdated(const Torrent & torrent);
         //void chunksUpdated(const QString & hash, QList<)
         
         void torrentPriorityChanged(const QString & hash, Torrent::TorrentState priority);

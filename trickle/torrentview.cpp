@@ -20,6 +20,7 @@
 #include "torrentview.h"
 
 #include <QHeaderView>
+#include <KDebug>
 
 #include "torrentmodel.h"
 #include "torrentsortmodel.h"
@@ -33,7 +34,7 @@ TorrentView::TorrentView()
 	setSortingEnabled(true);
 	setIndentation(0);
 	
-	connect(this, SIGNAL(clicked(const QModelIndex &)), this, SLOT(setCurrentTorrent(const QModelIndex &)));
+	connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(setCurrentIndex(const QModelIndex &)));
 	//connect(this, SIGNAL(torrentChanged(TorrentItem *)), SelectedTorrent::instance(), SLOT(setTorrent(TorrentItem *)));
 }
 
@@ -41,9 +42,10 @@ TorrentView::~TorrentView()
 {
 }
 
-void TorrentView::setCurrentTorrent(const QModelIndex & index)
+void TorrentView::setCurrentIndex(const QModelIndex & index)
 {
-	//emit torrentChanged(static_cast<TorrentItem *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
+    kDebug() << "index changed to " << QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
+    emit torrentHashChanged(QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer())));
 }
 
 #include "torrentview.moc"

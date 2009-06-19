@@ -101,7 +101,6 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
     kDebug() << url;
     
     QByteArray requestData = document.toByteArray();
-    kDebug() << requestData;
     KIO::StoredTransferJob * job = KIO::storedHttpPost(requestData, url, KIO::HideProgressInfo);
     job->addMetaData("content-type", "Content-Type: text/xml");
     job->addMetaData("user-agent", "User-Agent: Trickle/0.01");
@@ -118,6 +117,7 @@ void rTorrentInterface::updateTorrentList()
         "d.get_hash=" <<
         "d.get_name=" <<
         "d.get_state=" <<
+        "d.get_complete=" <<
         "d.get_size_bytes=" <<
         "d.get_peers_accounted=" <<
         "d.get_peers_complete=" <<
@@ -125,14 +125,23 @@ void rTorrentInterface::updateTorrentList()
         "d.get_completed_bytes=" <<
         "d.get_up_rate=" <<
         "d.get_up_total=" <<
-        "d.get_priority=");
-    jobs.insert(job, TorrentList);
+        "d.get_priority=" <<
+        "d.get_completed_chunks=" <<
+        "d.get_size_chunks=" <<
+        "d.get_chunk_size=");
+    jobs.insert(job, qMakePair(TorrentList, QVariantList()));
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
 void rTorrentInterface::updateFileInfo(const QString & hash)
 {
-    Q_UNUSED(hash); //TODO: Remove when implemented
+    KIO::StoredTransferJob * job = call("f.multicall", QVariantList() <<
+        hash <<
+        "" <<
+        "f.get_path=" <<
+        "f.get_path_components=");
+    jobs.insert(job, qMakePair(FileList, QVariantList() << hash));
+    connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
 void rTorrentInterface::updatePeerInfo(const QString & hash)
@@ -142,13 +151,26 @@ void rTorrentInterface::updatePeerInfo(const QString & hash)
 
 void rTorrentInterface::updateTrackerInfo(const QString & hash)
 {
-    Q_UNUSED(hash); //TODO: Remove when implemented
+    kDebug() << "Tracker job starting";
+    KIO::StoredTransferJob * job = call("t.multicall", QVariantList() <<
+        hash <<
+        "" <<
+        "t.get_id=" <<
+        "t.get_url=" <<
+        "t.is_open=" <<
+        "t.is_enabled=" <<
+        "t.get_type=" <<
+        "t.get_scrape_incomplete=" <<
+        "t.get_scrape_complete=" <<
+        "t.get_scrape_time_last=" <<
+        "t.get_normal_interval=");
+    jobs.insert(job, qMakePair(FileList, QVariantList() << hash));
+    connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
 void rTorrentInterface::jobFinished(KJob * job)
 {
     KIO::StoredTransferJob * transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
-    kdDebug() << "Job finished";
     if (transferJob)
     {
         if (transferJob->error())
@@ -160,11 +182,12 @@ void rTorrentInterface::jobFinished(KJob * job)
         
         if (jobs.contains(transferJob))
         {
-            rTorrentRequest requestType = jobs.value(transferJob);
+            rTorrentRequest requestType = jobs.value(transferJob).first;
             switch(requestType)
             {
                 case TorrentList:
                 {
+                    kDebug() << "Torrent job finished";
                     LogData::self()->logMessage("Torrent list update finished");
                     //kDebug() << transferJob->data();
                     //kDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FINDME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
@@ -178,18 +201,43 @@ void rTorrentInterface::jobFinished(KJob * job)
                     foreach(QVariant torrentVariant, torrents)
                     {
                         QVariantList torrentAttributes = torrentVariant.toList();
-                        Torrent torrent(torrentAttributes.at(0).toString());
-                        torrent.setName(torrentAttributes.at(1).toString());
-                        //kDebug() << torrentAttributes.at(2);
+                        Torrent torrent(torrentAttributes.takeFirst().toString());
+                        torrent.setName(torrentAttributes.takeFirst().toString());
+                        bool started = torrentAttributes.takeFirst().toBool();
+                        bool complete = torrentAttributes.takeFirst().toBool();
+                        Torrent::TorrentState state;
+                        if (started)
+                        {
+                            if (complete)
+                            {
+                                state = Torrent::Seeding;
+                            }
+                            else
+                            {
+                                state = Torrent::Downloading;
+                            }
+                        }
+                        else
+                        {
+                            if (complete)
+                            {
+                                state = Torrent::Completed;
+                            }
+                            else
+                            {
+                                state = Torrent::Stopped;
+                            }
+                        }
+                        torrent.setState(state);
                         //kDebug() << ByteSize(torrentAttributes.at(3).toLongLong()).toString();
-                        torrent.setSize(ByteSize(torrentAttributes.at(3).toLongLong()));
-                        torrent.setLeechsConnected(torrentAttributes.at(4).toLongLong());
-                        torrent.setSeedsConnected(torrentAttributes.at(5).toLongLong());
-                        torrent.setDownloadRate(ByteSize(torrentAttributes.at(6).toLongLong()));
-                        torrent.setDownloaded(ByteSize(torrentAttributes.at(7).toLongLong()));
-                        torrent.setUploadRate(ByteSize(torrentAttributes.at(8).toLongLong()));
-                        torrent.setUploaded(ByteSize(torrentAttributes.at(9).toLongLong()));
-                        int priorityInt = torrentAttributes.at(10).toInt();
+                        torrent.setSize(ByteSize(torrentAttributes.takeFirst().toLongLong()));
+                        torrent.setLeechsConnected(torrentAttributes.takeFirst().toLongLong());
+                        torrent.setSeedsConnected(torrentAttributes.takeFirst().toLongLong());
+                        torrent.setDownloadRate(ByteSize(torrentAttributes.takeFirst().toLongLong()));
+                        torrent.setDownloaded(ByteSize(torrentAttributes.takeFirst().toLongLong()));
+                        torrent.setUploadRate(ByteSize(torrentAttributes.takeFirst().toLongLong()));
+                        torrent.setUploaded(ByteSize(torrentAttributes.takeFirst().toLongLong()));
+                        int priorityInt = torrentAttributes.takeFirst().toInt();
                         Torrent::Priority priority;
                         switch(priorityInt)
                         {
@@ -219,8 +267,15 @@ void rTorrentInterface::jobFinished(KJob * job)
                             }
                         }
                         torrent.setPriority(priority);
+                        torrent.setCompletedChunks(torrentAttributes.takeFirst().toLongLong());
+                        torrent.setChunks(torrentAttributes.takeFirst().toLongLong());
+                        torrent.setChunkSize(torrentAttributes.takeFirst().toLongLong());
                         //kDebug() << torrent.hash() << ", " << torrent.name();
                         torrentMap.insert(torrent.hash(), torrent);
+                        if (watchedTorrents().contains(torrent.hash()))
+                        {
+                            emit watchedTorrentUpdated(torrent);
+                        }
                     }
                     /*QVariantMap response = CSVCodec::decode(transferJob->data()).toMap();
                     QVariantList torrents = response.value("torrents").toList();
@@ -258,9 +313,70 @@ void rTorrentInterface::jobFinished(KJob * job)
                         torrent.setUploaded(webuiTorrent.at(6).toLongLong());
                         torrentMap.insert(webuiTorrent.at(0).toString(), torrent);
                     }*/
-                    qDebug() << "emitting";
+                    kDebug() << "emitting";
                     emit torrentsUpdated(torrentMap);
                     jobs.remove(transferJob);
+                    break;
+                }
+                case FileList:
+                {
+                    kDebug() << "File job finished";
+                    QDomDocument document;
+                    document.setContent(transferJob->data());
+                    //kDebug() << document.toString();
+                    QVariant result = toVariant(document.documentElement().firstChildElement("params").firstChildElement("param").firstChildElement("value"));
+                    QVariantList files = result.toList();
+                    foreach(QVariant fileVariant, files)
+                    {
+                        kDebug() << fileVariant;
+                    }
+                    break;
+                }
+                case TrackerList:
+                {
+                    kDebug() << "Tracker job finished";
+                    QDomDocument document;
+                    document.setContent(transferJob->data());
+                    //kDebug() << document.toString();
+                    QVariant result = toVariant(document.documentElement().firstChildElement("params").firstChildElement("param").firstChildElement("value"));
+                    QVariantList trackerVariants = result.toList();
+                    QMap<int, Tracker> trackers;
+                    foreach(QVariant trackerVariant, trackerVariants)
+                    {
+                        QVariantList trackerAttributes = trackerVariant.toList();
+                        Tracker tracker;
+                        tracker.setId(trackerAttributes.takeFirst().toInt());
+                        tracker.setUrl(KUrl(trackerAttributes.takeFirst().toString()));
+                        tracker.setOpen(trackerAttributes.takeFirst().toBool());
+                        tracker.setEnabled(trackerAttributes.takeFirst().toBool());
+                        int typeInt = trackerAttributes.takeFirst().toInt();
+                        Tracker::Type type;
+                        switch (typeInt)
+                        {
+                            case 0:
+                            {
+                                type = Tracker::Http;
+                                break;
+                            }
+                            case 1:
+                            {
+                                type = Tracker::Udp;
+                                break;
+                            }
+                            case 2:
+                            {
+                                type = Tracker::Dht;
+                                break;
+                            }
+                        }
+                        tracker.setType(type);
+                        tracker.setPeersIncomplete(trackerAttributes.takeFirst().toInt());
+                        tracker.setPeersComplete(trackerAttributes.takeFirst().toInt());
+                        tracker.setLastAnnounce(QDateTime::fromTime_t(trackerAttributes.takeFirst().toLongLong()));
+                        tracker.setAnnounceInterval(trackerAttributes.takeFirst().toInt());
+                        trackers.insert(tracker.id(), tracker);
+                    }
+                    emit trackersUpdated(jobs.value(transferJob).second.at(0).toString(), trackers);
                     break;
                 }
                 default:

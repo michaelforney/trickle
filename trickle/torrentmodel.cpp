@@ -33,7 +33,11 @@ TorrentModel::TorrentModel()
 {
 	headers << "Name" << "State" << "Size" << "Seeders" << "Leechers" << "Down Rate" << "Downloaded" << "Up Rate" << "Uploaded" << "Ratio" << "Priority" << "Hash";
 	//connect(this, SIGNAL(layoutChanged()), SelectedTorrent::instance(), SLOT(update()));
-	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    if (InterfaceManager::interface())
+    {
+        setupInterfaceConnections(InterfaceManager::interface());
+    }
 	//connect(ServerStatus::instance(), SIGNAL(serverChanged(int)), this, SLOT(clear()));
 }
 
