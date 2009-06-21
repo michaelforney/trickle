@@ -19,7 +19,7 @@ SET(TrickleSources main.cpp
 	filedelegate.cpp
 	torrentdelegate.cpp
 	#selectedtorrent.cpp
-	settingsdelegate.cpp
+	#settingsdelegate.cpp
 	generalinfo.cpp
 	serverinfo.cpp
 	serversettings.cpp
