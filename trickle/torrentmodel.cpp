@@ -22,10 +22,7 @@
 #include <QTimer>
 #include <KDebug>
 
-#include "xmlrpc.h"
-#include "updatetimer.h"
 #include "interfacemanager.h"
-#include "serverstatus.h"
 #include "interface.h"
 
 TorrentModel::TorrentModel()
@@ -81,11 +78,16 @@ QModelIndex TorrentModel::parent(const QModelIndex &) const
 
 QVariant TorrentModel::data(const QModelIndex & index, int role) const
 {
+    //kDebug() << "start";
 	if (!index.isValid())
 	{
 		return QVariant();
 	}
-	Torrent torrent = torrents.value(*static_cast<QString *>(index.internalPointer()));
+    Q_ASSERT(torrents.size() > index.row());
+    //kDebug() << torrents.size() << index.row();
+	Torrent torrent = torrents.values().at(index.row());
+    
+    //kDebug() << "mid";
 	switch (role)
 	{
 		case Qt::DisplayRole:
@@ -207,49 +209,15 @@ QModelIndex TorrentModel::index(int row, int column, const QModelIndex & parent)
 	}
 	
 	//Torrent * item = torrents[row];
-	QString * hash = new QString(torrents.keys().at(row));
+	//QString * hash = new QString(torrents.keys().at(row));
 
-	return createIndex(row, column, hash);
+	return createIndex(row, column);
 }
 
 void TorrentModel::clear()
 {
 	torrents.clear();
 	emit layoutChanged();
-}
-
-void TorrentModel::update()
-{
-	qDebug() << "update";
-	/*if (XmlRpc::instance()->isBusy())
-	{
-		QVariantList args;
-		args << "default";
-		args << "d.get_name=";
-		args << "d.get_state=";
-		args << "d.get_size_chunks=";
-		args << "d.get_chunk_size=";
-		args << "d.get_down_rate=";
-		args << "d.get_completed_chunks=";
-		args << "d.get_down_total=";
-		args << "d.get_up_rate=";
-		args << "d.get_up_total=";
-		args << "d.get_ratio=";
-		args << "d.get_hash=";
-		args << "d.get_peers_accounted=";
-		args << "d.get_peers_complete=";
-		args << "d.get_priority=";
-		//XmlRpc::instance()->call("d.multicall", args, this, "result");
-		foreach(Torrent * item, torrents)
-		{
-			item.update();
-		}
-		emit logInfo(QString("Updating torrent information"));
-	}
-	else
-	{
-		emit logInfo(QString("XmlRpc busy with %1 requests").arg(XmlRpc::instance()->requests()));
-	}*/
 }
 
 ByteSize TorrentModel::totalDownloadRate() const
@@ -282,20 +250,13 @@ Qt::ItemFlags TorrentModel::flags(const QModelIndex & index) const
 	return itemFlags;
 }
 
-void TorrentModel::updateItem(Torrent * item)
-{
-	//int row = torrents.indexOf(item);
-	//emit dataChanged(createIndex(row, 0, item), createIndex(row, headers.count(), item));
-	//emit layoutChanged();
-}
-
 void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 {
-	kDebug() << "torrentsUpdated()";
+	kDebug() << "torrentsUpdated() // size: " << torrentMap.size();
 	for (int index = 0; index < torrents.keys().size(); index++)
 	{
 		QString key = torrents.keys().at(index);
-		if (torrentMap.keys().contains(key))
+		if (!torrentMap.keys().contains(key))
 		{
 			beginRemoveRows(QModelIndex(), index, index);
 			torrents.remove(key);
@@ -317,6 +278,7 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 			endInsertRows();
 		}
 	}
+    kDebug() << torrents.size();
 	if (torrents.size() > 0)
 	{
 		emit dataChanged(createIndex(0, 0), createIndex(torrents.size() - 1, headers.size() - 1));
@@ -331,7 +293,20 @@ void TorrentModel::setupInterfaceConnections(Interface * interface)
 
 Torrent TorrentModel::torrent(const QString & hash) const
 {
+    Q_ASSERT(torrents.contains(hash));
 	return torrents.value(hash);
+}
+
+Torrent TorrentModel::torrent(int row) const
+{
+    Q_ASSERT(row < torrents.size());
+    return torrents.values().at(row);
+}
+
+QString TorrentModel::hash(int row) const
+{
+    Q_ASSERT(row < torrents.size());
+    return torrents.keys().at(row);
 }
 
 #include "torrentmodel.moc"

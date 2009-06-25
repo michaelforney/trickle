@@ -98,7 +98,7 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
     url.setPort(server().port());
     url.setPath(config()->path());
 
-    kDebug() << url;
+    //kDebug() << url;
     
     QByteArray requestData = document.toByteArray();
     KIO::StoredTransferJob * job = KIO::storedHttpPost(requestData, url, KIO::HideProgressInfo);
@@ -164,7 +164,7 @@ void rTorrentInterface::updateTrackerInfo(const QString & hash)
         "t.get_scrape_complete=" <<
         "t.get_scrape_time_last=" <<
         "t.get_normal_interval=");
-    jobs.insert(job, qMakePair(FileList, QVariantList() << hash));
+    jobs.insert(job, qMakePair(TrackerList, QVariantList() << hash));
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
@@ -205,6 +205,7 @@ void rTorrentInterface::jobFinished(KJob * job)
                         torrent.setName(torrentAttributes.takeFirst().toString());
                         bool started = torrentAttributes.takeFirst().toBool();
                         bool complete = torrentAttributes.takeFirst().toBool();
+                        //kDebug() << torrent.name() << ", " << started << ", " << complete;
                         Torrent::TorrentState state;
                         if (started)
                         {

@@ -21,7 +21,6 @@
 
 #include "selectedtorrent.h"
 #include "torrentitem.h"
-#include "xmlrpc.h"
 
 FileItem::FileItem(FileModelItem * parent)
  : FileModelItem(parent)

@@ -23,7 +23,6 @@
 #include <QDebug>
 
 #include "fileitem.h"
-#include "torrentitem.h"
 
 DirectoryItem::DirectoryItem(FileModelItem * parent)
  : FileModelItem(parent)

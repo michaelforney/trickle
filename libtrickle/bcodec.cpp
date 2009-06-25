@@ -170,12 +170,10 @@ QByteArray BCodec::encode(const QVariant & data)
 		{
 			QString string = data.toString();
 			return QString("%1:%2").arg(string.size()).arg(string).toAscii();
-			break;
 		}
 		case QVariant::Int:
 		{
 			return QString("i%1e").arg(data.toInt()).toAscii();
-			break;
 		}
 		case QVariant::List:
 		{
@@ -186,7 +184,6 @@ QByteArray BCodec::encode(const QVariant & data)
 			}
 			output.append("e");
 			return output;
-			break;
 		}
 		case QVariant::Map:
 		{
@@ -199,7 +196,6 @@ QByteArray BCodec::encode(const QVariant & data)
 			}
 			output.append("e");
 			return output;
-			break;
 		}
 		case QVariant::UserType:
 		{
@@ -220,7 +216,6 @@ QByteArray BCodec::encode(const QVariant & data)
 				kdDebug() << "Unknown type: \"" << data.typeName() << "\", userType(): " << data.userType();
 				return QByteArray();
 			}
-			break;
 		}
 		default:
 		{

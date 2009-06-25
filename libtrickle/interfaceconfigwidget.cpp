@@ -22,6 +22,7 @@
 InterfaceConfigWidget::InterfaceConfigWidget(QObject * parent, const QVariantList & args)
  : QWidget(qobject_cast<QWidget *>(parent)), m_config(0)
 {
+    Q_UNUSED(args);
 }
 
 InterfaceConfigWidget::~InterfaceConfigWidget()

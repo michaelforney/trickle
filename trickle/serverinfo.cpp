@@ -25,9 +25,7 @@
 #include <QPushButton>
 #include <QDebug>
 
-#include "serverstatus.h"
 #include "servermodel.h"
-#include "updatetimer.h"
 
 ServerInfo::ServerInfo()
  : QWidget()
@@ -80,7 +78,7 @@ void ServerInfo::setServer(int index)
 	{
 		//Server server = ServerStatus::instance()->server(index);
 		//serverName->setText(QString("<b>%1</b>").arg(server.name()));
-		serverUpdateStatus->setText(UpdateTimer::instance()->isActive() ? "<b>Started</b>" : "<b>Stopped</b>");
+		//serverUpdateStatus->setText(UpdateTimer::instance()->isActive() ? "<b>Started</b>" : "<b>Stopped</b>");
 	}
 }
 

@@ -35,8 +35,8 @@ TorrentSortModel::~TorrentSortModel()
 
 bool TorrentSortModel::lessThan(const QModelIndex & left, const QModelIndex & right) const
 {
-	Torrent leftItem = static_cast<TorrentModel *>(sourceModel())->torrent(*static_cast<QString *>(left.internalPointer()));
-	Torrent rightItem = static_cast<TorrentModel *>(sourceModel())->torrent(*static_cast<QString *>(right.internalPointer()));
+	Torrent leftItem = static_cast<TorrentModel *>(sourceModel())->torrent(left.row());
+	Torrent rightItem = static_cast<TorrentModel *>(sourceModel())->torrent(right.row());
 	
 	if (left.column() == right.column())
 	{

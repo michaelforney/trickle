@@ -59,15 +59,12 @@ class TorrentModel : public QAbstractItemModel
 		ByteSize totalUploadRate() const;
 		
 		Torrent torrent(const QString & hash) const;
+        Torrent torrent(int row) const;
+        QString hash(int row) const;
 	public slots:
 		void clear();
-		void update();
-		void updateItem(Torrent * item);
 		void torrentsUpdated(const QMap<QString, Torrent> & torrentMap);
 		void setupInterfaceConnections(Interface * interface);
-	signals:
-		void logInfo(const QString & info);
-		void updated();
 	private:
 		QList<QVariant> headers;
 		QMap<QString, Torrent> torrents;

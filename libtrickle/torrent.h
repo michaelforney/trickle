@@ -94,7 +94,7 @@ class TRICKLE_EXPORT Torrent
 		void setName(const QString & name);
 		void setHash(const QString & hash);
 		void setSize(ByteSize size);
-		void setState(int state);
+		void setState(TorrentState state);
 		void setPriority(Priority priority);
 		//void setRatio(double ratio);
 		bool operator==(const Torrent & other);
@@ -116,7 +116,7 @@ class TRICKLE_EXPORT Torrent
 		int m_completedChunks;
 		ByteSize m_uploaded;
 		ByteSize m_downloaded;
-		int m_state;
+		TorrentState m_state;
 		Priority m_priority;
 		//double m_ratio;
 		QString m_name;

@@ -7,7 +7,6 @@ SET(TrickleSources main.cpp
 	trackeritem.cpp
 	trickle.cpp
 	log.cpp
-	updatetimer.cpp
 	torrentwidget.cpp
 	torrentmodel.cpp
 	torrentview.cpp
@@ -18,13 +17,10 @@ SET(TrickleSources main.cpp
 	torrentsortmodel.cpp
 	filedelegate.cpp
 	torrentdelegate.cpp
-	#selectedtorrent.cpp
-	#settingsdelegate.cpp
 	generalinfo.cpp
 	serverinfo.cpp
 	serversettings.cpp
 	generalsettings.cpp
-	#servermanager.cpp
 	configdialog.cpp
 	servereditdialog.cpp
 	serveritem.cpp

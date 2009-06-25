@@ -78,7 +78,7 @@ class Trickle : public KXmlGuiWindow
 		void setDownloadLimit(int limit);
 		void setUploadLimit(int limit);
 		
-		void result(const QString & method, const QVariant & result);
+		void torrentIndexChanged(int index);
 		
 		void setupInterfaceConnections(Interface * interface);
 	private:

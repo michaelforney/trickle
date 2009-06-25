@@ -41,8 +41,8 @@ class TrackerInfo : public QWidget
 		TrackerInfo();
 		~TrackerInfo();
 		
-		void setTorrent(Torrent * torrent);
-	public slots:
+    public slots:
+        void setTorrentHash(const QString & hash);
 	private:
 		Ui::TrackerInfo ui;
 

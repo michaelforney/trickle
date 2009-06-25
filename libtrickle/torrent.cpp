@@ -144,28 +144,7 @@ Torrent::Priority Torrent::priority() const
 
 Torrent::TorrentState Torrent::state() const
 {
-	if (m_state == Seeding)
-	{
-		if (completedChunks() == chunks())
-		{
-			return Seeding;
-		}
-		else
-		{
-			return Downloading;
-		}
-	}
-	else
-	{
-		if (completedChunks() == chunks())
-		{
-			return Completed;
-		}
-		else
-		{
-			return Stopped;
-		}
-	}
+    return m_state;
 }
 
 double Torrent::ratio() const
@@ -262,7 +241,7 @@ void Torrent::setHash(const QString & hash)
 	m_hash = hash;
 }
 
-void Torrent::setState(int state)
+void Torrent::setState(TorrentState state)
 {
 	m_state = state;
 }

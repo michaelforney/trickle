@@ -26,9 +26,6 @@
 #include <QDebug>
 #include <QGroupBox>
 
-#include "xmlrpc.h"
-#include "updatetimer.h"
-
 GeneralInfo::GeneralInfo()
  : QWidget()
 {
@@ -67,8 +64,6 @@ GeneralInfo::GeneralInfo()
 		}
 		mainLayout->addWidget(speedBox);
 		mainLayout->addStretch();
-		
-		connect(UpdateTimer::instance(), SIGNAL(timeout()), this, SLOT(update()));
 	}
 }
 

@@ -60,7 +60,7 @@ void TrackerModel::setTorrentHash(const QString & hash)
 void TrackerModel::setupInterfaceConnections(Interface * interface)
 {
     kDebug() << interface;
-    connect(interface, SIGNAL(trackersUpdated(const QSet<Tracker> &)), this, SLOT(torrentUpdated(const QSet<Tracker> &)));
+    connect(interface, SIGNAL(trackersUpdated(const QString &, const QMap<int, Tracker> &)), this, SLOT(trackersUpdated(const QString &, const QMap<int, Tracker> &)));
 }
 
 void TrackerModel::trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers)
@@ -68,7 +68,35 @@ void TrackerModel::trackersUpdated(const QString & hash, const QMap<int, Tracker
     kDebug() << "trackers updated";
     if (m_hash == hash)
     {
-        
+        QList<int> currentIds = trackerMap.keys();
+        for (int index = 0; index < trackerMap.size(); index++)
+        {
+            int id = currentIds.at(index);
+            if (!trackers.contains(id))
+            {
+                beginRemoveRows(QModelIndex(), index, index);
+                trackerMap.remove(id);
+                endRemoveRows();
+            }
+        }
+        for (int index = 0; index < trackers.size(); index++)
+        {
+            int id = trackers.keys().at(index);
+            if (trackerMap.contains(id))
+            {
+                beginInsertRows(QModelIndex(), index, index);
+            }
+            else
+            {
+                beginInsertRows(QModelIndex(), index, index);
+                trackerMap.insert(id, trackers.value(id));
+                endInsertRows();
+            }
+        }
+        if (trackerMap.size() > 0)
+        {
+            emit dataChanged(createIndex(0, 0), createIndex(trackerMap.size() - 1, headers.size() - 1));
+        }
     }
 }
 

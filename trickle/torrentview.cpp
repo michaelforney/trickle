@@ -44,8 +44,9 @@ TorrentView::~TorrentView()
 
 void TorrentView::setCurrentIndex(const QModelIndex & index)
 {
-    kDebug() << "index changed to " << QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
-    emit torrentHashChanged(QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer())));
+    //kDebug() << "index changed to " << QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
+    //emit torrentHashChanged(QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer())));
+    emit indexChanged(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).row());
 }
 
 #include "torrentview.moc"

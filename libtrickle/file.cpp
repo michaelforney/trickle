@@ -34,7 +34,3 @@ File::File(const QString & path, const ByteSize & size, int index, int completed
 File::~File()
 {
 }
-
-#include "file.moc"
-
-

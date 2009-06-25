@@ -90,7 +90,7 @@ class TRICKLE_EXPORT Interface : public QObject
 		void torrentsUpdated(const QMap<QString, Torrent> & torrents);
 		void filesUpdated(const QString & hash, QSet<File> & files);
         void peersUpdated(const QString & hash, QSet<Peer> & peers);
-        void trackersUpdated(const QString & hash, QMap<int, Tracker> & trackers);
+        void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
         void watchedTorrentUpdated(const Torrent & torrent);
         //void chunksUpdated(const QString & hash, QList<)
         
@@ -105,12 +105,12 @@ class TRICKLE_EXPORT Interface : public QObject
 		Server server() const;
         InterfaceConfig * genericConfig() const;
         bool configValid() const;
-        QSet<QString> watchedTorrents() const;
+        QMap<QString, int> watchedTorrents() const;
 	private:
 		QTimer * m_timer;
         InterfaceConfig * m_config;
 		Server m_server;
-        QSet<QString> m_watchedTorrents;
+        QMap<QString, int> m_watchedTorrents;
 };
 
 #endif

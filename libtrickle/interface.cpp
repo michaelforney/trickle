@@ -28,13 +28,13 @@
 Interface::Interface(InterfaceConfig * config, QObject * parent)
  : QObject(parent), m_timer(new QTimer()), m_config(config)
 {
-	connect(m_timer, SIGNAL(timeout()), this, SLOT(updateTorrentList()));
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Interface::Interface(QObject * parent)
 : QObject(parent), m_timer(new QTimer()), m_config(0)
 {
-    connect(m_timer, SIGNAL(timeout()), this, SLOT(updateTorrentList()));
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Interface::~Interface()
@@ -89,21 +89,31 @@ InterfaceConfig * Interface::genericConfig() const
     return m_config;
 }
 
-QSet<QString> Interface::watchedTorrents() const
+QMap<QString, int> Interface::watchedTorrents() const
 {
     return m_watchedTorrents;
 }
 
 void Interface::watchTorrent(const QString & hash)
 {
-    kDebug() << hash;
-    m_watchedTorrents.insert(hash);
+    kDebug() << "watching torrent: " << hash;
+    int count = m_watchedTorrents.value(hash, 0) + 1;
+    m_watchedTorrents.insert(hash, count);
     updateWatchedTorrent(hash);
 }
 
 void Interface::stopWatchingTorrent(const QString & hash)
 {
-    m_watchedTorrents.remove(hash);
+    if (!m_watchedTorrents.contains(hash))
+    {
+        return;
+    }
+
+    int count = m_watchedTorrents.take(hash) - 1;
+    if (count > 0)
+    {
+        m_watchedTorrents.insert(hash, count);
+    }
 }
 
 void Interface::updateWatchedTorrent(const QString & hash)
@@ -121,7 +131,7 @@ void Interface::updateWatchedTorrent(const QString & hash)
 
 void Interface::updateWatchedTorrents()
 {
-    foreach(QString hash, m_watchedTorrents)
+    foreach(QString hash, m_watchedTorrents.keys())
     {
         updateWatchedTorrent(hash);
     }

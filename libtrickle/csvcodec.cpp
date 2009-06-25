@@ -133,7 +133,6 @@ QByteArray CSVCodec::encode(const QVariant & data)
 				output.append(encode(value));
 			}
 			return QString("[%1]").arg(output.join(",")).toAscii();
-			break;
 		}
 		case QVariant::Map:
 		{

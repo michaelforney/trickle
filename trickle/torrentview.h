@@ -37,7 +37,8 @@ class TorrentView : public QTreeView
 	private slots:
 		void setCurrentIndex(const QModelIndex & index);
 	signals:
-		void torrentHashChanged(const QString & hash);
+		//void torrentHashChanged(const QString & hash);
+        void indexChanged(int index);
 };
 
 #endif

@@ -55,19 +55,14 @@
 #include "torrentdelegate.h"
 #include "torrentinfo.h"
 #include "log.h"
-#include "torrentitem.h"
 #include "torrentsortmodel.h"
 #include "fileinfo.h"
 #include "filemodel.h"
-#include "updatetimer.h"
-#include "xmlrpc.h"
 #include "trackerinfo.h"
 #include "server.h"
 #include "servermodel.h"
-//#include "selectedtorrent.h"
 #include "generalinfo.h"
 #include "serverinfo.h"
-#include "serverstatus.h"
 #include "settings.h"
 #include "serversettings.h"
 #include "generalsettings.h"
@@ -104,7 +99,7 @@ Trickle::Trickle()
 	setupGUI();
 	//connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
 	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
-    connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), torrentInfo, SLOT(setTorrentHash(const QString &)));
+    connect(torrentView, SIGNAL(indexChanged(int)), this, SLOT(torrentIndexChanged(int)));
 	
 	InterfaceManager::self()->load();
     if (InterfaceManager::interface())
@@ -215,24 +210,19 @@ void Trickle::startTorrent()
 	}
 }
 
+void Trickle::torrentIndexChanged(int index)
+{
+    QString hash = torrentModel->hash(index);
+    torrentInfo->setTorrentHash(hash);
+    trackerInfo->setTorrentHash(hash);
+}
+
 void Trickle::setDownloadLimit(int limit)
 {
 }
 
 void Trickle::setUploadLimit(int limit)
 {
-}
-
-void Trickle::result(const QString & method, const QVariant & result)
-{
-	/*if (method == "get_upload_rate")
-	{
-		upLimitEdit->setValue(result.toInt() / 1024);
-	}
-	else if (method == "get_download_rate")
-	{
-		downLimitEdit->setValue(result.toInt() / 1024);
-	}*/
 }
 
 void Trickle::optionsPreferences()

@@ -38,4 +38,9 @@ TrackerInfo::~TrackerInfo()
 {
 }
 
+void TrackerInfo::setTorrentHash(const QString & hash)
+{
+    trackerModel->setTorrentHash(hash);
+}
+
 #include "trackerinfo.moc"
