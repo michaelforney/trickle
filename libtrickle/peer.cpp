@@ -15,7 +15,7 @@
     Boston, MA  02110-1301, USA.
 
     ---
-    Copyright (C) 2009, Michael Forney <michael@obberon.com>
+    Copyright (C) 2009, Michael Forney <mforney@trickleproject.org>
  */
 
 #include "peer.h"

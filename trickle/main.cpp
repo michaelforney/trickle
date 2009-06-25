@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Michael Forney                                  *
- *   michael@obberon.com                                                   *
+ *   mforney@trickleproject.org                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,8 +34,8 @@ static const char version[] = "git devel";
 
 int main(int argc, char *argv[])
 {
-	KAboutData about("trickle", 0, ki18n("Trickle"), version, ki18n(description), KAboutData::License_GPL, ki18n("(C) 2007-2009 Michael Forney"), KLocalizedString(), 0, "michael@obberon.com");
-	about.addAuthor( ki18n("Michael Forney"), KLocalizedString(), "michael@obberon.com" );
+	KAboutData about("trickle", 0, ki18n("Trickle"), version, ki18n(description), KAboutData::License_GPL, ki18n("(C) 2007-2009 Michael Forney"), KLocalizedString(), 0, "mforney@trickleproject.org");
+	about.addAuthor( ki18n("Michael Forney"), KLocalizedString(), "mforney@trickleproject.org" );
 	KCmdLineArgs::init(argc, argv, &about);
 	KApplication app;
 	Trickle * trickle = new Trickle();

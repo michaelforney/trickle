@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Michael Forney                                  *
- *   michael@obberon.com                                                   *
+ *   mforney@trickleproject.org                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,7 +21,7 @@
 #define SERVER_H
 
 /**
-	@author Michael Forney <michael@obberon.com>
+	@author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QString>
