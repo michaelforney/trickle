@@ -24,8 +24,10 @@
 #include <KPasswordDialog>
 #include <KToggleAction>
 #include <KConfigDialog>
+#include <KStatusBar>
 #include <KToolBar>
 #include <KActionCollection>
+#include <KSystemTrayIcon>
 #include <QMenu>
 #include <QAction>
 #include <QToolBar>
@@ -38,7 +40,6 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <KSystemTrayIcon>
 #include <QDebug>
 #include <QAuthenticator>
 #include <QDialog>
@@ -65,6 +66,7 @@
 #include "serverinfo.h"
 #include "settings.h"
 #include "serversettings.h"
+#include "serverselector.h"
 #include "generalsettings.h"
 #include "servermanager.h"
 #include "interfacemanager.h"
@@ -145,21 +147,19 @@ void Trickle::setupActions()
 
 void Trickle::createStatusBar()
 {
-	/*totalDownloadRate = new QLabel(statusBar());
-	totalUploadRate = new QLabel(statusBar());
-	totalDownloadRate->setMinimumWidth(150);
-	totalUploadRate->setMinimumWidth(150);
-	serverList = new QComboBox(statusBar());
-	{
-		serverList->setModel(serverModel);
-		connect(serverList, SIGNAL(currentIndexChanged(int)), ServerStatus::instance(), SLOT(setCurrentServer0(int)));
-		connect(ServerStatus::instance(), SIGNAL(serverChanged0(int)), serverList, SLOT(setCurrentIndex(int)));
-	}
-	
-	statusBar()->showMessage("Ready");
-	statusBar()->addPermanentWidget(serverList);
-	statusBar()->addPermanentWidget(totalDownloadRate);
-	statusBar()->addPermanentWidget(totalUploadRate);*/
+    totalDownloadRate = new QLabel(statusBar());
+    totalUploadRate = new QLabel(statusBar());
+    totalDownloadRate->setMinimumWidth(150);
+    totalUploadRate->setMinimumWidth(150);
+    serverSelector = new ServerSelector(statusBar());
+    //serverList->setModel(serverModel);
+    //connect(serverList, SIGNAL(currentIndexChanged(int)), ServerStatus::instance(), SLOT(setCurrentServer0(int)));
+    //connect(ServerStatus::instance(), SIGNAL(serverChanged0(int)), serverList, SLOT(setCurrentIndex(int)));
+
+    statusBar()->showMessage("Ready");
+    statusBar()->addPermanentWidget(serverSelector);
+    statusBar()->addPermanentWidget(totalDownloadRate);
+    statusBar()->addPermanentWidget(totalUploadRate);
 }
 
 void Trickle::createDockWidgets()

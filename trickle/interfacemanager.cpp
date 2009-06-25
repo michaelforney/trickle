@@ -108,6 +108,10 @@ void InterfaceManager::setServer(const Server & server)
 {
 	if (factories.contains(server.type()))
 	{
+        if (m_interface)
+        {
+            delete m_interface;
+        }
 		m_interface = factories.value(server.type())->create<Interface>();
 		m_interface->setServer(server);
 		m_interface->setInterval(Settings::self()->interval());

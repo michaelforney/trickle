@@ -56,6 +56,7 @@ class ServerModel;
 class GeneralInfo;
 class ServerInfo;
 class Interface;
+class ServerSelector;
 
 class Trickle : public KXmlGuiWindow
 {
@@ -92,13 +93,13 @@ class Trickle : public KXmlGuiWindow
 		TrackerInfo * trackerInfo;
 		GeneralInfo * generalInfo;
 		ServerInfo * serverInfo;
-		ServerModel * serverModel;
+        ServerModel * serverModel;
+        ServerSelector * serverSelector;
 		
 		QDockWidget * settingsDock;
 		
 		QLabel * totalUploadRate;
 		QLabel * totalDownloadRate;
-		QComboBox * serverList;
 		
 		KSystemTrayIcon * trayIcon;
 		

@@ -140,22 +140,22 @@ QVariant TrackerModel::data(const QModelIndex & index, int role) const
 {
 	if (index.isValid())
 	{
-        //TODO: Put into switch statement
-		if (role == Qt::DisplayRole)
-		{
-			if (index.column() == TrackerModel::TrackerUrl)
-			{
-				return trackerMap.value(index.internalId()).url().url();
-			}
-			else
-			{
-				return QVariant();
-			}
-		}
-		else
-		{
-			return QVariant();
-		}
+        switch(role)
+        {
+            case Qt::DisplayRole:
+            {
+                if (index.column() == TrackerModel::TrackerUrl)
+                {
+                    return trackerMap.value(index.internalId()).url().url();
+                }
+                else
+                {
+                    return QVariant();
+                }
+            }
+            default:
+                return QVariant();
+        }
 	}
 	else
 	{

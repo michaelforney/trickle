@@ -26,6 +26,8 @@
 	@author Michael Forney <michael@obberon.com>
 */
 
+#include "ui_serverinfo.h"
+
 class QLabel;
 class QPushButton;
 
@@ -38,11 +40,10 @@ class ServerInfo : public QWidget
 		ServerInfo();
 		~ServerInfo();
 	public slots:
-		void setServer(int index);
+		void interfaceChanged();
+        void clear();
 	private:
-		QLabel * serverName;
-		QLabel * serverUpdateStatus;
-		QPushButton * changeStatusButton;
+        Ui::ServerInfo ui;
 };
 
 #endif

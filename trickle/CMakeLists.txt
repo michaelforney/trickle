@@ -25,11 +25,13 @@ SET(TrickleSources main.cpp
 	servereditdialog.cpp
 	serveritem.cpp
 	interfacemanager.cpp
+    serverselector.cpp
 	settingsbase.cpp)
 SET(TrickleUi serversettings.ui
 	generalsettings.ui
 	torrentinfo.ui
 	trackerinfo.ui
+    serverinfo.ui
 	servereditdialog.ui)
 SET(TrickleKcfg settings.kcfgc)
 

@@ -26,60 +26,37 @@
 #include <QDebug>
 
 #include "servermodel.h"
+#include "interfacemanager.h"
+#include "interface.h"
 
 ServerInfo::ServerInfo()
  : QWidget()
 {
-	QVBoxLayout * mainLayout = new QVBoxLayout(this);
-	{
-		QHBoxLayout * serverNameLayout = new QHBoxLayout();
-		{
-			serverName = new QLabel("<b>None</b>");
-			//serverName->setFrameStyle(QFrame::Box);
-			
-			serverNameLayout->addWidget(new QLabel("Current Server: "));
-			serverNameLayout->addWidget(serverName);
-			serverNameLayout->addStretch();
-		}
-		
-		QHBoxLayout * statusLayout = new QHBoxLayout();
-		{
-			//changeStatusButton = new QPushButton("Start");
-			serverUpdateStatus = new QLabel("Stopped");
-			//serverUpdateStatus->setFrameStyle(QFrame::Box);
-			
-			statusLayout->addWidget(new QLabel("Update Status: "));
-			statusLayout->addWidget(serverUpdateStatus);
-			//statusLayout->addWidget(changeStatusButton);
-			statusLayout->addStretch();
-		}
-		
-		mainLayout->addLayout(serverNameLayout);
-		mainLayout->addLayout(statusLayout);
-		mainLayout->addStretch();
-	}
-	
-	//connect(ServerStatus::instance(), SIGNAL(serverChanged(int)), this, SLOT(setServer(int)));
+    ui.setupUi(this);
+    clear();
+    connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(interfaceChanged()));
 }
 
 ServerInfo::~ServerInfo()
 {
 }
 
-void ServerInfo::setServer(int index)
+void ServerInfo::interfaceChanged()
 {
-	if (index < 0)
-	{
-		serverName->setText(QString("<b>None</b>"));
-		serverUpdateStatus->setText("<b>Stopped</b>");
-	}
-	
-	else
-	{
-		//Server server = ServerStatus::instance()->server(index);
-		//serverName->setText(QString("<b>%1</b>").arg(server.name()));
-		//serverUpdateStatus->setText(UpdateTimer::instance()->isActive() ? "<b>Started</b>" : "<b>Stopped</b>");
-	}
+    Q_ASSERT(InterfaceManager::interface());
+    Server server = InterfaceManager::server();
+    ui.serverName->setText(server.name());
+    ui.serverType->setText(InterfaceManager::interface()->title());
+    ui.serverHost->setText(QString("%1:%2").arg(server.host()).arg(server.port()));
+    //TODO: set update status
+}
+
+void ServerInfo::clear()
+{
+    ui.serverName->setText("None");
+    ui.serverType->setText("N/A");
+    ui.serverHost->setText("N/A");
+    ui.updateStatus->setText("N/A");
 }
 
 #include "serverinfo.moc"
