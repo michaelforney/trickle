@@ -30,6 +30,9 @@ File::File(const QString & path, const ByteSize & size, int index, int completed
 	setPriority(priority);
 }
 
+File::File()
+{
+}
 
 File::~File()
 {

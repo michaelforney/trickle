@@ -37,11 +37,12 @@ TorrentDelegate::~TorrentDelegate()
 {
 }
 
-QWidget * TorrentDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & /*style*/, const QModelIndex & index) const
+QWidget * TorrentDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & style, const QModelIndex & index) const
 {
+    Q_UNUSED(style);
 	if (index.column() == TorrentModel::Priority)
 	{
-		Torrent * item = static_cast<Torrent *>(static_cast<const QSortFilterProxyModel *>(index.model())->mapToSource(index).internalPointer());
+        Torrent * item = static_cast<Torrent *>(static_cast<const QAbstractProxyModel *>(index.model())->mapToSource(index).internalPointer()); //FIXME: not using torrent pointers anymore
 		QComboBox * prioritySelector = new QComboBox(parent);
 		prioritySelector->addItems(QStringList() << "Off" << "Low" << "Normal" << "High");
 		prioritySelector->setCurrentIndex(item->priority());

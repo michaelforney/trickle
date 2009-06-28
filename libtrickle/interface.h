@@ -88,8 +88,8 @@ class TRICKLE_EXPORT Interface : public QObject
         virtual void setConfig(InterfaceConfig * config);
 	signals:
 		void torrentsUpdated(const QMap<QString, Torrent> & torrents);
-		void filesUpdated(const QString & hash, QSet<File> & files);
-        void peersUpdated(const QString & hash, QSet<Peer> & peers);
+        void filesUpdated(const QString & hash, const QMap<QString, File> & files);
+        void peersUpdated(const QString & hash, const QSet<Peer> & peers);
         void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
         void watchedTorrentUpdated(const Torrent & torrent);
         //void chunksUpdated(const QString & hash, QList<)

@@ -99,7 +99,7 @@ void Interface::watchTorrent(const QString & hash)
     kDebug() << "watching torrent: " << hash;
     int count = m_watchedTorrents.value(hash, 0) + 1;
     m_watchedTorrents.insert(hash, count);
-    updateWatchedTorrent(hash);
+    //updateWatchedTorrent(hash);
 }
 
 void Interface::stopWatchingTorrent(const QString & hash)

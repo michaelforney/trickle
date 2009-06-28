@@ -33,6 +33,7 @@
 class FileModelItem;
 class TorrentItem;
 class FileItem;
+class Interface;
 
 class FileModel : public QAbstractItemModel
 {
@@ -40,30 +41,37 @@ class FileModel : public QAbstractItemModel
 	public:
 		FileModel();
 		~FileModel();
-		
+
 		enum Column { Name, Size, Complete, Priority };
-		
+        enum IndexType { DirectoryIndex, FileIndex };
+
 		QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+        QModelIndex index(const QString & path, IndexType type) const;
 		QModelIndex parent(const QModelIndex & index) const;
 		int rowCount(const QModelIndex & parent = QModelIndex()) const;
 		int columnCount(const QModelIndex & parent = QModelIndex()) const;
 		QVariant data(const QModelIndex & index, int role) const;
 		QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 		Qt::ItemFlags flags(const QModelIndex & index) const;
-		bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
-		
-        //FileModelItem * findItem(const QString & path) const;
-        QStringList childDirectories(const QModelIndex & index = QModelIndex()) const;
-        QStringList childFiles(const QModelIndex & index = QModelIndex()) const;
-        QString path(const QModelIndex & index = QModelIndex()) const;
+        bool setData(const QModelIndex & index, const QVariant & value, int role = Qt::EditRole);
 	public slots:
-		void update();
-        //void result(const QString & method, const QVariant & result);
+        void clear();
+        void filesUpdated(const QString & hash, const QMap<QString, File> & files);
+        void setTorrentHash(const QString & hash);
+        void setupInterfaceConnections(Interface * interface);
+    protected:
+        QStringList children(const QString & path, IndexType type) const;
+        QString findPath(const QModelIndex & index = QModelIndex()) const;
+        QString findParentPath(const QString & path = QString()) const;
+
+        ByteSize size(const QString & path, IndexType type) const;
 	private:
-		//void updateItem(FileItem * item, const QVariantList & data, int index);
+        QStringList findDirs(const QStringList & filePaths);
 
 		QStringList headers;
-        QMap<QString, File> fileMap;
+        QMap<QString, File> m_files;
+        QStringList m_dirs;
+        QString m_hash;
 };
 
 #endif

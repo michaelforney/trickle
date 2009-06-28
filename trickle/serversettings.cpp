@@ -35,7 +35,6 @@
 #include <KMessageBox>
 #include <QDebug>
 
-//#include "servermanager.h"
 #include "server.h"
 #include "servereditdialog.h"
 #include "serveritem.h"

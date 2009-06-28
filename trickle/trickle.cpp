@@ -62,7 +62,6 @@
 #include "trackerinfo.h"
 #include "server.h"
 #include "servermodel.h"
-#include "generalinfo.h"
 #include "serverinfo.h"
 #include "settings.h"
 #include "serversettings.h"
@@ -84,7 +83,7 @@ Trickle::Trickle()
 	torrentView = new TorrentView();
 	{
 		TorrentDelegate * priorityDelegate = new TorrentDelegate();
-		
+
 		torrentView->setItemDelegateForColumn(TorrentModel::Priority, priorityDelegate);
 		torrentView->setModel(torrentSortModel);
 		torrentView->setColumnHidden(TorrentModel::Hash, true);
@@ -94,15 +93,18 @@ Trickle::Trickle()
 		trayIcon->show();
 	}
 	setCentralWidget(torrentView);
-	
+
 	setupActions();
 	createStatusBar();
 	createDockWidgets();
 	setupGUI();
 	//connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
 	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
-    connect(torrentView, SIGNAL(indexChanged(int)), this, SLOT(torrentIndexChanged(int)));
-	
+
+    connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), torrentInfo, SLOT(setTorrentHash(const QString &)));
+    connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), trackerInfo, SLOT(setTorrentHash(const QString &)));
+    connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), fileInfo, SLOT(setTorrentHash(const QString &)));
+
 	InterfaceManager::self()->load();
     if (InterfaceManager::interface())
     {
@@ -121,21 +123,21 @@ void Trickle::setupActions()
 	KStandardAction::openNew(this, SLOT(newTorrent()), actionCollection());
 	KStandardAction::open(this, SLOT(openTorrent()), actionCollection());
 	KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
-	
+
 	KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
-	
+
 	KToggleAction * showTorrentInfo = new KToggleAction("&Show Torrent Info", actionCollection());
 	showTorrentInfo->setObjectName("view_torrentinfo");
-	
+
 	KAction * startAction = new KAction(KIcon("media-playback-start"), "&Start", actionCollection());
 	startAction->setObjectName("torrent_start");
-	
+
 	KAction * stopAction = new KAction(KIcon("media-playback-stop"), "&Stop", actionCollection());
 	stopAction->setObjectName("torrent_stop");
-	
+
 	KAction * removeAction = new KAction(KIcon("list-remove"), "&Remove", actionCollection());
 	removeAction->setObjectName("torrent_remove");
-	
+
 	actionCollection()->addAction(showTorrentInfo->objectName(), showTorrentInfo);
 	actionCollection()->addAction(startAction->objectName(), startAction);
 	actionCollection()->addAction(stopAction->objectName(), stopAction);
@@ -164,7 +166,7 @@ void Trickle::createStatusBar()
 
 void Trickle::createDockWidgets()
 {
-	
+
 	QDockWidget * statsDock = new QDockWidget("Info", this);
 	{
 		statsDock->setObjectName("Info");
@@ -172,14 +174,12 @@ void Trickle::createDockWidgets()
 		torrentWidget = new TorrentWidget();
 		{
 			serverInfo = new ServerInfo();
-			generalInfo = new GeneralInfo();
 			torrentInfo = new TorrentInfo();
 			fileInfo = new FileInfo();
 			trackerInfo = new TrackerInfo();
 			log = new Log();
-			
+
 			torrentWidget->addTab(serverInfo, "Server");
-			torrentWidget->addTab(generalInfo, "General");
 			torrentWidget->addTab(torrentInfo, "Torrent Information");
 			torrentWidget->addTab(fileInfo, "Files");
 			torrentWidget->addTab(trackerInfo, "Tracker");
@@ -210,13 +210,6 @@ void Trickle::startTorrent()
 	}
 }
 
-void Trickle::torrentIndexChanged(int index)
-{
-    QString hash = torrentModel->hash(index);
-    torrentInfo->setTorrentHash(hash);
-    trackerInfo->setTorrentHash(hash);
-}
-
 void Trickle::setDownloadLimit(int limit)
 {
 }
@@ -243,6 +236,15 @@ void Trickle::openTorrent()
 
 void Trickle::setupInterfaceConnections(Interface * interface)
 {
+}
+
+bool Trickle::queryClose()
+{
+    if (autoSaveSettings())
+    {
+        torrentView->save();
+    }
+    return true;
 }
 
 #include "trickle.moc"

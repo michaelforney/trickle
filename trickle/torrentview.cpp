@@ -21,6 +21,9 @@
 
 #include <QHeaderView>
 #include <KDebug>
+#include <KGlobal>
+#include <KConfig>
+#include <KConfigGroup>
 
 #include "torrentmodel.h"
 #include "torrentsortmodel.h"
@@ -28,25 +31,43 @@
 TorrentView::TorrentView()
  : QTreeView()
 {
-	setUniformRowHeights(true);
-	setItemsExpandable(false);
-	setAlternatingRowColors(true);
-	setSortingEnabled(true);
-	setIndentation(0);
-	
-	connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(setCurrentIndex(const QModelIndex &)));
-	//connect(this, SIGNAL(torrentChanged(TorrentItem *)), SelectedTorrent::instance(), SLOT(setTorrent(TorrentItem *)));
+     setUniformRowHeights(true);
+     setItemsExpandable(false);
+     setAlternatingRowColors(true);
+     setSortingEnabled(true);
+     setIndentation(0);
+
+     restore();
+
+    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(setTorrentIndex(const QModelIndex &)));
 }
 
 TorrentView::~TorrentView()
 {
 }
 
-void TorrentView::setCurrentIndex(const QModelIndex & index)
+void TorrentView::setTorrentIndex(const QModelIndex & proxyIndex)
 {
-    //kDebug() << "index changed to " << QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer()));
-    //emit torrentHashChanged(QString(*static_cast<QString *>(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).internalPointer())));
-    emit indexChanged(static_cast<const TorrentSortModel *>(index.model())->mapToSource(index).row());
+    const QAbstractProxyModel * proxyModel = static_cast<const QAbstractProxyModel *>(proxyIndex.model());
+    Q_ASSERT(proxyModel);
+    TorrentModel * model = static_cast<const TorrentModel *>(proxyModel->sourceModel());
+    Q_ASSERT(model);
+    QModelIndex index = proxyModel->mapToSource(proxyIndex);
+    emit torrentHashChanged(model->hash(index));
+}
+
+void TorrentView::save()
+{
+    KSharedConfig::Ptr config = KGlobal::config();
+    KConfigGroup group = config->group("TorrentView");
+    group.writeEntry("State", header()->saveState());
+}
+
+void TorrentView::restore()
+{
+    KSharedConfig::Ptr config = KGlobal::config();
+    KConfigGroup group = config->group("TorrentView");
+    header()->restoreState(group.readEntry("State", QByteArray()));
 }
 
 #include "torrentview.moc"

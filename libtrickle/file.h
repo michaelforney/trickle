@@ -36,20 +36,22 @@ class TRICKLE_EXPORT File
 		enum FilePriority { Off, Low, Medium, High };
 
 		File(const QString & path, const ByteSize & size, int index, int completedChunks, FilePriority priority);
+        File();
 		~File();
 		
 		
-		inline ByteSize size() const { return m_size; };
-		inline int index() const { return m_index; };
-		inline int completedChunks() const { return m_completedChunks; };
-		inline FilePriority priority() const { return m_priority; };
-		inline QString path() const { return m_path; };
-	private:
-		inline void setCompletedChunks(int completedChunks) { m_completedChunks = completedChunks; };
-		inline void setSize(const ByteSize & size) { m_size = size; };
-		inline void setIndex(int index) { m_index = index; };
-		inline void setPriority(FilePriority priority) { m_priority = priority; };
-		inline void setPath(const QString & path) { m_path = path; };
+        inline ByteSize size() const { return m_size; }
+        inline int index() const { return m_index; }
+        inline int completedChunks() const { return m_completedChunks; }
+        inline FilePriority priority() const { return m_priority; }
+        inline QString path() const { return m_path; }
+
+        inline void setCompletedChunks(int completedChunks) { m_completedChunks = completedChunks; }
+        inline void setSize(const ByteSize & size) { m_size = size; }
+        inline void setIndex(int index) { m_index = index; }
+        inline void setPriority(FilePriority priority) { m_priority = priority; }
+        inline void setPath(const QString & path) { m_path = path; }
+    private:
 		
 		FilePriority m_priority;
 		int m_completedChunks;

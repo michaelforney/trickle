@@ -54,11 +54,6 @@ FileInfo::~FileInfo()
 	writeSettings();
 }
 
-void FileInfo::update()
-{
-	fileModel->update();
-}
-
 void FileInfo::writeSettings()
 {
 	QSettings settings;
@@ -69,6 +64,11 @@ void FileInfo::readSettings()
 {
 	QSettings settings;
 	fileView->header()->restoreState(settings.value("fileinfo/headerstate").toByteArray());
+}
+
+void FileInfo::setTorrentHash(const QString & hash)
+{
+    fileModel->setTorrentHash(hash);
 }
 
 #include "fileinfo.moc"

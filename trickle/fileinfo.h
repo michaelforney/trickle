@@ -44,8 +44,8 @@ class FileInfo : public QWidget
 		
 		void writeSettings();
 		void readSettings();
-	public slots:
-		void update();
+    public slots:
+        void setTorrentHash(const QString & hash);
 	private:
 		FileView * fileView;
 		FileModel * fileModel;

@@ -139,7 +139,8 @@ void rTorrentInterface::updateFileInfo(const QString & hash)
         hash <<
         "" <<
         "f.get_path=" <<
-        "f.get_path_components=");
+        //"f.get_path_components=" <<
+        "f.get_size_bytes=");
     jobs.insert(job, qMakePair(FileList, QVariantList() << hash));
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
@@ -326,11 +327,19 @@ void rTorrentInterface::jobFinished(KJob * job)
                     document.setContent(transferJob->data());
                     //kDebug() << document.toString();
                     QVariant result = toVariant(document.documentElement().firstChildElement("params").firstChildElement("param").firstChildElement("value"));
-                    QVariantList files = result.toList();
-                    foreach(QVariant fileVariant, files)
+                    QVariantList fileVariants = result.toList();
+                    //kDebug() << fileVariants;
+                    QMap<QString, File> files;
+                    foreach(QVariant fileVariant, fileVariants)
                     {
-                        kDebug() << fileVariant;
+                        QVariantList fileAttributes = fileVariant.toList();
+                        File file;
+                        file.setPath(fileAttributes.takeFirst().toString());
+                        file.setSize(ByteSize(fileAttributes.takeFirst().toLongLong()));
+                        files.insert(file.path(), file);
                     }
+                    kDebug() << "emitting files updated";
+                    emit filesUpdated(jobs.value(transferJob).second.at(0).toString(), files);
                     break;
                 }
                 case TrackerList:

@@ -64,23 +64,23 @@ class Trickle : public KXmlGuiWindow
 	public:
 		Trickle();
 		~Trickle();
-		
+
 		void setupActions();
 		void createStatusBar();
 		void createDockWidgets();
 	public slots:
         void newTorrent();
 		void openTorrent();
-		
+
 		void optionsPreferences();
-		
+
 		void stopTorrent();
 		void startTorrent();
 		void setDownloadLimit(int limit);
-		void setUploadLimit(int limit);
-		
-		void torrentIndexChanged(int index);
-		
+        void setUploadLimit(int limit);
+
+        bool queryClose();
+
 		void setupInterfaceConnections(Interface * interface);
 	private:
 		TorrentView * torrentView;
@@ -91,22 +91,21 @@ class Trickle : public KXmlGuiWindow
 		TorrentInfo * torrentInfo;
 		FileInfo * fileInfo;
 		TrackerInfo * trackerInfo;
-		GeneralInfo * generalInfo;
 		ServerInfo * serverInfo;
         ServerModel * serverModel;
         ServerSelector * serverSelector;
-		
+
 		QDockWidget * settingsDock;
-		
+
 		QLabel * totalUploadRate;
 		QLabel * totalDownloadRate;
-		
+
 		KSystemTrayIcon * trayIcon;
-		
+
 		QToolBar * mainToolBar;
 		QToolBar * serverBar;
 		QToolBar * controlBar;
-		
+
 		QString host;
 		int port;
 		QString path;

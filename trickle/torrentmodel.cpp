@@ -86,7 +86,7 @@ QVariant TorrentModel::data(const QModelIndex & index, int role) const
     Q_ASSERT(torrents.size() > index.row());
     //kDebug() << torrents.size() << index.row();
 	Torrent torrent = torrents.values().at(index.row());
-    
+
     //kDebug() << "mid";
 	switch (role)
 	{
@@ -207,7 +207,7 @@ QModelIndex TorrentModel::index(int row, int column, const QModelIndex & parent)
 	{
 		return QModelIndex();
 	}
-	
+
 	//Torrent * item = torrents[row];
 	//QString * hash = new QString(torrents.keys().at(row));
 
@@ -252,7 +252,6 @@ Qt::ItemFlags TorrentModel::flags(const QModelIndex & index) const
 
 void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 {
-	kDebug() << "torrentsUpdated() // size: " << torrentMap.size();
 	for (int index = 0; index < torrents.keys().size(); index++)
 	{
 		QString key = torrents.keys().at(index);
@@ -274,11 +273,10 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 			torrents.insert(hash, torrentMap.value(hash));
 			int index = torrents.keys().indexOf(hash);
 			//qDebug() << index;
-			beginInsertRows(QModelIndex(), index, index);
+			beginInsertRows(QModelIndex(), index, index); //FIXME: do this correctly
 			endInsertRows();
 		}
 	}
-    kDebug() << torrents.size();
 	if (torrents.size() > 0)
 	{
 		emit dataChanged(createIndex(0, 0), createIndex(torrents.size() - 1, headers.size() - 1));
@@ -303,10 +301,22 @@ Torrent TorrentModel::torrent(int row) const
     return torrents.values().at(row);
 }
 
+Torrent TorrentModel::torrent(const QModelIndex & index) const
+{
+    Q_ASSERT(index.isValid());
+    return torrents.values().at(index.row());
+}
+
 QString TorrentModel::hash(int row) const
 {
     Q_ASSERT(row < torrents.size());
     return torrents.keys().at(row);
+}
+
+QString TorrentModel::hash(const QModelIndex & index) const
+{
+    Q_ASSERT(index.isValid());
+    return torrents.keys().at(index.row());
 }
 
 #include "torrentmodel.moc"

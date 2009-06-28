@@ -17,7 +17,6 @@ SET(TrickleSources main.cpp
 	torrentsortmodel.cpp
 	filedelegate.cpp
 	torrentdelegate.cpp
-	generalinfo.cpp
 	serverinfo.cpp
 	serversettings.cpp
 	generalsettings.cpp
