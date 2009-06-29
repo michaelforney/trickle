@@ -26,11 +26,12 @@
 	@author Michael Forney <mforney@trickleproject.org>
 */
 
+#include "ui_fileinfo.h"
+
 class QComboBox;
 
 class FileView;
 class FileModel;
-//class FileDelegate;
 class TorrentItem;
 
 class FileInfo : public QWidget
@@ -39,19 +40,18 @@ class FileInfo : public QWidget
 	public:
 		FileInfo();
 		~FileInfo();
-		
-		void setTorrent(TorrentItem * torrent);
-		
-		void writeSettings();
-		void readSettings();
+
+        void restore();
+        void save();
     public slots:
         void setTorrentHash(const QString & hash);
+    protected slots:
+        void fileChanged(const QString & path);
 	private:
-		FileView * fileView;
-		FileModel * fileModel;
-		//FileDelegate * fileDelegate;
-		
-		QComboBox * filePriority;
+        Ui::FileInfo ui;
+        FileModel * fileModel;
+
+        QString m_file;
 };
 
 #endif

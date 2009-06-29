@@ -1,4 +1,5 @@
-SET(TrickleSources main.cpp
+SET(TrickleSources
+    main.cpp
 	filemodel.cpp
 	directoryitem.cpp
 	filemodelitem.cpp
@@ -25,13 +26,17 @@ SET(TrickleSources main.cpp
 	serveritem.cpp
 	interfacemanager.cpp
     serverselector.cpp
-	settingsbase.cpp)
-SET(TrickleUi serversettings.ui
+	settingsbase.cpp
+)
+SET(TrickleUi
+    serversettings.ui
 	generalsettings.ui
 	torrentinfo.ui
+    fileinfo.ui
 	trackerinfo.ui
     serverinfo.ui
-	servereditdialog.ui)
+	servereditdialog.ui
+)
 SET(TrickleKcfg settings.kcfgc)
 
 KDE4_ADD_UI_FILES(TrickleSources ${TrickleUi})

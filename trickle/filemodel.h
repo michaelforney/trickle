@@ -34,10 +34,12 @@ class FileModelItem;
 class TorrentItem;
 class FileItem;
 class Interface;
+class Torrent;
 
 class FileModel : public QAbstractItemModel
 {
 	Q_OBJECT
+    friend class FileView;
 	public:
 		FileModel();
 		~FileModel();
@@ -59,17 +61,20 @@ class FileModel : public QAbstractItemModel
         void filesUpdated(const QString & hash, const QMap<QString, File> & files);
         void setTorrentHash(const QString & hash);
         void setupInterfaceConnections(Interface * interface);
+        void torrentUpdated(const Torrent & torrent);
     protected:
         QStringList children(const QString & path, IndexType type) const;
         QString findPath(const QModelIndex & index = QModelIndex()) const;
         QString findParentPath(const QString & path = QString()) const;
 
         ByteSize size(const QString & path, IndexType type) const;
+        ByteSize bytesComplete(const QString & path, IndexType type) const;
 	private:
         QStringList findDirs(const QStringList & filePaths);
 
 		QStringList headers;
         QMap<QString, File> m_files;
+        ByteSize m_chunkSize;
         QStringList m_dirs;
         QString m_hash;
 };

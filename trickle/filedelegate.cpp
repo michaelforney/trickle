@@ -37,8 +37,9 @@ FileDelegate::~FileDelegate()
 {
 }
 
-QWidget * FileDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & /*styleOption*/, const QModelIndex & index) const
+QWidget * FileDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & styleOption, const QModelIndex & index) const
 {
+    Q_UNUSED(styleOption);
 	if (index.column() == FileModel::Priority)
 	{
 		QComboBox * prioritySelector = new QComboBox(parent);

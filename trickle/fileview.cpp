@@ -19,16 +19,25 @@
  ***************************************************************************/
 #include "fileview.h"
 
+#include "filemodel.h"
+
 #include <QHeaderView>
 
-FileView::FileView()
- : QTreeView()
+FileView::FileView(QWidget * parent)
+ : QTreeView(parent)
 {
+    connect(this, SIGNAL(activated(const QModelIndex &)), this, SLOT(indexActivated(const QModelIndex &)));
 }
-
 
 FileView::~FileView()
 {
 }
 
+void FileView::indexActivated(const QModelIndex & index)
+{
+    FileModel * fileModel = qobject_cast<FileModel *>(model());
+    Q_ASSERT(fileModel);
+    emit fileChanged(fileModel->findPath(index));
+}
 
+#include "fileview.moc"

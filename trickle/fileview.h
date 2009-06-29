@@ -23,16 +23,20 @@
 #include <QTreeView>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class FileView : public QTreeView
 {
-	public:
-		FileView();
+    Q_OBJECT
+    public:
+        FileView(QWidget * parent = 0);
+        ~FileView();
 
-		~FileView();
-
+    protected slots:
+        void indexActivated(const QModelIndex & index);
+    signals:
+        void fileChanged(const QString & path);
 };
 
 #endif

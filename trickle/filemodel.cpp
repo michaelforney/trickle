@@ -157,7 +157,7 @@ int FileModel::columnCount(const QModelIndex & index) const
 
 QVariant FileModel::data(const QModelIndex & index, int role) const
 {
-    kDebug() << index << role;
+    //kDebug() << index << role;
     Q_ASSERT(index.isValid());
     //kDebug() << index.isValid();
 
@@ -190,14 +190,31 @@ QVariant FileModel::data(const QModelIndex & index, int role) const
                             return size(m_files.keys().at(listIndex), type).toString();
                         case DirectoryIndex:
                             return size(m_dirs.at(listIndex), type).toString();
-                        default:
-                            return QVariant();
                     }
+                    return QVariant();
                 }
                 case Complete:
                 {
-                    // TODO: Implement this
-                    return QVariant();
+                    QString path;
+                    switch (type)
+                    {
+                        case FileIndex:
+                        {
+                            path = m_files.keys().at(listIndex);
+                            break;
+                        }
+                        case DirectoryIndex:
+                        {
+                            path = m_dirs.at(listIndex);
+                            break;
+                        }
+                        default:
+                            return QVariant();
+                    }
+                    int percent = bytesComplete(path, type) * 100 / size(path, type);
+                    percent = qMin(100, percent);
+                    percent = qMax(0, percent);
+                    return QString("%1%").arg(percent);
                 }
                 case Priority:
                 {
@@ -294,6 +311,7 @@ void FileModel::clear()
     m_dirs.clear();
     m_files.clear();
     endRemoveRows();
+    m_chunkSize = 0;
 }
 
 void FileModel::filesUpdated(const QString & hash, const QMap<QString, File> & files)
@@ -349,6 +367,7 @@ void FileModel::setupInterfaceConnections(Interface * interface)
 {
     kDebug() << interface;
     connect(interface, SIGNAL(filesUpdated(const QString &, const QMap<QString, File> &)), this, SLOT(filesUpdated(const QString &, const QMap<QString, File> &)));
+    connect(interface, SIGNAL(watchedTorrentUpdated(const Torrent &)), this, SLOT(torrentUpdated(const Torrent &)));
 }
 
 QStringList FileModel::findDirs(const QStringList & filePaths)
@@ -438,9 +457,7 @@ ByteSize FileModel::size(const QString & path, IndexType type) const
     switch (type)
     {
         case FileIndex:
-        {
             return m_files.value(path).size();
-        }
         case DirectoryIndex:
         {
             ByteSize totalSize;
@@ -458,6 +475,28 @@ ByteSize FileModel::size(const QString & path, IndexType type) const
     return ByteSize();
 }
 
+ByteSize FileModel::bytesComplete(const QString & path, IndexType type) const
+{
+    switch (type)
+    {
+        case FileIndex:
+            return ByteSize(m_chunkSize.bytes() * m_files.value(path).completedChunks());
+        case DirectoryIndex:
+        {
+            ByteSize totalBytesComplete;
+            foreach(const QString & directoryPath, children(path, DirectoryIndex))
+            {
+                totalBytesComplete += bytesComplete(directoryPath, DirectoryIndex);
+            }
+            foreach(const QString & filePath, children(path, FileIndex))
+            {
+                totalBytesComplete += bytesComplete(filePath, FileIndex);
+            }
+            return totalBytesComplete;
+        }
+    }
+}
+
 void FileModel::setTorrentHash(const QString & hash)
 {
     if (m_hash == hash)
@@ -471,5 +510,14 @@ void FileModel::setTorrentHash(const QString & hash)
     m_hash = hash;
     InterfaceManager::interface()->watchTorrent(hash);
 }
+
+void FileModel::torrentUpdated(const Torrent & torrent)
+{
+    if (m_hash == torrent.hash())
+    {
+        m_chunkSize = torrent.chunkSize();
+    }
+}
+
 
 #include "filemodel.moc"

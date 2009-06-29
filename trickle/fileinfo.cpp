@@ -19,12 +19,12 @@
  ***************************************************************************/
 #include "fileinfo.h"
 
+#include <KDebug>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QComboBox>
 #include <QLabel>
 #include <QHeaderView>
-#include <QSettings>
 
 #include "fileview.h"
 #include "filemodel.h"
@@ -33,37 +33,40 @@
 FileInfo::FileInfo()
  : QWidget()
 {
-	fileView = new FileView();
-	fileModel = new FileModel();
-	//fileDelegate = new FileDelegate();
-	fileView->setModel(fileModel);
-	//fileView->setItemDelegateForColumn(FileModel::Priority, fileDelegate);
-	
-	QHBoxLayout * mainLayout = new QHBoxLayout();
-	{
-		mainLayout->addWidget(fileView);
-	}
-	setLayout(mainLayout);
-	
-	readSettings();
+    fileModel = new FileModel();
+
+    ui.setupUi(this);
+    ui.fileView->setModel(fileModel);
+
+    connect(ui.fileView, SIGNAL(fileChanged(const QString &)), this, SLOT(fileChanged(const QString &)));
+
+    restore();
 }
 
 
 FileInfo::~FileInfo()
 {
-	writeSettings();
 }
 
-void FileInfo::writeSettings()
+void FileInfo::save()
 {
-	QSettings settings;
-	settings.setValue("fileinfo/headerstate", fileView->header()->saveState());
+    KSharedConfig::Ptr config = KGlobal::config();
+    KConfigGroup group = config->group("FileInfo");
+    group.writeEntry("State", ui.fileView->header()->saveState());
 }
 
-void FileInfo::readSettings()
+void FileInfo::restore()
 {
-	QSettings settings;
-	fileView->header()->restoreState(settings.value("fileinfo/headerstate").toByteArray());
+    KSharedConfig::Ptr config = KGlobal::config();
+    KConfigGroup group = config->group("FileInfo");
+    ui.fileView->header()->restoreState(group.readEntry("State", QByteArray()));
+}
+
+void FileInfo::fileChanged(const QString & path)
+{
+    kDebug() << "file changed";
+    //QModelIndex index = fileModel->index(path, FileIndex);
+    //ui.name->setText(fileModel->data(fileModel->)
 }
 
 void FileInfo::setTorrentHash(const QString & hash)
