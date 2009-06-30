@@ -91,7 +91,7 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
         paramsElement.appendChild(paramElement);
     }
     documentElement.appendChild(paramsElement);
-    
+
     KUrl url;
     url.setScheme("http");
     url.setHost(server().host());
@@ -99,7 +99,7 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
     url.setPath(config()->path());
 
     //kDebug() << url;
-    
+
     QByteArray requestData = document.toByteArray();
     KIO::StoredTransferJob * job = KIO::storedHttpPost(requestData, url, KIO::HideProgressInfo);
     job->addMetaData("content-type", "Content-Type: text/xml");
@@ -110,7 +110,7 @@ KIO::StoredTransferJob * rTorrentInterface::call(const QString & method, const Q
 void rTorrentInterface::updateTorrentList()
 {
     kDebug() << "updateTorrentList()";
-    
+
     LogData::self()->logMessage("Updating torrent list");
     KIO::StoredTransferJob * job = call("d.multicall", QVariantList() <<
         "" <<
@@ -126,9 +126,10 @@ void rTorrentInterface::updateTorrentList()
         "d.get_up_rate=" <<
         "d.get_up_total=" <<
         "d.get_priority=" <<
-        "d.get_completed_chunks=" <<
+        //"d.get_completed_chunks=" <<
         "d.get_size_chunks=" <<
-        "d.get_chunk_size=");
+        "d.get_chunk_size=" <<
+        "d.get_bitfield=");
     jobs.insert(job, qMakePair(TorrentList, QVariantList()));
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
@@ -182,10 +183,11 @@ void rTorrentInterface::jobFinished(KJob * job)
             kDebug() << transferJob->errorString();
             return;
         }
-        
+
         if (jobs.contains(transferJob))
         {
             rTorrentRequest requestType = jobs.value(transferJob).first;
+            //kDebug() << transferJob->data();
             switch(requestType)
             {
                 case TorrentList:
@@ -271,9 +273,27 @@ void rTorrentInterface::jobFinished(KJob * job)
                             }
                         }
                         torrent.setPriority(priority);
-                        torrent.setCompletedChunks(torrentAttributes.takeFirst().toLongLong());
+                        //torrent.setCompletedChunks(torrentAttributes.takeFirst().toLongLong());
                         torrent.setChunks(torrentAttributes.takeFirst().toLongLong());
                         torrent.setChunkSize(torrentAttributes.takeFirst().toLongLong());
+                        QByteArray byteField = QByteArray::fromHex(torrentAttributes.takeFirst().toByteArray());
+                        //kDebug() << byteField.toHex();
+                        QBitArray bitField(torrent.chunks());
+                        for (int i = 0; i < byteField.size(); i++)
+                        {
+                            for (int bit = 0; bit < 8; bit++)
+                            {
+                                if (byteField.at(i) & (1 << (7 - bit)))
+                                {
+                                    int bitIndex = (i * 8) + bit;
+                                    if (bitIndex >= 0 && bitIndex < bitField.size())
+                                    {
+                                        bitField.setBit(bitIndex);
+                                    }
+                                }
+                            }
+                        }
+                        torrent.setBitField(bitField);
                         //kDebug() << torrent.hash() << ", " << torrent.name();
                         torrentMap.insert(torrent.hash(), torrent);
                         if (watchedTorrents().contains(torrent.hash()))
@@ -371,7 +391,7 @@ QVariant rTorrentInterface::toVariant(const QDomElement & value)
     {
         return QVariant();
     }
-    
+
     QDomElement element = value.firstChildElement();
     QString type = element.tagName();
     //kDebug() << type;
@@ -452,7 +472,7 @@ void rTorrentInterface::setConfig(InterfaceConfig * rconfig)
     {
         return;
     }
-    
+
     if (config())
     {
         config()->deleteLater();

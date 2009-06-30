@@ -36,7 +36,7 @@ Torrent::Torrent(const QString & hash)
 	setDownloadRate(0);
 	setUploadRate(0);
 	setChunkSize(0);
-	setCompletedChunks(0);
+    //setBitArray(QBitArray());
 	setChunks(0);
 	setUploaded(0);
 	setDownloaded(0);
@@ -132,9 +132,9 @@ QString Torrent::hash() const
 	return m_hash;
 }
 
-int Torrent::completedChunks() const
+QBitArray Torrent::bitField() const
 {
-	return m_completedChunks;
+	return m_bitField;
 }
 
 Torrent::Priority Torrent::priority() const
@@ -173,9 +173,9 @@ int Torrent::chunks() const
 		emit updated();
 	}
 }*/
-		
+
 //Data Set Functions
-		
+
 void Torrent::setSeedsConnected(int seedsConnected)
 {
 	m_seedsConnected = seedsConnected;
@@ -251,9 +251,9 @@ void Torrent::setState(TorrentState state)
 	m_ratio = ratio;
 }*/
 
-void Torrent::setCompletedChunks(int completedChunks)
+void Torrent::setBitField(const QBitArray & bitField)
 {
-	m_completedChunks = completedChunks;
+    m_bitField = bitField;
 }
 
 void Torrent::setPriority(Priority priority)

@@ -28,8 +28,7 @@
 
 #include "bytesize.h"
 
-#include <QMap>
-#include <QVariantList>
+#include <QBitArray>
 
 class TRICKLE_EXPORT Torrent
 {
@@ -52,16 +51,16 @@ class TRICKLE_EXPORT Torrent
 	Q_PROPERTY(QString hash READ hash WRITE setHash)
 	Q_PROPERTY(int priority READ priority WRITE setPriority)
 	Q_ENUMS(TorrentState)*/
-	
+
 	public:
 		Torrent(const QString & hash);
 		Torrent();
 		~Torrent();
-		
+
 		enum Attribute { Hash, Name, Status, ChunkSize, Chunks, Size, Uploaded, UploadRate, Downloaded, DownloadRate, State, Ratio, Seeders, SeedersConnected, Leechers, LeechersConnected };
 		enum TorrentState { Downloading, Seeding, Stopped, Completed };
 		enum Priority { Off, Low, Medium, High };
-		
+
 		int seedsConnected() const;
 		int seedsTotal() const;
 		int leechsConnected() const;
@@ -69,7 +68,8 @@ class TRICKLE_EXPORT Torrent
 		ByteSize downloadRate() const;
 		ByteSize uploadRate() const;
 		int chunks() const;
-		int completedChunks() const;
+        QBitArray bitField() const;
+        //int completedChunks() const;
 		ByteSize chunkSize() const;
 		ByteSize size() const;
 		ByteSize uploaded() const;
@@ -79,7 +79,7 @@ class TRICKLE_EXPORT Torrent
 		QString name() const;
 		QString hash() const;
 		Priority priority() const;
-		
+
 		void setSeedsConnected(int seedsConnected);
 		void setSeedsTotal(int seedsTotal);
 		void setLeechsConnected(int leechsConnected);
@@ -87,7 +87,8 @@ class TRICKLE_EXPORT Torrent
 		void setDownloadRate(ByteSize downloadRate);
 		void setUploadRate(ByteSize uploadRate);
 		void setChunks(int chunks);
-		void setCompletedChunks(int completedChunks);
+        //void setCompletedChunks(int completedChunks);
+        void setBitField(const QBitArray & bitField);
 		void setChunkSize(ByteSize chunkSize);
 		void setUploaded(ByteSize uploaded);
 		void setDownloaded(ByteSize downloaded);
@@ -113,8 +114,9 @@ class TRICKLE_EXPORT Torrent
 		ByteSize m_uploadRate;
 		ByteSize m_chunkSize;
 		int m_chunks;
-		int m_completedChunks;
-		ByteSize m_uploaded;
+        //int m_completedChunks;
+        QBitArray m_bitField;
+        ByteSize m_uploaded;
 		ByteSize m_downloaded;
 		TorrentState m_state;
 		Priority m_priority;
@@ -127,7 +129,5 @@ class TRICKLE_EXPORT Torrent
 		void dataChanged(Torrent * item);
 		void updated();*/
 };
-
-typedef QMap<QString, Torrent *> TorrentMap;
 
 #endif

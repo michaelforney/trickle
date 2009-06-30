@@ -27,6 +27,7 @@ SET(TrickleSources
 	interfacemanager.cpp
     serverselector.cpp
 	settingsbase.cpp
+    bitarrayprogressbar.cpp
 )
 SET(TrickleUi
     serversettings.ui

@@ -32,10 +32,10 @@ TorrentInfo::TorrentInfo()
 {
 	ui.setupUi(this);
 
-    
+
 	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(update()));
 	//connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
-    
+
     connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
     if (InterfaceManager::interface())
     {
@@ -70,10 +70,11 @@ void TorrentInfo::torrentUpdated(const Torrent & torrent)
 {
     if (hash == torrent.hash())
     {
-        ui.progress->setMaximum(torrent.chunks());
-        ui.progress->setValue(torrent.completedChunks());
+        ui.progress->setBitArray(torrent.bitField());
+        //ui.progress->setMaximum(torrent.chunks());
+        //ui.progress->setValue(torrent.completedChunks());
         ui.torrentName->setText(torrent.name());
-        ui.chunksCompleted->setText(QString("%1/%2").arg(torrent.completedChunks()).arg(torrent.chunks()));
+        ui.chunksCompleted->setText(QString("%1/%2").arg(torrent.bitField().count(true)).arg(torrent.chunks()));
         ui.chunkSize->setText(torrent.chunkSize().toString());
     }
 }

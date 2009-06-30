@@ -69,7 +69,6 @@ class rTorrentInterface : public Interface
         rTorrentConfig * config() const;
     private:
         QMap<KIO::StoredTransferJob *, QPair<rTorrentRequest, QVariantList> > jobs;
-		TorrentMap torrents;
 };
 
 #endif
