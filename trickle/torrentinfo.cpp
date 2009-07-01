@@ -30,11 +30,12 @@
 TorrentInfo::TorrentInfo()
  : QWidget()
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 
+    connect(ui.priorityButton, SIGNAL(clicked()), this, SLOT(setPriority()));
 
-	//connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(Torrent *)), this, SLOT(update()));
-	//connect(SelectedTorrent::instance(), SIGNAL(torrentUpdated()), this, SLOT(update()));
+    firstUpdate = true;
+    setEnabled(false);
 
     connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
     if (InterfaceManager::interface())
@@ -54,6 +55,9 @@ void TorrentInfo::setTorrentHash(const QString & torrentHash)
         return;
     }
 
+    clear();
+    setEnabled(false);
+    firstUpdate = true;
     Q_ASSERT(InterfaceManager::interface());
     InterfaceManager::interface()->stopWatchingTorrent(hash);
     hash = torrentHash;
@@ -70,13 +74,36 @@ void TorrentInfo::torrentUpdated(const Torrent & torrent)
 {
     if (hash == torrent.hash())
     {
+        if (firstUpdate)
+        {
+            setEnabled(true);
+            firstUpdate = false;
+            ui.priorityEdit->setCurrentIndex(torrent.priority());
+        }
         ui.progress->setBitArray(torrent.bitField());
         //ui.progress->setMaximum(torrent.chunks());
         //ui.progress->setValue(torrent.completedChunks());
         ui.torrentName->setText(torrent.name());
         ui.chunksCompleted->setText(QString("%1/%2").arg(torrent.bitField().count(true)).arg(torrent.chunks()));
         ui.chunkSize->setText(torrent.chunkSize().toString());
+
+        ui.priority->setText(torrent.priorityString());
     }
+}
+
+void TorrentInfo::setPriority()
+{
+    Q_ASSERT(InterfaceManager::interface());
+    InterfaceManager::interface()->setPriority(hash, (Torrent::Priority)ui.priorityEdit->currentIndex());
+}
+
+void TorrentInfo::clear()
+{
+    ui.progress->clear();
+    ui.torrentName->clear();
+    ui.chunksCompleted->clear();
+    ui.chunkSize->clear();
+    ui.priority->clear();
 }
 
 #include "torrentinfo.moc"

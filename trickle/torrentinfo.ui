@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="torrentNameLayout">
      <item>
       <widget class="QLabel" name="torrentNameLabel">
        <property name="text">
@@ -51,7 +51,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="progresLabel">
+    <widget class="QLabel" name="progressLabel">
      <property name="text">
       <string>Progress:</string>
      </property>
@@ -61,7 +61,7 @@
     <widget class="BitArrayProgressBar" name="progress" native="true"/>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="trackerStatusLayout">
      <item>
       <widget class="QLabel" name="trackerStatusLabel">
        <property name="text">
@@ -88,7 +88,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout">
+    <layout class="QHBoxLayout" name="torrentInfoLayout">
      <item>
       <widget class="QGroupBox" name="peerBox">
        <property name="sizePolicy">
@@ -102,7 +102,7 @@
        </property>
        <layout class="QVBoxLayout">
         <item>
-         <layout class="QHBoxLayout">
+         <layout class="QHBoxLayout" name="seedersLayout">
           <item>
            <widget class="QLabel" name="seedersLabel">
             <property name="text">
@@ -135,7 +135,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout">
+         <layout class="QHBoxLayout" name="leechersLayout">
           <item>
            <widget class="QLabel" name="leechersLabel">
             <property name="text">
@@ -183,7 +183,7 @@
        </property>
        <layout class="QVBoxLayout">
         <item>
-         <layout class="QHBoxLayout">
+         <layout class="QHBoxLayout" name="chunksCompletedLayout">
           <item>
            <widget class="QLabel" name="chunksCompletedLabel">
             <property name="text">
@@ -216,7 +216,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout">
+         <layout class="QHBoxLayout" name="chunkSizeLayout">
           <item>
            <widget class="QLabel" name="chunkSizeLabel">
             <property name="text">
@@ -252,7 +252,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="priorityBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>1</horstretch>
@@ -264,7 +264,7 @@
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="priorityLabel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -277,7 +277,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="priority">
           <property name="minimumSize">
            <size>
             <width>75</width>
@@ -296,15 +296,39 @@
           <property name="text">
            <string/>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="KComboBox" name="kcombobox"/>
+         <widget class="KComboBox" name="priorityEdit">
+          <item>
+           <property name="text">
+            <string>Off</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Low</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Medium</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>High</string>
+           </property>
+          </item>
+         </widget>
         </item>
         <item row="1" column="0" colspan="3">
-         <layout class="QHBoxLayout" name="horizontalLayout">
+         <layout class="QHBoxLayout" name="priorityButtonLayout">
           <item>
-           <spacer name="horizontalSpacer">
+           <spacer name="priorityButtonSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -317,7 +341,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="KPushButton" name="kpushbutton">
+           <widget class="KPushButton" name="priorityButton">
             <property name="text">
              <string>&amp;Change Priority</string>
             </property>

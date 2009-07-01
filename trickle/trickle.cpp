@@ -53,7 +53,6 @@
 #include "torrentmodel.h"
 #include "torrentview.h"
 #include "torrentwidget.h"
-#include "torrentdelegate.h"
 #include "torrentinfo.h"
 #include "log.h"
 #include "torrentsortmodel.h"
@@ -82,9 +81,6 @@ Trickle::Trickle()
 	}
 	torrentView = new TorrentView();
 	{
-		TorrentDelegate * priorityDelegate = new TorrentDelegate();
-
-		torrentView->setItemDelegateForColumn(TorrentModel::Priority, priorityDelegate);
 		torrentView->setModel(torrentSortModel);
 		torrentView->setColumnHidden(TorrentModel::Hash, true);
 	}
@@ -212,10 +208,12 @@ void Trickle::startTorrent()
 
 void Trickle::setDownloadLimit(int limit)
 {
+    Q_UNUSED(limit); // TODO: Remove when implemented
 }
 
 void Trickle::setUploadLimit(int limit)
 {
+    Q_UNUSED(limit); // TODO: Remove when implemented
 }
 
 void Trickle::optionsPreferences()
@@ -236,6 +234,7 @@ void Trickle::openTorrent()
 
 void Trickle::setupInterfaceConnections(Interface * interface)
 {
+    Q_UNUSED(interface);
 }
 
 bool Trickle::queryClose()
@@ -243,6 +242,7 @@ bool Trickle::queryClose()
     if (autoSaveSettings())
     {
         torrentView->save();
+        fileInfo->save();
     }
     return true;
 }

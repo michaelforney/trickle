@@ -46,9 +46,12 @@ class TorrentInfo : public QWidget
     private slots:
         void torrentUpdated(const Torrent & torrent);
         void setupInterfaceConnections(Interface * interface);
+        void setPriority();
+        void clear();
 	private:
 		Ui::TorrentInfo ui;
         QString hash;
+        bool firstUpdate;
 };
 
 #endif

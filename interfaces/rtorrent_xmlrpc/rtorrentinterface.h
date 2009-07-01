@@ -40,7 +40,7 @@ class rTorrentInterface : public Interface
 {
 	Q_OBJECT
     public:
-        enum rTorrentRequest { TorrentList, FileList, TrackerList };
+        enum rTorrentRequest { TorrentList, FileList, TrackerList, SetTorrentPriority };
 		rTorrentInterface(QObject * parent, const QVariantList & args);
 		~rTorrentInterface();
 		QString title() const { return "rTorrent XmlRpc Interface"; }
@@ -51,6 +51,8 @@ class rTorrentInterface : public Interface
 
 		void startTorrent(const QString & hash);
 		void stopTorrent(const QString & hash);
+
+        void setPriority(const QString & hash, Torrent::Priority priority);
 
 		bool connectToServer();
 		void clear();

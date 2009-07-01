@@ -53,18 +53,19 @@ class TRICKLE_EXPORT Interface : public QObject
 		virtual ~Interface();
 		virtual QString title() const = 0;
 		virtual QString description() const = 0;
-		
+
 		//enum UpdateType { TorrentList, TorrentFiles, Trackers };
 	public slots:
 		virtual void setServer(const Server & server);
-		
+
 		virtual void setDownloadLimit(const ByteSize & size) = 0;
 		virtual void setUploadLimit(const ByteSize & size) = 0;
 
 		virtual void startTorrent(const QString & hash) = 0;
 		virtual void stopTorrent(const QString & hash) = 0;
 
-    
+        virtual void setPriority(const QString & hash, Torrent::Priority priority) = 0;
+
 		virtual void setInterval(int interval);
 		virtual bool start();
 		virtual bool stop();
@@ -93,7 +94,7 @@ class TRICKLE_EXPORT Interface : public QObject
         void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
         void watchedTorrentUpdated(const Torrent & torrent);
         //void chunksUpdated(const QString & hash, QList<)
-        
+
         void torrentPriorityChanged(const QString & hash, Torrent::TorrentState priority);
 		void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
 		void uploadLimitChanged(const ByteSize & limit);

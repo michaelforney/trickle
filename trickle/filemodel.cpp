@@ -271,36 +271,6 @@ QVariant FileModel::headerData(int section, Qt::Orientation orientation, int rol
     }
 }
 
-Qt::ItemFlags FileModel::flags(const QModelIndex & index) const
-{
-    if (!index.isValid())
-    {
-        return Qt::ItemIsEnabled;
-    }
-    else
-    {
-        return QAbstractItemModel::flags(index) | Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
-    }
-}
-
-bool FileModel::setData(const QModelIndex & index, const QVariant & value, int role)
-{
-    //TODO: Implement
-    if (!index.isValid())
-    {
-        return false;
-    }
-
-    if (role == Qt::CheckStateRole && index.column() == FileModel::Name)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
 void FileModel::clear()
 {
     if (m_files.size() == 0)
@@ -494,6 +464,8 @@ ByteSize FileModel::bytesComplete(const QString & path, IndexType type) const
             }
             return totalBytesComplete;
         }
+        default:
+            return ByteSize();
     }
 }
 
@@ -504,7 +476,6 @@ void FileModel::setTorrentHash(const QString & hash)
         return;
     }
 
-    clear();
     Q_ASSERT(InterfaceManager::interface());
     InterfaceManager::interface()->stopWatchingTorrent(hash);
     m_hash = hash;

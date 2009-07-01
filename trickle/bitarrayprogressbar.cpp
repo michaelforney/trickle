@@ -80,11 +80,14 @@ void BitArrayProgressBar::paintEvent(QPaintEvent * event)
                 if (i - regionStart >= (qreal)(m_bitArray.size()) / rect.width())
                 {
                     regionRects.append(QRectF(QPointF((qreal)(regionStart) * rect.width() / m_bitArray.size(), 0), QPointF((qreal)(i * rect.width() / m_bitArray.size()), rect.height())));
-                    kDebug() << "adding region from " << regionStart << " to " << i;
                 }
             }
             currentBit = !currentBit;
         }
+    }
+    if (currentBit)
+    {
+        regionRects.append(QRectF(QPointF((qreal)(regionStart) * rect.width() / m_bitArray.size(), 0), QPointF(rect.width(), rect.height())));
     }
     p.setBrush(palette().highlight());
     p.setPen(Qt::NoPen);

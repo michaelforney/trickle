@@ -38,6 +38,9 @@ FileInfo::FileInfo()
     ui.setupUi(this);
     ui.fileView->setModel(fileModel);
 
+    setEnabled(false);
+    firstUpdate = true;
+
     connect(ui.fileView, SIGNAL(fileChanged(const QString &)), this, SLOT(fileChanged(const QString &)));
 
     restore();
@@ -65,13 +68,24 @@ void FileInfo::restore()
 void FileInfo::fileChanged(const QString & path)
 {
     kDebug() << "file changed";
-    //QModelIndex index = fileModel->index(path, FileIndex);
-    //ui.name->setText(fileModel->data(fileModel->)
+    Q_UNUSED(path); // TODO: Remove when implemented
 }
 
 void FileInfo::setTorrentHash(const QString & hash)
 {
+    clear();
+    setEnabled(false);
     fileModel->setTorrentHash(hash);
+}
+
+void FileInfo::clear()
+{
+    fileModel->clear();
+    ui.name->clear();
+    ui.progress->setValue(0);
+    ui.size->clear();
+    ui.priority->clear();
+    ui.priorityEdit->setCurrentIndex(0);
 }
 
 #include "fileinfo.moc"

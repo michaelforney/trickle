@@ -79,6 +79,7 @@ class TRICKLE_EXPORT Torrent
 		QString name() const;
 		QString hash() const;
 		Priority priority() const;
+        QString priorityString() const;
 
 		void setSeedsConnected(int seedsConnected);
 		void setSeedsTotal(int seedsTotal);

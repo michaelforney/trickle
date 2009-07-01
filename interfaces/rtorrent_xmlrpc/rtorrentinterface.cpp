@@ -68,6 +68,7 @@ void rTorrentInterface::stopTorrent(const QString & hash)
 bool rTorrentInterface::connectToServer()
 {
 	//xmlRpc->setServer(server());
+    return true;
 }
 
 void rTorrentInterface::clear()
@@ -172,6 +173,16 @@ void rTorrentInterface::updateTrackerInfo(const QString & hash)
     connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
 }
 
+void rTorrentInterface::setPriority(const QString & hash, Torrent::Priority priority)
+{
+    LogData::self()->logMessage(QString("Changing priority of torrent with hash: %1 to %2").arg(hash).arg(priority));
+    KIO::StoredTransferJob * job = call("d.set_priority", QVariantList() <<
+        hash <<
+        priority);
+    jobs.insert(job, qMakePair(SetTorrentPriority, QVariantList() << hash));
+    connect(job, SIGNAL(finished(KJob *)), this, SLOT(jobFinished(KJob *)));
+}
+
 void rTorrentInterface::jobFinished(KJob * job)
 {
     KIO::StoredTransferJob * transferJob = qobject_cast<KIO::StoredTransferJob *>(job);
@@ -187,7 +198,6 @@ void rTorrentInterface::jobFinished(KJob * job)
         if (jobs.contains(transferJob))
         {
             rTorrentRequest requestType = jobs.value(transferJob).first;
-            //kDebug() << transferJob->data();
             switch(requestType)
             {
                 case TorrentList:
@@ -375,6 +385,13 @@ void rTorrentInterface::jobFinished(KJob * job)
                     }
                     emit trackersUpdated(jobs.value(transferJob).second.at(0).toString(), trackers);
                     break;
+                }
+                case SetTorrentPriority:
+                {
+                    QDomDocument document;
+                    document.setContent(transferJob->data());
+                    kDebug() << document.toString();
+                    //QVariant resultVariant = toVariant(document.documentElement().firstChildElement("params").firstChildElement("param").firstChildElement("value"));
                 }
                 default:
                 {

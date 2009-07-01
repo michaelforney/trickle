@@ -240,16 +240,6 @@ ByteSize TorrentModel::totalUploadRate() const
 	return total;
 }
 
-Qt::ItemFlags TorrentModel::flags(const QModelIndex & index) const
-{
-	Qt::ItemFlags itemFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-	if (index.column() == Priority)
-	{
-		itemFlags |= Qt::ItemIsEditable;
-	}
-	return itemFlags;
-}
-
 void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 {
 	for (int index = 0; index < torrents.keys().size(); index++)
@@ -262,7 +252,7 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 			endRemoveRows();
 		}
 	}
-	foreach(QString hash, torrentMap.keys())
+	foreach(const QString & hash, torrentMap.keys())
 	{
 		if (torrents.contains(hash))
 		{
@@ -270,10 +260,10 @@ void TorrentModel::torrentsUpdated(const QMap<QString, Torrent> & torrentMap)
 		}
 		else
 		{
-			torrents.insert(hash, torrentMap.value(hash));
-			int index = torrents.keys().indexOf(hash);
+			int index = torrentMap.keys().indexOf(hash);
 			//qDebug() << index;
-			beginInsertRows(QModelIndex(), index, index); //FIXME: do this correctly
+            beginInsertRows(QModelIndex(), index, index); //FIXME: do this correctly
+            torrents.insert(hash, torrentMap.value(hash));
 			endInsertRows();
 		}
 	}

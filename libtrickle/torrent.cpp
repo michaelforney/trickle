@@ -142,6 +142,23 @@ Torrent::Priority Torrent::priority() const
 	return m_priority;
 }
 
+QString Torrent::priorityString() const
+{
+    switch (m_priority)
+    {
+        case Off:
+            return QString("Off");
+        case Low:
+            return QString("Low");
+        case Medium:
+            return QString("Medium");
+        case High:
+            return QString("High");
+        default:
+            return QString();
+    }
+}
+
 Torrent::TorrentState Torrent::state() const
 {
     return m_state;

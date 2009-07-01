@@ -23,6 +23,7 @@
 rTorrentConfig::rTorrentConfig(QObject * parent, const QVariantList & args)
  : InterfaceConfig(parent)
 {
+    Q_UNUSED(args);
     setPath("/RPC2");
 }
 
@@ -58,8 +59,6 @@ void rTorrentConfig::setData(const QByteArray & data)
     QVariantMap config;
     stream >> config;
 
-    if (config.value("info") == "trickle_rtorrent 0.1")
-    {
-        setPath(config.value("path").toString());
-    }
+    Q_ASSERT(config.value("info") == "trickle_rtorrent 0.1");
+    setPath(config.value("path").toString());
 }

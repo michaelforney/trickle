@@ -45,6 +45,7 @@ class FileInfo : public QWidget
         void save();
     public slots:
         void setTorrentHash(const QString & hash);
+        void clear();
     protected slots:
         void fileChanged(const QString & path);
 	private:
@@ -52,6 +53,7 @@ class FileInfo : public QWidget
         FileModel * fileModel;
 
         QString m_file;
+        bool firstUpdate;
 };
 
 #endif
