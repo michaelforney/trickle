@@ -26,7 +26,7 @@
 Log::Log()
  : QTextEdit()
 {
-	setReadOnly(true);
+    setReadOnly(true);
     connect(LogData::self(), SIGNAL(entry(const LogEntry &)), this, SLOT(logEntry(const LogEntry &)));
 }
 

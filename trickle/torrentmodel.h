@@ -23,7 +23,7 @@
 #include <QAbstractItemModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QList>
@@ -37,39 +37,39 @@ class Interface;
 
 class TorrentModel : public QAbstractItemModel
 {
-	Q_OBJECT
-	Q_ENUMS(Columns)
+    Q_OBJECT
+    Q_ENUMS(Columns)
 
-	public:
-		TorrentModel();
-		~TorrentModel();
+    public:
+        TorrentModel();
+        ~TorrentModel();
 
-		enum Columns { Name, State, Size, Seeders, Leechers, DownloadRate, Downloaded, UploadRate, Uploaded, Ratio, Priority, Hash };
+        enum Columns { Name, State, Size, Seeders, Leechers, DownloadRate, Downloaded, UploadRate, Uploaded, Ratio, Priority, Hash };
 
-		//Virtual QAbstractItemModel functions
-		int rowCount(const QModelIndex & parent = QModelIndex()) const;
-		int columnCount(const QModelIndex & parent = QModelIndex()) const;
-		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-		QModelIndex parent(const QModelIndex & index) const;
-		QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-		QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+        //Virtual QAbstractItemModel functions
+        int rowCount(const QModelIndex & parent = QModelIndex()) const;
+        int columnCount(const QModelIndex & parent = QModelIndex()) const;
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+        QModelIndex parent(const QModelIndex & index) const;
+        QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
 
-		ByteSize totalDownloadRate() const;
-		ByteSize totalUploadRate() const;
+        ByteSize totalDownloadRate() const;
+        ByteSize totalUploadRate() const;
 
-		Torrent torrent(const QString & hash) const;
+        Torrent torrent(const QString & hash) const;
         Torrent torrent(int row) const;
         Torrent torrent(const QModelIndex & index) const;
         QString hash(int row) const;
         QString hash(const QModelIndex & index) const;
-	public slots:
-		void clear();
-		void torrentsUpdated(const QMap<QString, Torrent> & torrentMap);
-		void setupInterfaceConnections(Interface * interface);
-	private:
-		QList<QVariant> headers;
-		QMap<QString, Torrent> torrents;
-		QStringList units;
+    public slots:
+        void clear();
+        void torrentsUpdated(const QMap<QString, Torrent> & torrentMap);
+        void setupInterfaceConnections(Interface * interface);
+    private:
+        QList<QVariant> headers;
+        QMap<QString, Torrent> torrents;
+        QStringList units;
 };
 
 #endif

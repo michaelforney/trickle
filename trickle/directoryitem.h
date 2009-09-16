@@ -23,35 +23,35 @@
 #include "filemodelitem.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 class DirectoryItem : public FileModelItem
 {
-	public:
-		DirectoryItem(FileModelItem * parent = 0);
-		~DirectoryItem();
-		
-		void addChild(FileModelItem * child);
-		void removeChild(FileModelItem * child);
-		
-		inline int childCount() const { return children.size(); };
-		inline FileModelItem * child(int row) { return children[row]; };
-		inline FileModelItem * child(const QString & name) { foreach(FileModelItem * item, children) { if (item->name() == name) return item; } return 0; };
-		inline int childRow(FileModelItem * child) { return children.indexOf(child); };
-		
-		ByteSize size() const;
-		ByteSize downloaded() const;
-		int priority() const;
-		void changePriority(int priority);
-		int complete() const;
-		
-		FileModelItem * item(const QString & path) const;
-		QStringList paths(FileModelItem * root) const;
-		DirectoryItem * directory(QStringList folders);
-		
-		ItemType type() const;
-	private:
-		QList<FileModelItem *> children;
+    public:
+        DirectoryItem(FileModelItem * parent = 0);
+        ~DirectoryItem();
+        
+        void addChild(FileModelItem * child);
+        void removeChild(FileModelItem * child);
+        
+        inline int childCount() const { return children.size(); };
+        inline FileModelItem * child(int row) { return children[row]; };
+        inline FileModelItem * child(const QString & name) { foreach(FileModelItem * item, children) { if (item->name() == name) return item; } return 0; };
+        inline int childRow(FileModelItem * child) { return children.indexOf(child); };
+        
+        ByteSize size() const;
+        ByteSize downloaded() const;
+        int priority() const;
+        void changePriority(int priority);
+        int complete() const;
+        
+        FileModelItem * item(const QString & path) const;
+        QStringList paths(FileModelItem * root) const;
+        DirectoryItem * directory(QStringList folders);
+        
+        ItemType type() const;
+    private:
+        QList<FileModelItem *> children;
 };
 
 #endif

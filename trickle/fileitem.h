@@ -23,40 +23,40 @@
 #include "filemodelitem.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QObject>
 
 class FileItem : public FileModelItem
 {
-	Q_OBJECT
-	public:
-		FileItem(FileModelItem * parent = 0);
-		~FileItem();
-		
-		
-		inline int completedChunks() const { return m_completedChunks; };
-		int complete() const;
-		inline int priority() const { return m_priority; };
-		inline void setCompletedChunks(int completedChunks) { m_completedChunks = completedChunks; };
-		inline void setSize(ByteSize size) { m_size = size; };
-		inline ByteSize size() const { return m_size; };
-		ByteSize downloaded() const;
-		inline void setIndex(int index) { m_index = index; };
-		inline int index() const { return m_index; };
-		inline void setPriority(int priority) { m_priority = priority; };
-		void changePriority(int priority);
-		QString path(FileModelItem * root) const;
-		
-		ItemType type() const;
-	public slots:
-		void result(const QString & method, const QVariant & result);
-	private:
-		int m_priority;
-		int m_completedChunks;
-		ByteSize m_size;
-		int m_index;
+    Q_OBJECT
+    public:
+        FileItem(FileModelItem * parent = 0);
+        ~FileItem();
+        
+        
+        inline int completedChunks() const { return m_completedChunks; };
+        int complete() const;
+        inline int priority() const { return m_priority; };
+        inline void setCompletedChunks(int completedChunks) { m_completedChunks = completedChunks; };
+        inline void setSize(ByteSize size) { m_size = size; };
+        inline ByteSize size() const { return m_size; };
+        ByteSize downloaded() const;
+        inline void setIndex(int index) { m_index = index; };
+        inline int index() const { return m_index; };
+        inline void setPriority(int priority) { m_priority = priority; };
+        void changePriority(int priority);
+        QString path(FileModelItem * root) const;
+        
+        ItemType type() const;
+    public slots:
+        void result(const QString & method, const QVariant & result);
+    private:
+        int m_priority;
+        int m_completedChunks;
+        ByteSize m_size;
+        int m_index;
 };
 
 #endif

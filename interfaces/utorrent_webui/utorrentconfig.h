@@ -23,22 +23,22 @@
 #include "interfaceconfigwidget.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_utorrentconfig.h"
 
 class uTorrentConfig : public InterfaceConfigWidget
 {
-	public:
-		uTorrentConfig(QWidget * parent = 0);
-		~uTorrentConfig();
+    public:
+        uTorrentConfig(QWidget * parent = 0);
+        ~uTorrentConfig();
 
-		QByteArray save() const;
-		void load(const QByteArray & data);
-		void clear();
-	private:
-		Ui::uTorrentConfig ui;
+        QByteArray save() const;
+        void load(const QByteArray & data);
+        void clear();
+    private:
+        Ui::uTorrentConfig ui;
 };
 
 #endif

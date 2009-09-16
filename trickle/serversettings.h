@@ -23,7 +23,7 @@
 #include <KCModule>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_serversettings.h"
@@ -43,27 +43,27 @@ class ServerEdit;
 
 class ServerSettings : public QWidget
 {
-	Q_OBJECT
-	public:
-		ServerSettings(QWidget * parent = 0);
-		~ServerSettings();
-		
-		bool hasChanged() const;
-		bool hasServerName(const QString & name) const;
-	public slots:
-		void updateWidgets();
-		void updateWidgetsDefault();
-		void updateSettings();
-		void addServer();
-		void editServer();
-		void removeServer();
-	signals:
-		void widgetModified();
-	private:
-		//QList<QTreeWidgetItem *> serverList;
-		QList<Server> servers;
-		
-		Ui::ServerSettings ui;
+    Q_OBJECT
+    public:
+        ServerSettings(QWidget * parent = 0);
+        ~ServerSettings();
+        
+        bool hasChanged() const;
+        bool hasServerName(const QString & name) const;
+    public slots:
+        void updateWidgets();
+        void updateWidgetsDefault();
+        void updateSettings();
+        void addServer();
+        void editServer();
+        void removeServer();
+    signals:
+        void widgetModified();
+    private:
+        //QList<QTreeWidgetItem *> serverList;
+        QList<Server> servers;
+        
+        Ui::ServerSettings ui;
 };
 
 #endif

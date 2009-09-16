@@ -29,24 +29,24 @@
 ServerEditDialog::ServerEditDialog(QWidget * parent)
  : QDialog(parent)
 {
-	ui.setupUi(this);
-	while (ui.interfaceConfig->currentWidget() != 0)
-	{
-		ui.interfaceConfig->removeWidget(ui.interfaceConfig->currentWidget());
-	}
-	ui.typeEdit->clear();
-	
-	QStringList names = InterfaceManager::self()->names();
-	foreach(QString name, names)
-	{
-		QWidget * configWidget = InterfaceManager::self()->configWidget(name);
-		if (configWidget)
-		{
-			ui.interfaceConfig->addWidget(configWidget);
-			ui.typeEdit->addItem(InterfaceManager::self()->title(name), name);
-		}
-	}
-	ui.typeEdit->setCurrentIndex(0);
+    ui.setupUi(this);
+    while (ui.interfaceConfig->currentWidget() != 0)
+    {
+        ui.interfaceConfig->removeWidget(ui.interfaceConfig->currentWidget());
+    }
+    ui.typeEdit->clear();
+    
+    QStringList names = InterfaceManager::self()->names();
+    foreach(QString name, names)
+    {
+        QWidget * configWidget = InterfaceManager::self()->configWidget(name);
+        if (configWidget)
+        {
+            ui.interfaceConfig->addWidget(configWidget);
+            ui.typeEdit->addItem(InterfaceManager::self()->title(name), name);
+        }
+    }
+    ui.typeEdit->setCurrentIndex(0);
 }
 
 ServerEditDialog::~ServerEditDialog()
@@ -65,28 +65,28 @@ Server ServerEditDialog::server() const
 
 void ServerEditDialog::clear()
 {
-	ui.nameEdit->clear();
-	ui.portEdit->setValue(80);
-	ui.hostEdit->clear();
+    ui.nameEdit->clear();
+    ui.portEdit->setValue(80);
+    ui.hostEdit->clear();
 }
 
 void ServerEditDialog::setServer(const Server & server)
 {
-	ui.nameEdit->setText(server.name());
-	ui.portEdit->setValue(server.port());
-	ui.hostEdit->setText(server.host());
-	ui.typeEdit->setCurrentIndex(InterfaceManager::self()->names().indexOf(server.type()));
-	InterfaceConfigWidget * widget = static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->widget(InterfaceManager::self()->names().indexOf(server.type())));
-	if (widget)
-	{
+    ui.nameEdit->setText(server.name());
+    ui.portEdit->setValue(server.port());
+    ui.hostEdit->setText(server.host());
+    ui.typeEdit->setCurrentIndex(InterfaceManager::self()->names().indexOf(server.type()));
+    InterfaceConfigWidget * widget = static_cast<InterfaceConfigWidget *>(ui.interfaceConfig->widget(InterfaceManager::self()->names().indexOf(server.type())));
+    if (widget)
+    {
         InterfaceConfig * config = InterfaceManager::self()->config(server.type());
         config->setData(server.typeConfig());
-		widget->setConfig(config);
-	}
-	else
-	{
-		qDebug() << ui.interfaceConfig->count();
-	}
+        widget->setConfig(config);
+    }
+    else
+    {
+        qDebug() << ui.interfaceConfig->count();
+    }
 }
 
 #include "servereditdialog.moc"

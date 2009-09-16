@@ -28,123 +28,123 @@
 
 bool getNonWhiteChar(char * c, QIODevice * device)
 {
-	do
-	{
-		if (!device->getChar(c))
-		{
-			return false;
-		}
-	}
-	while (QChar(*c).isSpace());
-	return true;
+    do
+    {
+        if (!device->getChar(c))
+        {
+            return false;
+        }
+    }
+    while (QChar(*c).isSpace());
+    return true;
 }
 
 QVariant CSVCodec::decode(const QByteArray & data)
 {
-	QBuffer buffer;
-	buffer.setData(data);
-	buffer.open(QIODevice::ReadOnly);
-	return decodeHelper(&buffer);
+    QBuffer buffer;
+    buffer.setData(data);
+    buffer.open(QIODevice::ReadOnly);
+    return decodeHelper(&buffer);
 }
 
 QVariant CSVCodec::decodeHelper(QBuffer * data)
 {
-	char c;
-	if (!getNonWhiteChar(&c, data))
-	{
-		return QVariant();
-	}
-	if (c == '"')
-	{
-		QString string;
-		while (data->getChar(&c) && c != '"')
-		{
-			string.append(c);
-		}
-		return string;
-	}
-	else if ((c <= '9' && c >= '0') || c == '-')
-	{
-		QString number(c);
-		while (data->getChar(&c) && c <= '9' && c >= '0')
-		{
-			number.append(c);
-		}
-		data->ungetChar(c);
-		bool ok;
-		qint64 num = number.toLongLong(&ok);
-		if (ok)
-		{
-			return num;
-		}
-		else
-		{
-			kdDebug() << "Conversion failed: " << number;
-			return QVariant();
-		}
-	}
-	else if (c == '[')
-	{
-		QVariantList list;
-		do
-		{
-			QVariant value = decodeHelper(data);
-			if (value == QVariant())
-			{
-				return list;
-			}
-			list.append(value);
-		}
-		while (getNonWhiteChar(&c, data) && c == ',');
-		return list;
-	}
-	else if (c == '{')
-	{
-		QVariantMap map;
-		do
-		{
-			QVariant key = decodeHelper(data);
-			if (key.type() != QVariant::String || !getNonWhiteChar(&c, data) || c != ':')
-			{
-				kdDebug() << "Something went wrong";
-				return QVariant();
-			}
-			map.insert(key.toString(), decodeHelper(data));
-		}
-		while (getNonWhiteChar(&c, data) && c == ',');
-		return map;
-	}
-	return QVariant();
+    char c;
+    if (!getNonWhiteChar(&c, data))
+    {
+        return QVariant();
+    }
+    if (c == '"')
+    {
+        QString string;
+        while (data->getChar(&c) && c != '"')
+        {
+            string.append(c);
+        }
+        return string;
+    }
+    else if ((c <= '9' && c >= '0') || c == '-')
+    {
+        QString number(c);
+        while (data->getChar(&c) && c <= '9' && c >= '0')
+        {
+            number.append(c);
+        }
+        data->ungetChar(c);
+        bool ok;
+        qint64 num = number.toLongLong(&ok);
+        if (ok)
+        {
+            return num;
+        }
+        else
+        {
+            kdDebug() << "Conversion failed: " << number;
+            return QVariant();
+        }
+    }
+    else if (c == '[')
+    {
+        QVariantList list;
+        do
+        {
+            QVariant value = decodeHelper(data);
+            if (value == QVariant())
+            {
+                return list;
+            }
+            list.append(value);
+        }
+        while (getNonWhiteChar(&c, data) && c == ',');
+        return list;
+    }
+    else if (c == '{')
+    {
+        QVariantMap map;
+        do
+        {
+            QVariant key = decodeHelper(data);
+            if (key.type() != QVariant::String || !getNonWhiteChar(&c, data) || c != ':')
+            {
+                kdDebug() << "Something went wrong";
+                return QVariant();
+            }
+            map.insert(key.toString(), decodeHelper(data));
+        }
+        while (getNonWhiteChar(&c, data) && c == ',');
+        return map;
+    }
+    return QVariant();
 }
 
 QByteArray CSVCodec::encode(const QVariant & data)
 {
-	switch(data.type())
-	{
-		case QVariant::String:
-			return QString("\"%1\"").arg(data.toString()).toAscii();
-		case QVariant::Int: case QVariant::LongLong:
-			return QByteArray::number(data.toLongLong());
-		case QVariant::List:
-		{
-			QStringList output;
-			foreach(QVariant value, data.toList())
-			{
-				output.append(encode(value));
-			}
-			return QString("[%1]").arg(output.join(",")).toAscii();
-		}
-		case QVariant::Map:
-		{
-			QVariantMap map = data.toMap();
-			QStringList output;
-			foreach(QString key, map.keys())
-			{
-				output.append(QString("\"%1\":%2").arg(key).arg(QString(encode(map.value(key)))));
-			}
-			return QString("{%1}").arg(output.join(",")).toAscii();
-		}
-		default:
-			return QByteArray();
-	}
+    switch(data.type())
+    {
+        case QVariant::String:
+            return QString("\"%1\"").arg(data.toString()).toAscii();
+        case QVariant::Int: case QVariant::LongLong:
+            return QByteArray::number(data.toLongLong());
+        case QVariant::List:
+        {
+            QStringList output;
+            foreach(QVariant value, data.toList())
+            {
+                output.append(encode(value));
+            }
+            return QString("[%1]").arg(output.join(",")).toAscii();
+        }
+        case QVariant::Map:
+        {
+            QVariantMap map = data.toMap();
+            QStringList output;
+            foreach(QString key, map.keys())
+            {
+                output.append(QString("\"%1\":%2").arg(key).arg(QString(encode(map.value(key)))));
+            }
+            return QString("{%1}").arg(output.join(",")).toAscii();
+        }
+        default:
+            return QByteArray();
+    }
 }

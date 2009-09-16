@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_trackerinfo.h"
@@ -36,21 +36,21 @@ class Torrent;
 
 class TrackerInfo : public QWidget
 {
-	Q_OBJECT
-	public:
-		TrackerInfo();
-		~TrackerInfo();
-		
+    Q_OBJECT
+    public:
+        TrackerInfo();
+        ~TrackerInfo();
+        
     public slots:
         void setTorrentHash(const QString & hash);
-	private:
-		Ui::TrackerInfo ui;
+    private:
+        Ui::TrackerInfo ui;
 
-		TrackerModel * trackerModel;
-		QTreeView * trackerView;
-		
-		QPushButton * updateTrackerButton;
-		QPushButton * forceUpdateTrackerButton;
+        TrackerModel * trackerModel;
+        QTreeView * trackerView;
+        
+        QPushButton * updateTrackerButton;
+        QPushButton * forceUpdateTrackerButton;
 };
 
 #endif

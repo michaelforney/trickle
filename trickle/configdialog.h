@@ -23,7 +23,7 @@
 #include <KConfigDialog>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class GeneralSettings;
@@ -31,20 +31,20 @@ class ServerSettings;
 
 class ConfigDialog : public KConfigDialog
 {
-	Q_OBJECT
-	public:
-		ConfigDialog(QWidget * parent, const QString & name, KConfigSkeleton * config);
-		~ConfigDialog();
-	private slots:
-		void updateWidgets();
-		void updateWidgetsDefault();
-		void updateSettings();
-		void updateButtons();
-	private:
-		bool hasChanged();
-		
-		GeneralSettings * general;
-		ServerSettings * server;
+    Q_OBJECT
+    public:
+        ConfigDialog(QWidget * parent, const QString & name, KConfigSkeleton * config);
+        ~ConfigDialog();
+    private slots:
+        void updateWidgets();
+        void updateWidgetsDefault();
+        void updateSettings();
+        void updateButtons();
+    private:
+        bool hasChanged();
+        
+        GeneralSettings * general;
+        ServerSettings * server;
 };
 
 #endif

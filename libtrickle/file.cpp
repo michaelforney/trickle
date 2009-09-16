@@ -23,11 +23,11 @@
 
 File::File(const QString & path, const ByteSize & size, int index, int completedChunks, FilePriority priority)
 {
-	setPath(path);
-	setSize(size);
-	setIndex(index);
-	setCompletedChunks(completedChunks);
-	setPriority(priority);
+    setPath(path);
+    setSize(size);
+    setIndex(index);
+    setCompletedChunks(completedChunks);
+    setPriority(priority);
 }
 
 File::File()

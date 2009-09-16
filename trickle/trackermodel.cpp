@@ -30,7 +30,7 @@
 TrackerModel::TrackerModel()
  : QAbstractItemModel()
 {
-	headers << "Tracker Url";
+    headers << "Tracker Url";
     //connect(SelectedTorrent::instance(), SIGNAL(torrentChanged(TorrentItem*)), this, SLOT(update()));
     connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
     if (InterfaceManager::interface())
@@ -102,44 +102,44 @@ void TrackerModel::trackersUpdated(const QString & hash, const QMap<int, Tracker
 
 QModelIndex TrackerModel::index(int row, int column, const QModelIndex & parent) const
 {
-	if (parent.isValid())
-	{
-		return QModelIndex();
-	}
-	else
-	{
-		return createIndex(row, column, trackerMap.keys().at(row));
-	}
+    if (parent.isValid())
+    {
+        return QModelIndex();
+    }
+    else
+    {
+        return createIndex(row, column, trackerMap.keys().at(row));
+    }
 }
 
 QModelIndex TrackerModel::parent(const QModelIndex & index) const
 {
     Q_UNUSED(index);
-	return QModelIndex();
+    return QModelIndex();
 }
 
 int TrackerModel::rowCount(const QModelIndex & parent) const
 {
-	if (parent.isValid())
-	{
-		return 0;
-	}
-	else
-	{
-		return trackerMap.size();
-	}
+    if (parent.isValid())
+    {
+        return 0;
+    }
+    else
+    {
+        return trackerMap.size();
+    }
 }
 
 int TrackerModel::columnCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
-	return headers.size();
+    return headers.size();
 }
 
 QVariant TrackerModel::data(const QModelIndex & index, int role) const
 {
-	if (index.isValid())
-	{
+    if (index.isValid())
+    {
         switch(role)
         {
             case Qt::DisplayRole:
@@ -156,30 +156,30 @@ QVariant TrackerModel::data(const QModelIndex & index, int role) const
             default:
                 return QVariant();
         }
-	}
-	else
-	{
-		return QVariant();
-	}
+    }
+    else
+    {
+        return QVariant();
+    }
 }
 
 QVariant TrackerModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (orientation == Qt::Horizontal)
-	{
-		if (role == Qt::DisplayRole)
-		{
-			return headers[section];
-		}
-		else
-		{
-			return QVariant();
-		}
-	}
-	else
-	{
-		return QVariant();
-	}
+    if (orientation == Qt::Horizontal)
+    {
+        if (role == Qt::DisplayRole)
+        {
+            return headers[section];
+        }
+        else
+        {
+            return QVariant();
+        }
+    }
+    else
+    {
+        return QVariant();
+    }
 }
 
 #include "trackermodel.moc"

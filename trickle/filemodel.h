@@ -23,7 +23,7 @@
 #include <QAbstractItemModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "file.h"
@@ -38,23 +38,23 @@ class Torrent;
 
 class FileModel : public QAbstractItemModel
 {
-	Q_OBJECT
+    Q_OBJECT
     friend class FileView;
-	public:
-		FileModel();
-		~FileModel();
+    public:
+        FileModel();
+        ~FileModel();
 
-		enum Column { Name, Size, Complete, Priority };
+        enum Column { Name, Size, Complete, Priority };
         enum IndexType { DirectoryIndex, FileIndex };
 
-		QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+        QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
         QModelIndex index(const QString & path, IndexType type) const;
-		QModelIndex parent(const QModelIndex & index) const;
-		int rowCount(const QModelIndex & parent = QModelIndex()) const;
-		int columnCount(const QModelIndex & parent = QModelIndex()) const;
-		QVariant data(const QModelIndex & index, int role) const;
-		QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-	public slots:
+        QModelIndex parent(const QModelIndex & index) const;
+        int rowCount(const QModelIndex & parent = QModelIndex()) const;
+        int columnCount(const QModelIndex & parent = QModelIndex()) const;
+        QVariant data(const QModelIndex & index, int role) const;
+        QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    public slots:
         void clear();
         void filesUpdated(const QString & hash, const QMap<QString, File> & files);
         void setTorrentHash(const QString & hash);
@@ -67,10 +67,10 @@ class FileModel : public QAbstractItemModel
 
         ByteSize size(const QString & path, IndexType type) const;
         ByteSize bytesComplete(const QString & path, IndexType type) const;
-	private:
+    private:
         QStringList findDirs(const QStringList & filePaths);
 
-		QStringList headers;
+        QStringList headers;
         QMap<QString, File> m_files;
         ByteSize m_chunkSize;
         QStringList m_dirs;

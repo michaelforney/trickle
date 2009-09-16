@@ -40,30 +40,30 @@ FileDelegate::~FileDelegate()
 QWidget * FileDelegate::createEditor(QWidget * parent, const QStyleOptionViewItem & styleOption, const QModelIndex & index) const
 {
     Q_UNUSED(styleOption);
-	if (index.column() == FileModel::Priority)
-	{
-		QComboBox * prioritySelector = new QComboBox(parent);
-		prioritySelector->addItems(QStringList() << "Skip" << "Normal" << "High");
-		return prioritySelector;
-	}
-	else
-	{
-		return 0;
-	}
+    if (index.column() == FileModel::Priority)
+    {
+        QComboBox * prioritySelector = new QComboBox(parent);
+        prioritySelector->addItems(QStringList() << "Skip" << "Normal" << "High");
+        return prioritySelector;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 void FileDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const
 {
-	model->setData(index, static_cast<QComboBox *>(editor)->currentIndex());
+    model->setData(index, static_cast<QComboBox *>(editor)->currentIndex());
 }
 
 void FileDelegate::setEditorData(QWidget * editor, const QModelIndex & index) const
 {
-	FileModelItem * item = static_cast<FileModelItem *>(index.internalPointer());
-	if (item->isFile())
-	{
-		static_cast<QComboBox *>(editor)->setCurrentIndex(item->toFile()->priority());
-	}
+    FileModelItem * item = static_cast<FileModelItem *>(index.internalPointer());
+    if (item->isFile())
+    {
+        static_cast<QComboBox *>(editor)->setCurrentIndex(item->toFile()->priority());
+    }
 }
 
 

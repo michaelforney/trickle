@@ -74,34 +74,34 @@
 Trickle::Trickle()
  : KXmlGuiWindow()
 {
-	torrentModel = new TorrentModel();
-	torrentSortModel = new TorrentSortModel();
-	{
-		torrentSortModel->setSourceModel(torrentModel);
-	}
-	torrentView = new TorrentView();
-	{
-		torrentView->setModel(torrentSortModel);
-		torrentView->setColumnHidden(TorrentModel::Hash, true);
-	}
-	trayIcon = new KSystemTrayIcon("trickle", this);
-	{
-		trayIcon->show();
-	}
-	setCentralWidget(torrentView);
+    torrentModel = new TorrentModel();
+    torrentSortModel = new TorrentSortModel();
+    {
+        torrentSortModel->setSourceModel(torrentModel);
+    }
+    torrentView = new TorrentView();
+    {
+        torrentView->setModel(torrentSortModel);
+        torrentView->setColumnHidden(TorrentModel::Hash, true);
+    }
+    trayIcon = new KSystemTrayIcon("trickle", this);
+    {
+        trayIcon->show();
+    }
+    setCentralWidget(torrentView);
 
-	setupActions();
-	createStatusBar();
-	createDockWidgets();
-	setupGUI();
-	//connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
-	connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
+    setupActions();
+    createStatusBar();
+    createDockWidgets();
+    setupGUI();
+    //connect(torrentModel, SIGNAL(logInfo(QString)), log, SLOT(logInfo(QString)));
+    connect(InterfaceManager::self(), SIGNAL(interfaceChanged(Interface *)), this, SLOT(setupInterfaceConnections(Interface *)));
 
     connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), torrentInfo, SLOT(setTorrentHash(const QString &)));
     connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), trackerInfo, SLOT(setTorrentHash(const QString &)));
     connect(torrentView, SIGNAL(torrentHashChanged(const QString &)), fileInfo, SLOT(setTorrentHash(const QString &)));
 
-	InterfaceManager::self()->load();
+    InterfaceManager::self()->load();
     if (InterfaceManager::interface())
     {
         qDebug() << InterfaceManager::interface()->title();
@@ -116,31 +116,31 @@ Trickle::~Trickle()
 
 void Trickle::setupActions()
 {
-	KStandardAction::openNew(this, SLOT(newTorrent()), actionCollection());
-	KStandardAction::open(this, SLOT(openTorrent()), actionCollection());
-	KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
+    KStandardAction::openNew(this, SLOT(newTorrent()), actionCollection());
+    KStandardAction::open(this, SLOT(openTorrent()), actionCollection());
+    KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
 
-	KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
+    KStandardAction::preferences(this, SLOT(optionsPreferences()), actionCollection());
 
-	KToggleAction * showTorrentInfo = new KToggleAction("&Show Torrent Info", actionCollection());
-	showTorrentInfo->setObjectName("view_torrentinfo");
+    KToggleAction * showTorrentInfo = new KToggleAction("&Show Torrent Info", actionCollection());
+    showTorrentInfo->setObjectName("view_torrentinfo");
 
-	KAction * startAction = new KAction(KIcon("media-playback-start"), "&Start", actionCollection());
-	startAction->setObjectName("torrent_start");
+    KAction * startAction = new KAction(KIcon("media-playback-start"), "&Start", actionCollection());
+    startAction->setObjectName("torrent_start");
 
-	KAction * stopAction = new KAction(KIcon("media-playback-stop"), "&Stop", actionCollection());
-	stopAction->setObjectName("torrent_stop");
+    KAction * stopAction = new KAction(KIcon("media-playback-stop"), "&Stop", actionCollection());
+    stopAction->setObjectName("torrent_stop");
 
-	KAction * removeAction = new KAction(KIcon("list-remove"), "&Remove", actionCollection());
-	removeAction->setObjectName("torrent_remove");
+    KAction * removeAction = new KAction(KIcon("list-remove"), "&Remove", actionCollection());
+    removeAction->setObjectName("torrent_remove");
 
-	actionCollection()->addAction(showTorrentInfo->objectName(), showTorrentInfo);
-	actionCollection()->addAction(startAction->objectName(), startAction);
-	actionCollection()->addAction(stopAction->objectName(), stopAction);
-	actionCollection()->addAction(removeAction->objectName(), removeAction);
-	connect(startAction, SIGNAL(triggered()), this, SLOT(startTorrent()));
-	connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTorrent()));
-	connect(removeAction, SIGNAL(triggered()), this, SLOT(removeTorrent()));
+    actionCollection()->addAction(showTorrentInfo->objectName(), showTorrentInfo);
+    actionCollection()->addAction(startAction->objectName(), startAction);
+    actionCollection()->addAction(stopAction->objectName(), stopAction);
+    actionCollection()->addAction(removeAction->objectName(), removeAction);
+    connect(startAction, SIGNAL(triggered()), this, SLOT(startTorrent()));
+    connect(stopAction, SIGNAL(triggered()), this, SLOT(stopTorrent()));
+    connect(removeAction, SIGNAL(triggered()), this, SLOT(removeTorrent()));
 }
 
 void Trickle::createStatusBar()
@@ -163,47 +163,47 @@ void Trickle::createStatusBar()
 void Trickle::createDockWidgets()
 {
 
-	QDockWidget * statsDock = new QDockWidget("Info", this);
-	{
-		statsDock->setObjectName("Info");
-		statsDock->setAllowedAreas(Qt::BottomDockWidgetArea);
-		torrentWidget = new TorrentWidget();
-		{
-			serverInfo = new ServerInfo();
-			torrentInfo = new TorrentInfo();
-			fileInfo = new FileInfo();
-			trackerInfo = new TrackerInfo();
-			log = new Log();
+    QDockWidget * statsDock = new QDockWidget("Info", this);
+    {
+        statsDock->setObjectName("Info");
+        statsDock->setAllowedAreas(Qt::BottomDockWidgetArea);
+        torrentWidget = new TorrentWidget();
+        {
+            serverInfo = new ServerInfo();
+            torrentInfo = new TorrentInfo();
+            fileInfo = new FileInfo();
+            trackerInfo = new TrackerInfo();
+            log = new Log();
 
-			torrentWidget->addTab(serverInfo, "Server");
-			torrentWidget->addTab(torrentInfo, "Torrent Information");
-			torrentWidget->addTab(fileInfo, "Files");
-			torrentWidget->addTab(trackerInfo, "Tracker");
-			torrentWidget->addTab(log, "Log");
-		}
-		statsDock->setWidget(torrentWidget);
-	}
-	addDockWidget(Qt::BottomDockWidgetArea, statsDock);
+            torrentWidget->addTab(serverInfo, "Server");
+            torrentWidget->addTab(torrentInfo, "Torrent Information");
+            torrentWidget->addTab(fileInfo, "Files");
+            torrentWidget->addTab(trackerInfo, "Tracker");
+            torrentWidget->addTab(log, "Log");
+        }
+        statsDock->setWidget(torrentWidget);
+    }
+    addDockWidget(Qt::BottomDockWidgetArea, statsDock);
 }
 
 void Trickle::stopTorrent()
 {
-	QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
-	if (selected.size() > 0)
-	{
-		//Torrent * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
-		//item->stop();
-	}
+    QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
+    if (selected.size() > 0)
+    {
+        //Torrent * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
+        //item->stop();
+    }
 }
 
 void Trickle::startTorrent()
 {
-	QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
-	if (selected.size() > 0)
-	{
-		//TorrentItem * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
-		//item->start();
-	}
+    QModelIndexList selected = torrentView->selectionModel()->selectedIndexes();
+    if (selected.size() > 0)
+    {
+        //TorrentItem * item = static_cast<TorrentItem *>(torrentSortModel->mapToSource(selected[0]).internalPointer());
+        //item->start();
+    }
 }
 
 void Trickle::setDownloadLimit(int limit)
@@ -218,10 +218,10 @@ void Trickle::setUploadLimit(int limit)
 
 void Trickle::optionsPreferences()
 {
-	ConfigDialog * configDialog = new ConfigDialog(this, "settings", Settings::self());
-	connect(configDialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
-	configDialog->setAttribute(Qt::WA_DeleteOnClose);
-	configDialog->exec();
+    ConfigDialog * configDialog = new ConfigDialog(this, "settings", Settings::self());
+    connect(configDialog, SIGNAL(settingsChanged(QString)), this, SLOT(settingsChanged()));
+    configDialog->setAttribute(Qt::WA_DeleteOnClose);
+    configDialog->exec();
 }
 
 void Trickle::newTorrent()

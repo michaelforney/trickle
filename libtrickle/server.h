@@ -21,7 +21,7 @@
 #define SERVER_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QString>
@@ -30,31 +30,31 @@
 
 class TRICKLE_EXPORT Server
 {
-	public:
-		Server();
-		Server(const QString & name, const QString & host, int port, const QString & type, const QByteArray & typeConfig);
-		~Server();
-		
-		inline void setPort(int port) { m_port = port; };
-		inline void setHost(const QString & host) { m_host = host; };
-		inline void setName(const QString & name) { m_name = name; };
-		inline void setType(const QString & type) { m_type = type; };
-		inline void setTypeConfig(const QByteArray & typeConfig) { m_typeConfig = typeConfig; };
-		
-		inline int port() const { return m_port; };
-		inline QString host() const { return m_host; };
-		inline QString name() const { return m_name; };
-		inline QString type() const { return m_type; }
-		inline QByteArray typeConfig() const { return m_typeConfig; }
-		
-		bool operator==(const Server & other) const;
-		bool operator<(const Server & other) const;
-	private:
-		int m_port;
-		QString m_host;
-		QString m_name;
-		QString m_type;
-		QByteArray m_typeConfig;
+    public:
+        Server();
+        Server(const QString & name, const QString & host, int port, const QString & type, const QByteArray & typeConfig);
+        ~Server();
+        
+        inline void setPort(int port) { m_port = port; };
+        inline void setHost(const QString & host) { m_host = host; };
+        inline void setName(const QString & name) { m_name = name; };
+        inline void setType(const QString & type) { m_type = type; };
+        inline void setTypeConfig(const QByteArray & typeConfig) { m_typeConfig = typeConfig; };
+        
+        inline int port() const { return m_port; };
+        inline QString host() const { return m_host; };
+        inline QString name() const { return m_name; };
+        inline QString type() const { return m_type; }
+        inline QByteArray typeConfig() const { return m_typeConfig; }
+        
+        bool operator==(const Server & other) const;
+        bool operator<(const Server & other) const;
+    private:
+        int m_port;
+        QString m_host;
+        QString m_name;
+        QString m_type;
+        QByteArray m_typeConfig;
 };
 
 #endif

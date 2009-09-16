@@ -23,16 +23,16 @@
 #include <QTabWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class TorrentWidget : public QTabWidget
 {
-	Q_OBJECT
-	public:
-		TorrentWidget();
-		~TorrentWidget();
-	private:
+    Q_OBJECT
+    public:
+        TorrentWidget();
+        ~TorrentWidget();
+    private:
 };
 
 #endif

@@ -46,13 +46,13 @@ rTorrentInterface::~rTorrentInterface()
 void rTorrentInterface::setDownloadLimit(const ByteSize & size)
 {
     Q_UNUSED(size); //TODO: Remove when implemented
-	//xmlRpc->call("set_download_rate", QVariantList() << size.bytes());
+    //xmlRpc->call("set_download_rate", QVariantList() << size.bytes());
 }
 
 void rTorrentInterface::setUploadLimit(const ByteSize & size)
 {
     Q_UNUSED(size); //TODO: Remove when implemented
-	//xmlRpc->call("set_upload_rate", QVariantList() << size.bytes());
+    //xmlRpc->call("set_upload_rate", QVariantList() << size.bytes());
 }
 
 void rTorrentInterface::startTorrent(const QString & hash)
@@ -67,7 +67,7 @@ void rTorrentInterface::stopTorrent(const QString & hash)
 
 bool rTorrentInterface::connectToServer()
 {
-	//xmlRpc->setServer(server());
+    //xmlRpc->setServer(server());
     return true;
 }
 

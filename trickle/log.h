@@ -23,18 +23,18 @@
 #include <QTextEdit>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "logentry.h"
 
 class Log : public QTextEdit
 {
-	Q_OBJECT
-	public:
-		Log();
-		~Log();
-	private slots:
+    Q_OBJECT
+    public:
+        Log();
+        ~Log();
+    private slots:
         void logEntry(const LogEntry & entry);
 
 };

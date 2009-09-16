@@ -34,7 +34,7 @@ Q_GLOBAL_STATIC(InterfaceManager, interfaceManager);
 
 InterfaceManager::InterfaceManager()
 {
-	m_interface = 0;
+    m_interface = 0;
 }
 
 InterfaceManager::~InterfaceManager()
@@ -43,24 +43,24 @@ InterfaceManager::~InterfaceManager()
 
 InterfaceManager * InterfaceManager::self()
 {
-	return interfaceManager();
+    return interfaceManager();
 }
 
 void InterfaceManager::load()
 {
-	KService::List offers = KServiceTypeTrader::self()->query("Trickle/Interface");
-	foreach(KService::Ptr service, offers)
-	{
-		factories.insert(service->desktopEntryName(), KPluginLoader(*service).factory());
-	}
-	
-	qDebug() << "Default server: " << Settings::self()->defaultServer();
-	setServer(Settings::self()->server(Settings::self()->defaultServer()));
+    KService::List offers = KServiceTypeTrader::self()->query("Trickle/Interface");
+    foreach(KService::Ptr service, offers)
+    {
+        factories.insert(service->desktopEntryName(), KPluginLoader(*service).factory());
+    }
+    
+    qDebug() << "Default server: " << Settings::self()->defaultServer();
+    setServer(Settings::self()->server(Settings::self()->defaultServer()));
 }
 
 QStringList InterfaceManager::names() const
 {
-	return factories.keys();
+    return factories.keys();
 }
 
 InterfaceConfig * InterfaceManager::config(const QString & name)
@@ -74,55 +74,55 @@ InterfaceConfig * InterfaceManager::config(const QString & name)
 
 InterfaceConfigWidget * InterfaceManager::configWidget(const QString & name)
 {
-	if (factories.contains(name))
-	{
-		return factories.value(name)->create<InterfaceConfigWidget>();
-	}
-	return 0;
+    if (factories.contains(name))
+    {
+        return factories.value(name)->create<InterfaceConfigWidget>();
+    }
+    return 0;
 }
 
 QString InterfaceManager::title(const QString & name)
 {
-	if (factories.contains(name))
-	{
-		return factories.value(name)->create<Interface>()->title();
-	}
-	return QString();
+    if (factories.contains(name))
+    {
+        return factories.value(name)->create<Interface>()->title();
+    }
+    return QString();
 }
 
 QString InterfaceManager::description(const QString & name)
 {
-	if (factories.contains(name))
-	{
-		return factories.value(name)->create<Interface>()->description();
-	}
-	return QString();
+    if (factories.contains(name))
+    {
+        return factories.value(name)->create<Interface>()->description();
+    }
+    return QString();
 }
-		
+        
 Interface * InterfaceManager::interface()
 {
-	return self()->m_interface;
+    return self()->m_interface;
 }
 
 void InterfaceManager::setServer(const Server & server)
 {
-	if (factories.contains(server.type()))
-	{
+    if (factories.contains(server.type()))
+    {
         if (m_interface)
         {
             delete m_interface;
         }
-		m_interface = factories.value(server.type())->create<Interface>();
-		m_interface->setServer(server);
-		m_interface->setInterval(Settings::self()->interval());
-		m_server = server;
-		emit interfaceChanged(m_interface);
-	}
+        m_interface = factories.value(server.type())->create<Interface>();
+        m_interface->setServer(server);
+        m_interface->setInterval(Settings::self()->interval());
+        m_server = server;
+        emit interfaceChanged(m_interface);
+    }
 }
 
 Server InterfaceManager::server()
 {
-	return interfaceManager()->m_server;
+    return interfaceManager()->m_server;
 }
 
 #include "interfacemanager.moc"

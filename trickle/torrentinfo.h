@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_torrentinfo.h"
@@ -36,10 +36,10 @@ class QProgressBar;
 
 class TorrentInfo : public QWidget
 {
-	Q_OBJECT
-	public:
-		TorrentInfo();
-		~TorrentInfo();
+    Q_OBJECT
+    public:
+        TorrentInfo();
+        ~TorrentInfo();
 
     public slots:
         void setTorrentHash(const QString & torrentHash);
@@ -48,8 +48,8 @@ class TorrentInfo : public QWidget
         void setupInterfaceConnections(Interface * interface);
         void setPriority();
         void clear();
-	private:
-		Ui::TorrentInfo ui;
+    private:
+        Ui::TorrentInfo ui;
         QString hash;
         bool firstUpdate;
 };

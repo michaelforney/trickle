@@ -26,7 +26,7 @@
 uTorrentConfig::uTorrentConfig(QWidget * parent)
  : InterfaceConfigWidget(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 uTorrentConfig::~uTorrentConfig()
@@ -35,17 +35,17 @@ uTorrentConfig::~uTorrentConfig()
 
 QByteArray uTorrentConfig::save() const
 {
-	VariantHash config;
-	config.insert("info", "trickle_utorrent 0.1");
-	return BCodec::encode(qVariantFromValue(config));
+    VariantHash config;
+    config.insert("info", "trickle_utorrent 0.1");
+    return BCodec::encode(qVariantFromValue(config));
 }
 
 void uTorrentConfig::load(const QByteArray & data)
 {
-	VariantHash config = BCodec::decode(data).value<VariantHash>();
-	if (config.value("info") == "trickle_utorrent 0.1")
-	{
-	}
+    VariantHash config = BCodec::decode(data).value<VariantHash>();
+    if (config.value("info") == "trickle_utorrent 0.1")
+    {
+    }
 }
 
 void uTorrentConfig::clear()

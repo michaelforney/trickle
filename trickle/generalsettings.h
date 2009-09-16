@@ -23,26 +23,26 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_generalsettings.h"
 
 class GeneralSettings : public QWidget
 {
-	Q_OBJECT
-	public:
-		GeneralSettings(QWidget * parent = 0);
-		~GeneralSettings();
-		
-		bool hasChanged() const;
-	public slots:
-		void updateSettings();
-		void updateServerLists();
-	signals:
-		void widgetModified();
-	private:
-		Ui::GeneralSettings ui;
+    Q_OBJECT
+    public:
+        GeneralSettings(QWidget * parent = 0);
+        ~GeneralSettings();
+        
+        bool hasChanged() const;
+    public slots:
+        void updateSettings();
+        void updateServerLists();
+    signals:
+        void widgetModified();
+    private:
+        Ui::GeneralSettings ui;
 };
 
 #endif

@@ -23,30 +23,30 @@
 #include <QObject>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class Server;
 
 class ServerManager : public QObject
 {
-	Q_OBJECT
-	public:
-		ServerManager();
-		~ServerManager();
-		
-		static ServerManager * self();
-		
-		Server * registerServer(Server * server);
-		Server * editServer(Server * server);
-		Server * removeServer(Server * server);
-		QList<Server *> servers() const;
-		QStringList serverNames() const;
-	public slots:
-		void load();
-		void save();
-	private:
-		QList<Server *> m_servers;
+    Q_OBJECT
+    public:
+        ServerManager();
+        ~ServerManager();
+        
+        static ServerManager * self();
+        
+        Server * registerServer(Server * server);
+        Server * editServer(Server * server);
+        Server * removeServer(Server * server);
+        QList<Server *> servers() const;
+        QStringList serverNames() const;
+    public slots:
+        void load();
+        void save();
+    private:
+        QList<Server *> m_servers;
 };
 
 

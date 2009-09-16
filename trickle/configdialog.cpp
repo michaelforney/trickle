@@ -25,14 +25,14 @@
 ConfigDialog::ConfigDialog(QWidget * parent, const QString & name, KConfigSkeleton * config)
  : KConfigDialog(parent, name, config)
 {
-	general = new GeneralSettings();
-	server = new ServerSettings();	
-	addPage(general, i18n("General"), "trickle");
-	addPage(server, i18n("Servers"), "network-server");
-	connect(server, SIGNAL(widgetModified()), this, SLOT(updateButtons()));
-	connect(general, SIGNAL(widgetModified()), this, SLOT(updateButtons()));
-	//connect(this, SIGNAL(widgetModified()), general, SLOT(updateServerLists()));
-	resize(600, 400);
+    general = new GeneralSettings();
+    server = new ServerSettings();    
+    addPage(general, i18n("General"), "trickle");
+    addPage(server, i18n("Servers"), "network-server");
+    connect(server, SIGNAL(widgetModified()), this, SLOT(updateButtons()));
+    connect(general, SIGNAL(widgetModified()), this, SLOT(updateButtons()));
+    //connect(this, SIGNAL(widgetModified()), general, SLOT(updateServerLists()));
+    resize(600, 400);
 }
 
 ConfigDialog::~ConfigDialog()
@@ -41,12 +41,12 @@ ConfigDialog::~ConfigDialog()
 
 bool ConfigDialog::hasChanged()
 {
-	return server->hasChanged() || general->hasChanged();
+    return server->hasChanged() || general->hasChanged();
 }
 
 void ConfigDialog::updateWidgets()
 {
-	server->updateWidgets();
+    server->updateWidgets();
 }
 
 void ConfigDialog::updateWidgetsDefault()
@@ -55,25 +55,25 @@ void ConfigDialog::updateWidgetsDefault()
 
 void ConfigDialog::updateSettings()
 {
-	if (hasChanged())
-	{
-		server->updateSettings();
-		general->updateSettings();
-	}
+    if (hasChanged())
+    {
+        server->updateSettings();
+        general->updateSettings();
+    }
 }
 
 void ConfigDialog::updateButtons()
 {
-	static bool only_once = false;
-	if (only_once) return;
-	only_once = true;
-	
-	bool has_changed = hasChanged();
-	
-	enableButton(KDialog::Apply, has_changed);
-	
-	emit widgetModified();
-	only_once = false;
+    static bool only_once = false;
+    if (only_once) return;
+    only_once = true;
+    
+    bool has_changed = hasChanged();
+    
+    enableButton(KDialog::Apply, has_changed);
+    
+    emit widgetModified();
+    only_once = false;
 }
 
 #include "configdialog.moc"

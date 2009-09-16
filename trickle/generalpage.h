@@ -23,21 +23,21 @@
 #include "settingspage.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class GeneralPage : public SettingsPage
 {
-	Q_OBJECT
-	public:
-		GeneralPage(QWidget * parent = 0);
-		~GeneralPage();
-		
-		QString title() const;
-		QIcon icon() const;
+    Q_OBJECT
+    public:
+        GeneralPage(QWidget * parent = 0);
+        ~GeneralPage();
+        
+        QString title() const;
+        QIcon icon() const;
 
-		void readSettings();
-		void writeSettings();
+        void readSettings();
+        void writeSettings();
 };
 
 #endif

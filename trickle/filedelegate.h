@@ -23,21 +23,21 @@
 #include <QItemDelegate>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class QComboBox;
 
 class FileDelegate : public QItemDelegate
 {
-	public:
-   		 FileDelegate();
-		~FileDelegate();
-		
-		QWidget * createEditor(QWidget * parent, const QStyleOptionViewItem & styleOption, const QModelIndex & index) const;
-		void setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const;
-		void setEditorData(QWidget * editor, const QModelIndex & index) const;
-	private:
+    public:
+            FileDelegate();
+        ~FileDelegate();
+        
+        QWidget * createEditor(QWidget * parent, const QStyleOptionViewItem & styleOption, const QModelIndex & index) const;
+        void setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const;
+        void setEditorData(QWidget * editor, const QModelIndex & index) const;
+    private:
 };
 
 #endif

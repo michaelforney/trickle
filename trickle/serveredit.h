@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_serveredit.h"
@@ -32,18 +32,18 @@
 
 class ServerEdit : public QWidget
 {
-	Q_OBJECT
-	public:
-		ServerEdit(QWidget * parent = 0);
-		~ServerEdit();
-		
-		Server server() const;
-	public slots:
-		void clear();
-		void setServer(const Server & server);
-		
-	private:
-		Ui::ServerEdit ui;	
+    Q_OBJECT
+    public:
+        ServerEdit(QWidget * parent = 0);
+        ~ServerEdit();
+        
+        Server server() const;
+    public slots:
+        void clear();
+        void setServer(const Server & server);
+        
+    private:
+        Ui::ServerEdit ui;    
 };
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Michael Forney                                  *
+ *   Copyright (C) 2007-2009 by Michael Forney                             *
  *   mforney@trickleproject.org                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -56,7 +56,7 @@ void ServerInfo::clear()
     ui.serverName->setText("None");
     ui.serverType->setText("N/A");
     ui.serverHost->setText("N/A");
-    ui.updateStatus->setText("N/A");
 }
 
 #include "serverinfo.moc"
+

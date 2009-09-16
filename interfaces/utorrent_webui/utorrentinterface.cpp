@@ -41,7 +41,7 @@ uTorrentInterface::~uTorrentInterface()
 
 InterfaceConfigWidget * uTorrentInterface::configWidget()
 {
-	return new uTorrentConfig();
+    return new uTorrentConfig();
 }
 
 void uTorrentInterface::setDownloadLimit(const ByteSize & size)

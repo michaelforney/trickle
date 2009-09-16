@@ -23,22 +23,22 @@
 #include <QTreeView>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class TorrentItem;
 
 class TorrentView : public QTreeView
 {
-	Q_OBJECT
-	public:
-		TorrentView();
+    Q_OBJECT
+    public:
+        TorrentView();
         ~TorrentView();
         void restore();
         void save();
-	private slots:
+    private slots:
         void setTorrentIndex(const QModelIndex & proxyIndex);
-	signals:
+    signals:
         void torrentHashChanged(const QString & hash);
 };
 

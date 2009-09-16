@@ -23,23 +23,23 @@
 #include <QAbstractListModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class SettingsPage;
 
 class SettingsModel : public QAbstractListModel
 {
-	public:
-		SettingsModel();
-		~SettingsModel();
-		
-		QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-		int rowCount(const QModelIndex & parent) const;
-		
-		void addPage(SettingsPage * page);
-	private:
-		QList<SettingsPage *> pages;
+    public:
+        SettingsModel();
+        ~SettingsModel();
+        
+        QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        int rowCount(const QModelIndex & parent) const;
+        
+        void addPage(SettingsPage * page);
+    private:
+        QList<SettingsPage *> pages;
 };
 
 #endif

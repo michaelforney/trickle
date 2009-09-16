@@ -35,56 +35,56 @@ FileItem::~FileItem()
 
 FileModelItem::ItemType FileItem::type() const
 {
-	return FileModelItem::File;
+    return FileModelItem::File;
 }
 
 void FileItem::changePriority(int priority)
 {
-	//XmlRpc::instance()->call("f.set_priority", QVariantList() << SelectedTorrent::torrentInstance()->hash() << index() << m_priority, this, "result");
+    //XmlRpc::instance()->call("f.set_priority", QVariantList() << SelectedTorrent::torrentInstance()->hash() << index() << m_priority, this, "result");
 }
 
 void FileItem::result(const QString & method, const QVariant & resultVariant)
 {
-	
+    
 }
 
 int FileItem::complete() const
 {
-	int percent = SelectedTorrent::torrentInstance()->chunkSize().bytes() * completedChunks() * 100 / size().bytes();
-	if (percent > 100)
-	{
-		return 100;
-	}
-	else
-	{
-		return percent;
-	}
+    int percent = SelectedTorrent::torrentInstance()->chunkSize().bytes() * completedChunks() * 100 / size().bytes();
+    if (percent > 100)
+    {
+        return 100;
+    }
+    else
+    {
+        return percent;
+    }
 }
 
 
 QString FileItem::path(FileModelItem * root) const
 {
-	const FileModelItem * item = this;
-	QStringList folders;
-	while (item != root)
-	{
-		folders.append(item->name());
-		item = item->parent();
-	}
-	return folders.join("/");
+    const FileModelItem * item = this;
+    QStringList folders;
+    while (item != root)
+    {
+        folders.append(item->name());
+        item = item->parent();
+    }
+    return folders.join("/");
 }
 
 ByteSize FileItem::downloaded() const
 {
-	ByteSize downloadedSize = SelectedTorrent::torrentInstance()->chunkSize().bytes() * completedChunks();
-	if (downloadedSize > size())
-	{
-		return size();
-	}
-	else
-	{
-		return downloadedSize;
-	}
+    ByteSize downloadedSize = SelectedTorrent::torrentInstance()->chunkSize().bytes() * completedChunks();
+    if (downloadedSize > size())
+    {
+        return size();
+    }
+    else
+    {
+        return downloadedSize;
+    }
 }
 
 #include "fileitem.moc"

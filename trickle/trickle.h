@@ -23,7 +23,7 @@
 #include <KXmlGuiWindow>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QVariant>
@@ -60,55 +60,55 @@ class ServerSelector;
 
 class Trickle : public KXmlGuiWindow
 {
-	Q_OBJECT
-	public:
-		Trickle();
-		~Trickle();
+    Q_OBJECT
+    public:
+        Trickle();
+        ~Trickle();
 
-		void setupActions();
-		void createStatusBar();
-		void createDockWidgets();
-	public slots:
+        void setupActions();
+        void createStatusBar();
+        void createDockWidgets();
+    public slots:
         void newTorrent();
-		void openTorrent();
+        void openTorrent();
 
-		void optionsPreferences();
+        void optionsPreferences();
 
-		void stopTorrent();
-		void startTorrent();
-		void setDownloadLimit(int limit);
+        void stopTorrent();
+        void startTorrent();
+        void setDownloadLimit(int limit);
         void setUploadLimit(int limit);
 
         bool queryClose();
 
-		void setupInterfaceConnections(Interface * interface);
-	private:
-		TorrentView * torrentView;
-		TorrentSortModel * torrentSortModel;
-		TorrentModel * torrentModel;
-		TorrentWidget * torrentWidget;
-		Log * log;
-		TorrentInfo * torrentInfo;
-		FileInfo * fileInfo;
-		TrackerInfo * trackerInfo;
-		ServerInfo * serverInfo;
+        void setupInterfaceConnections(Interface * interface);
+    private:
+        TorrentView * torrentView;
+        TorrentSortModel * torrentSortModel;
+        TorrentModel * torrentModel;
+        TorrentWidget * torrentWidget;
+        Log * log;
+        TorrentInfo * torrentInfo;
+        FileInfo * fileInfo;
+        TrackerInfo * trackerInfo;
+        ServerInfo * serverInfo;
         ServerModel * serverModel;
         ServerSelector * serverSelector;
 
-		QDockWidget * settingsDock;
+        QDockWidget * settingsDock;
 
-		QLabel * totalUploadRate;
-		QLabel * totalDownloadRate;
+        QLabel * totalUploadRate;
+        QLabel * totalDownloadRate;
 
-		KSystemTrayIcon * trayIcon;
+        KSystemTrayIcon * trayIcon;
 
-		QToolBar * mainToolBar;
-		QToolBar * serverBar;
-		QToolBar * controlBar;
+        QToolBar * mainToolBar;
+        QToolBar * serverBar;
+        QToolBar * controlBar;
 
-		QString host;
-		int port;
-		QString path;
+        QString host;
+        int port;
+        QString path;
 };
 
 #endif

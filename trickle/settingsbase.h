@@ -23,28 +23,28 @@
 #include <KConfigSkeleton>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "server.h"
 
 class SettingsBase : public KConfigSkeleton
 {
-	public:
-		SettingsBase(KSharedConfig::Ptr config, QObject * parent = 0);
-		SettingsBase(const QString & confignName = QString(), QObject * parent = 0);
-		~SettingsBase();
-		
-		QList<Server> serverList() const;
-		QStringList serverNames() const;
-		Server server(const QString & name) const;
-		
-		void setServers(const QList<Server> & servers); 
-	protected:
-		virtual void usrWriteConfig();
-		virtual void usrReadConfig();	
-	private:
-		QList<Server> m_servers;
+    public:
+        SettingsBase(KSharedConfig::Ptr config, QObject * parent = 0);
+        SettingsBase(const QString & confignName = QString(), QObject * parent = 0);
+        ~SettingsBase();
+        
+        QList<Server> serverList() const;
+        QStringList serverNames() const;
+        Server server(const QString & name) const;
+        
+        void setServers(const QList<Server> & servers); 
+    protected:
+        virtual void usrWriteConfig();
+        virtual void usrReadConfig();    
+    private:
+        QList<Server> m_servers;
 };
 
 #endif

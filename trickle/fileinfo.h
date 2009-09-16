@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_fileinfo.h"
@@ -36,10 +36,10 @@ class TorrentItem;
 
 class FileInfo : public QWidget
 {
-	Q_OBJECT
-	public:
-		FileInfo();
-		~FileInfo();
+    Q_OBJECT
+    public:
+        FileInfo();
+        ~FileInfo();
 
         void restore();
         void save();
@@ -48,7 +48,7 @@ class FileInfo : public QWidget
         void clear();
     protected slots:
         void fileChanged(const QString & path);
-	private:
+    private:
         Ui::FileInfo ui;
         FileModel * fileModel;
 

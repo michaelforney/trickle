@@ -21,22 +21,22 @@
 #define TRACKERITEM_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QString>
 
 class TrackerItem
 {
-	public:
-		TrackerItem();
-		~TrackerItem();
-		
-		void setUrl(const QString & url) { m_url = url; };
-		
-		QString url() const { return m_url; };
-	private:
-		QString m_url;
+    public:
+        TrackerItem();
+        ~TrackerItem();
+        
+        void setUrl(const QString & url) { m_url = url; };
+        
+        QString url() const { return m_url; };
+    private:
+        QString m_url;
 };
 
 #endif

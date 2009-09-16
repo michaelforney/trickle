@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QIcon>
@@ -33,15 +33,15 @@ class QBoxLayout;
 
 class SettingsPage : public QWidget
 {
-	public:
-		SettingsPage(QWidget * parent = 0);
-		~SettingsPage();
-		
-		virtual QString title() const = 0;
-		virtual QIcon icon() const = 0;
-		
-		virtual void readSettings() = 0;
-		virtual void writeSettings() = 0;
+    public:
+        SettingsPage(QWidget * parent = 0);
+        ~SettingsPage();
+        
+        virtual QString title() const = 0;
+        virtual QIcon icon() const = 0;
+        
+        virtual void readSettings() = 0;
+        virtual void writeSettings() = 0;
 };
 
 #endif

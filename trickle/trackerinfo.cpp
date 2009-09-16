@@ -28,9 +28,9 @@
 TrackerInfo::TrackerInfo()
  : QWidget()
 {
-	ui.setupUi(this);
-	trackerModel = new TrackerModel();
-	ui.trackerView->setModel(trackerModel);
+    ui.setupUi(this);
+    trackerModel = new TrackerModel();
+    ui.trackerView->setModel(trackerModel);
 }
 
 

@@ -30,12 +30,12 @@ GeneralPage::~GeneralPage()
 
 QString GeneralPage::title() const
 {
-	return QString("General");
+    return QString("General");
 }
 
 QIcon GeneralPage::icon() const
 {
-	return QIcon(":/images/trickle.png");
+    return QIcon(":/images/trickle.png");
 }
 
 void GeneralPage::readSettings()

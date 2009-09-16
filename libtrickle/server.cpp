@@ -27,11 +27,11 @@ Server::Server()
 
 Server::Server(const QString & name, const QString & host, int port, const QString & type, const QByteArray & typeConfig)
 {
-	setName(name);
-	setPort(port);
-	setHost(host);
-	setType(type);
-	setTypeConfig(typeConfig);
+    setName(name);
+    setPort(port);
+    setHost(host);
+    setType(type);
+    setTypeConfig(typeConfig);
 }
 
 
@@ -41,21 +41,21 @@ Server::~Server()
 
 bool Server::operator==(const Server & other) const
 {
-	bool equal = other.name() == name() && other.host() == host() && other.port() == port() && other.type() == type() && other.typeConfig() == typeConfig();
-	/*if (equal)
-	{
-		qDebug() << "Server " << name() << " == " << other.name();
-	}
-	else
-	{
-		qDebug() << "Server " << name() << " != " << other.name();
-	}*/
-	return equal;
+    bool equal = other.name() == name() && other.host() == host() && other.port() == port() && other.type() == type() && other.typeConfig() == typeConfig();
+    /*if (equal)
+    {
+        qDebug() << "Server " << name() << " == " << other.name();
+    }
+    else
+    {
+        qDebug() << "Server " << name() << " != " << other.name();
+    }*/
+    return equal;
 }
 
 bool Server::operator<(const Server & other) const
 {
-	return name() < other.name();
+    return name() < other.name();
 }
 
 

@@ -21,7 +21,7 @@
 #define BCODEC_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "trickle_export.h"
@@ -41,11 +41,11 @@ uint TRICKLE_EXPORT qHash(const QVariant & variant);
 
 class TRICKLE_EXPORT BCodec
 {
-	public:
-		static QVariant decode(const QByteArray & data);
-		static QByteArray encode(const QVariant & data);
-	private:
-		static QVariant decodeHelper(QBuffer * data);
+    public:
+        static QVariant decode(const QByteArray & data);
+        static QByteArray encode(const QVariant & data);
+    private:
+        static QVariant decodeHelper(QBuffer * data);
 };
 
 #endif

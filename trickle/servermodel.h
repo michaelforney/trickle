@@ -23,7 +23,7 @@
 #include <QAbstractItemModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QList>
@@ -33,40 +33,40 @@ class Server;
 
 class ServerModel : public QAbstractItemModel
 {
-	Q_OBJECT
-	public:
-		ServerModel();
-		ServerModel(QList<Server> servers);
-		~ServerModel();
-		
-		enum Column { Name, Host, Port, Type };
-		
-		int rowCount(const QModelIndex & parent = QModelIndex()) const;
-		int columnCount(const QModelIndex & parent) const;
-		QModelIndex parent(const QModelIndex & index) const;
-		QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
-		QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
-		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-		
-		void removeServer(int row);
-		Server server(int pos) const;
-		
-		inline void setStartupServer(int startupServer) { m_startupServer = startupServer; };
-		inline int startupServer() const { return m_startupServer; };
-		
-		void addServer(Server server);
-		void setServer(int index, Server server);
-		void clear();
-		
-		QList<Server> servers();
-		inline bool showNoServer() const { return m_showNoServer; };
-	public slots:
-		inline void setShowNoServer(bool showNoServer) { m_showNoServer = showNoServer; emit layoutChanged(); };
-	private:
-		QList<Server> m_servers;
-		QStringList headers;
-		int m_startupServer;
-		bool m_showNoServer;
+    Q_OBJECT
+    public:
+        ServerModel();
+        ServerModel(QList<Server> servers);
+        ~ServerModel();
+        
+        enum Column { Name, Host, Port, Type };
+        
+        int rowCount(const QModelIndex & parent = QModelIndex()) const;
+        int columnCount(const QModelIndex & parent) const;
+        QModelIndex parent(const QModelIndex & index) const;
+        QModelIndex index(int row, int column, const QModelIndex & parent = QModelIndex()) const;
+        QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+        
+        void removeServer(int row);
+        Server server(int pos) const;
+        
+        inline void setStartupServer(int startupServer) { m_startupServer = startupServer; };
+        inline int startupServer() const { return m_startupServer; };
+        
+        void addServer(Server server);
+        void setServer(int index, Server server);
+        void clear();
+        
+        QList<Server> servers();
+        inline bool showNoServer() const { return m_showNoServer; };
+    public slots:
+        inline void setShowNoServer(bool showNoServer) { m_showNoServer = showNoServer; emit layoutChanged(); };
+    private:
+        QList<Server> m_servers;
+        QStringList headers;
+        int m_startupServer;
+        bool m_showNoServer;
 };
 
 #endif

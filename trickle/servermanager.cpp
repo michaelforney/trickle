@@ -39,114 +39,114 @@ ServerManager::~ServerManager()
 
 ServerManager * ServerManager::self()
 {
-	return serverManager();
+    return serverManager();
 }
 
 void ServerManager::load()
 {
-	KSharedConfigPtr config = KGlobal::config();
-	KConfigGroup serversGroup(config, "servers");
-	
-	QStringList serverList = config->groupList().filter(QRegExp("server_.*"));
-	foreach(QString serverGroupName, serverList)
-	{
-		KConfigGroup serverGroup(config, serverGroupName);
-		QString serverName = serverGroup.readEntry("name", QString());
-		QString serverHost = serverGroup.readEntry("host", QString());
-		int serverPort = serverGroup.readEntry("port", 80);
-		QString serverType = serverGroup.readEntry("type", QString());
-		QByteArray serverTypeConfig = serverGroup.readEntry("typeConfig", QByteArray());
-		Server * server = registerServer(new Server(serverName, serverHost, serverPort, serverType, serverTypeConfig));
-		if (!server)
-		{
-			qDebug() << "Failed to create new server";
-		}
-	}
+    KSharedConfigPtr config = KGlobal::config();
+    KConfigGroup serversGroup(config, "servers");
+    
+    QStringList serverList = config->groupList().filter(QRegExp("server_.*"));
+    foreach(QString serverGroupName, serverList)
+    {
+        KConfigGroup serverGroup(config, serverGroupName);
+        QString serverName = serverGroup.readEntry("name", QString());
+        QString serverHost = serverGroup.readEntry("host", QString());
+        int serverPort = serverGroup.readEntry("port", 80);
+        QString serverType = serverGroup.readEntry("type", QString());
+        QByteArray serverTypeConfig = serverGroup.readEntry("typeConfig", QByteArray());
+        Server * server = registerServer(new Server(serverName, serverHost, serverPort, serverType, serverTypeConfig));
+        if (!server)
+        {
+            qDebug() << "Failed to create new server";
+        }
+    }
 }
 
 void ServerManager::save()
 {
-	KSharedConfigPtr config = KGlobal::config();
-	QStringList serverGroupNames = config->groupList().filter(QRegExp("server_.*"));
-	QStringList currentServers = serverNames();
-	foreach(QString serverGroupName, serverGroupNames)
-	{
-		if (!currentServers.contains(serverGroupName))
-		{
-			config->deleteGroup(serverGroupName);
-		}
-	}
-	foreach(Server * server, m_servers)
-	{
-		KConfigGroup serverGroup(config, QString("server_%1").arg(server->name()));
-		serverGroup.writeEntry("name", server->name());
-		serverGroup.writeEntry("host", server->host());
-		serverGroup.writeEntry("port", server->port());
-		serverGroup.writeEntry("type", server->type());
-		serverGroup.writeEntry("typeConfig", server->typeConfig());
-	}
-	config->sync();
+    KSharedConfigPtr config = KGlobal::config();
+    QStringList serverGroupNames = config->groupList().filter(QRegExp("server_.*"));
+    QStringList currentServers = serverNames();
+    foreach(QString serverGroupName, serverGroupNames)
+    {
+        if (!currentServers.contains(serverGroupName))
+        {
+            config->deleteGroup(serverGroupName);
+        }
+    }
+    foreach(Server * server, m_servers)
+    {
+        KConfigGroup serverGroup(config, QString("server_%1").arg(server->name()));
+        serverGroup.writeEntry("name", server->name());
+        serverGroup.writeEntry("host", server->host());
+        serverGroup.writeEntry("port", server->port());
+        serverGroup.writeEntry("type", server->type());
+        serverGroup.writeEntry("typeConfig", server->typeConfig());
+    }
+    config->sync();
 }
 
 Server * ServerManager::registerServer(Server * server)
 {
-	if (m_servers.contains(server))
-	{
-		delete(server);
-		return 0;
-	}
-	
-	foreach(Server * currentServer, m_servers)
-	{
-		if (server->name() == currentServer->name())
-		{
-			delete(server);
-			return 0;
-		}
-	}
-	m_servers.append(server);
-	return server;
+    if (m_servers.contains(server))
+    {
+        delete(server);
+        return 0;
+    }
+    
+    foreach(Server * currentServer, m_servers)
+    {
+        if (server->name() == currentServer->name())
+        {
+            delete(server);
+            return 0;
+        }
+    }
+    m_servers.append(server);
+    return server;
 }
 
 Server * ServerManager::editServer(Server * server)
 {
-	for(int i = 0; i < m_servers.size(); i++)
-	{
-		if (server->name() == m_servers[i]->name())
-		{
-			m_servers.replace(i, server);
-			return server;
-		}
-	}
-	return 0;
+    for(int i = 0; i < m_servers.size(); i++)
+    {
+        if (server->name() == m_servers[i]->name())
+        {
+            m_servers.replace(i, server);
+            return server;
+        }
+    }
+    return 0;
 }
 
 Server * ServerManager::removeServer(Server * server)
 {
-	for(int i = 0; i < m_servers.size(); i++)
-	{
-		if (server->name() == m_servers[i]->name())
-		{
-			m_servers.removeAt(i);
-			return server;
-		}
-	}
-	return 0;
+    for(int i = 0; i < m_servers.size(); i++)
+    {
+        if (server->name() == m_servers[i]->name())
+        {
+            m_servers.removeAt(i);
+            return server;
+        }
+    }
+    return 0;
 }
 
 QStringList ServerManager::serverNames() const
 {
-	QStringList names;
-	foreach(Server * server, m_servers)
-	{
-		names.append(server->name());
-	}
-	return names;
+    QStringList names;
+    foreach(Server * server, m_servers)
+    {
+        names.append(server->name());
+    }
+    return names;
 }
 
 QList<Server *> ServerManager::servers() const
 {
-	return m_servers;
+    return m_servers;
 }
 
 #include "servermanager.moc"

@@ -28,10 +28,10 @@
 GeneralSettings::GeneralSettings(QWidget * parent)
  : QWidget(parent)
 {
-	ui.setupUi(this);
-	updateServerLists();
-	
-	connect(ui.defaultServer, SIGNAL(currentIndexChanged(const QString &)), this, SIGNAL(widgetModified()));
+    ui.setupUi(this);
+    updateServerLists();
+    
+    connect(ui.defaultServer, SIGNAL(currentIndexChanged(const QString &)), this, SIGNAL(widgetModified()));
 }
 
 GeneralSettings::~GeneralSettings()
@@ -40,37 +40,37 @@ GeneralSettings::~GeneralSettings()
 
 void GeneralSettings::updateSettings()
 {
-	if (hasChanged())
-	{
-		Settings::self()->findItem("defaultServer")->setProperty(ui.defaultServer->currentText());
-		Settings::self()->writeConfig();
-	}
+    if (hasChanged())
+    {
+        Settings::self()->findItem("defaultServer")->setProperty(ui.defaultServer->currentText());
+        Settings::self()->writeConfig();
+    }
 }
 
 void GeneralSettings::updateServerLists()
 {
-	kdDebug() << "GeneralSettings::updateServerLists()";
-	ui.server->clear();
-	ui.defaultServer->clear();
-	QString currentServer = InterfaceManager::self()->server().name(); /* FIXME use interface manager */
-	foreach(Server server, Settings::self()->serverList())
-	{
-		ui.server->addItem(server.name());
-		ui.defaultServer->addItem(server.name());
-		if (server.name() == currentServer)
-		{
-			ui.server->setCurrentIndex(ui.server->count() - 1);
-		}
-		if (server.name() == Settings::self()->defaultServer())
-		{
-			ui.defaultServer->setCurrentIndex(ui.defaultServer->count() - 1);
-		}
-	}
+    kdDebug() << "GeneralSettings::updateServerLists()";
+    ui.server->clear();
+    ui.defaultServer->clear();
+    QString currentServer = InterfaceManager::self()->server().name(); /* FIXME use interface manager */
+    foreach(Server server, Settings::self()->serverList())
+    {
+        ui.server->addItem(server.name());
+        ui.defaultServer->addItem(server.name());
+        if (server.name() == currentServer)
+        {
+            ui.server->setCurrentIndex(ui.server->count() - 1);
+        }
+        if (server.name() == Settings::self()->defaultServer())
+        {
+            ui.defaultServer->setCurrentIndex(ui.defaultServer->count() - 1);
+        }
+    }
 }
 
 bool GeneralSettings::hasChanged() const
 {
-	return Settings::self()->defaultServer() != ui.defaultServer->currentText();
+    return Settings::self()->defaultServer() != ui.defaultServer->currentText();
 }
 
 #include "generalsettings.moc"

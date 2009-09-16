@@ -23,7 +23,7 @@
 #include <QObject>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "trickle_export.h"
@@ -46,30 +46,30 @@ class QAuthenticator;
 
 class TRICKLE_EXPORT Interface : public QObject
 {
-	Q_OBJECT
-	public:
-		Interface(InterfaceConfig * config, QObject * parent = 0);
+    Q_OBJECT
+    public:
+        Interface(InterfaceConfig * config, QObject * parent = 0);
         Interface(QObject * parent = 0);
-		virtual ~Interface();
-		virtual QString title() const = 0;
-		virtual QString description() const = 0;
+        virtual ~Interface();
+        virtual QString title() const = 0;
+        virtual QString description() const = 0;
 
-		//enum UpdateType { TorrentList, TorrentFiles, Trackers };
-	public slots:
-		virtual void setServer(const Server & server);
+        //enum UpdateType { TorrentList, TorrentFiles, Trackers };
+    public slots:
+        virtual void setServer(const Server & server);
 
-		virtual void setDownloadLimit(const ByteSize & size) = 0;
-		virtual void setUploadLimit(const ByteSize & size) = 0;
+        virtual void setDownloadLimit(const ByteSize & size) = 0;
+        virtual void setUploadLimit(const ByteSize & size) = 0;
 
-		virtual void startTorrent(const QString & hash) = 0;
-		virtual void stopTorrent(const QString & hash) = 0;
+        virtual void startTorrent(const QString & hash) = 0;
+        virtual void stopTorrent(const QString & hash) = 0;
 
         virtual void setPriority(const QString & hash, Torrent::Priority priority) = 0;
 
-		virtual void setInterval(int interval);
-		virtual bool start();
-		virtual bool stop();
-		virtual void reset();
+        virtual void setInterval(int interval);
+        virtual bool start();
+        virtual bool stop();
+        virtual void reset();
 
         virtual void watchTorrent(const QString & hash);
         virtual void stopWatchingTorrent(const QString & hash);
@@ -77,18 +77,18 @@ class TRICKLE_EXPORT Interface : public QObject
         virtual void updateWatchedTorrents();
 
         virtual void update();
-		//virtual bool connectToServer() = 0;
-		virtual void clear() = 0;
-	protected slots:
-		virtual void updateTorrentList() = 0;
+        //virtual bool connectToServer() = 0;
+        virtual void clear() = 0;
+    protected slots:
+        virtual void updateTorrentList() = 0;
         virtual void updateFileInfo(const QString & hash) = 0;
         virtual void updatePeerInfo(const QString & hash) = 0;
         virtual void updateTrackerInfo(const QString & hash) = 0;
         //virtual void updateChunkInfo(const QString & hash) = 0;
 
         virtual void setConfig(InterfaceConfig * config);
-	signals:
-		void torrentsUpdated(const QMap<QString, Torrent> & torrents);
+    signals:
+        void torrentsUpdated(const QMap<QString, Torrent> & torrents);
         void filesUpdated(const QString & hash, const QMap<QString, File> & files);
         void peersUpdated(const QString & hash, const QSet<Peer> & peers);
         void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
@@ -96,21 +96,21 @@ class TRICKLE_EXPORT Interface : public QObject
         //void chunksUpdated(const QString & hash, QList<)
 
         void torrentPriorityChanged(const QString & hash, Torrent::TorrentState priority);
-		void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
-		void uploadLimitChanged(const ByteSize & limit);
-		void downloadLimitChanged(const ByteSize & limit);
-		void torrentStarted(const QString & hash);
-		void torrentStopped(const QString & hash);
-		void cleared();
-	protected:
-		Server server() const;
+        void filePriorityChanged(const QString & hash, const QStringList & path, File::FilePriority priority);
+        void uploadLimitChanged(const ByteSize & limit);
+        void downloadLimitChanged(const ByteSize & limit);
+        void torrentStarted(const QString & hash);
+        void torrentStopped(const QString & hash);
+        void cleared();
+    protected:
+        Server server() const;
         InterfaceConfig * genericConfig() const;
         bool configValid() const;
         QMap<QString, int> watchedTorrents() const;
-	private:
-		QTimer * m_timer;
+    private:
+        QTimer * m_timer;
         InterfaceConfig * m_config;
-		Server m_server;
+        Server m_server;
         QMap<QString, int> m_watchedTorrents;
 };
 

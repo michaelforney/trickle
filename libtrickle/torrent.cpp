@@ -27,19 +27,19 @@
 
 Torrent::Torrent(const QString & hash)
 {
-	setHash(hash);
-	setState(Stopped);
-	setSeedsConnected(0);
-	setSeedsTotal(0);
-	setLeechsConnected(0);
-	setLeechsTotal(0);
-	setDownloadRate(0);
-	setUploadRate(0);
-	setChunkSize(0);
+    setHash(hash);
+    setState(Stopped);
+    setSeedsConnected(0);
+    setSeedsTotal(0);
+    setLeechsConnected(0);
+    setLeechsTotal(0);
+    setDownloadRate(0);
+    setUploadRate(0);
+    setChunkSize(0);
     //setBitArray(QBitArray());
-	setChunks(0);
-	setUploaded(0);
-	setDownloaded(0);
+    setChunks(0);
+    setUploaded(0);
+    setDownloaded(0);
 }
 
 Torrent::Torrent()
@@ -52,94 +52,94 @@ Torrent::~Torrent()
 
 bool Torrent::operator==(const Torrent & other)
 {
-	return hash() == other.hash();
+    return hash() == other.hash();
 }
 
 /*void Torrent::stop()
 {
-	//XmlRpc::instance()->call("d.stop", QVariantList() << m_hash, this, "result");
+    //XmlRpc::instance()->call("d.stop", QVariantList() << m_hash, this, "result");
 }
 
 void Torrent::start()
 {
-	//XmlRpc::instance()->call("d.start", QVariantList() << m_hash, this, "result");
+    //XmlRpc::instance()->call("d.start", QVariantList() << m_hash, this, "result");
 }
 
 void Torrent::update()
 {
-	QVariantList args;
-	args << m_hash;
-	args << "";
-	args << "t.get_scrape_complete=";
-	args << "t.get_scrape_incomplete=";
-	//XmlRpc::instance()->call("t.multicall", args, this, "result");
+    QVariantList args;
+    args << m_hash;
+    args << "";
+    args << "t.get_scrape_complete=";
+    args << "t.get_scrape_incomplete=";
+    //XmlRpc::instance()->call("t.multicall", args, this, "result");
 }*/
 
 //Data Get Functions
 
 int Torrent::seedsConnected() const
 {
-	return m_seedsConnected;
+    return m_seedsConnected;
 }
 
 int Torrent::seedsTotal() const
 {
-	return m_seedsTotal;
+    return m_seedsTotal;
 }
 
 int Torrent::leechsConnected() const
 {
-	return m_leechsConnected;
+    return m_leechsConnected;
 }
 
 int Torrent::leechsTotal() const
 {
-	return m_leechsTotal;
+    return m_leechsTotal;
 }
 
 ByteSize Torrent::downloadRate() const
 {
-	return m_downloadRate;
+    return m_downloadRate;
 }
 
 ByteSize Torrent::uploadRate() const
 {
-	return m_uploadRate;
+    return m_uploadRate;
 }
 
 ByteSize Torrent::size() const
 {
-	return m_size;
+    return m_size;
 }
 
 ByteSize Torrent::uploaded() const
 {
-	return m_uploaded;
+    return m_uploaded;
 }
 
 ByteSize Torrent::downloaded() const
 {
-	return m_downloaded;
+    return m_downloaded;
 }
 
 QString Torrent::name() const
 {
-	return m_name;
+    return m_name;
 }
 
 QString Torrent::hash() const
 {
-	return m_hash;
+    return m_hash;
 }
 
 QBitArray Torrent::bitField() const
 {
-	return m_bitField;
+    return m_bitField;
 }
 
 Torrent::Priority Torrent::priority() const
 {
-	return m_priority;
+    return m_priority;
 }
 
 QString Torrent::priorityString() const
@@ -166,106 +166,106 @@ Torrent::TorrentState Torrent::state() const
 
 double Torrent::ratio() const
 {
-	return m_uploaded / m_downloaded;
+    return m_uploaded / m_downloaded;
 }
 
 ByteSize Torrent::chunkSize() const
 {
-	return m_chunkSize;
+    return m_chunkSize;
 }
 
 int Torrent::chunks() const
 {
-	return m_chunks;
+    return m_chunks;
 }
 
 /*void Torrent::result(const QString & method, const QVariant & result)
 {
-	if (method == "t.multicall")
-	{
-		QVariantList resultList = result.value<QVariantList>()[0].value<QVariantList>();
-		setSeedsTotal(resultList[0].toInt());
-		setLeechsTotal(resultList[1].toInt());
-		emit dataChanged(this);
-		emit updated();
-	}
+    if (method == "t.multicall")
+    {
+        QVariantList resultList = result.value<QVariantList>()[0].value<QVariantList>();
+        setSeedsTotal(resultList[0].toInt());
+        setLeechsTotal(resultList[1].toInt());
+        emit dataChanged(this);
+        emit updated();
+    }
 }*/
 
 //Data Set Functions
 
 void Torrent::setSeedsConnected(int seedsConnected)
 {
-	m_seedsConnected = seedsConnected;
+    m_seedsConnected = seedsConnected;
 }
 
 void Torrent::setSeedsTotal(int seedsTotal)
 {
-	m_seedsTotal = seedsTotal;
+    m_seedsTotal = seedsTotal;
 }
 
 void Torrent::setLeechsConnected(int leechsConnected)
 {
-	m_leechsConnected = leechsConnected;
+    m_leechsConnected = leechsConnected;
 }
 
 void Torrent::setLeechsTotal(int leechsTotal)
 {
-	m_leechsTotal = leechsTotal;
+    m_leechsTotal = leechsTotal;
 }
 
 void Torrent::setDownloadRate(ByteSize downloadRate)
 {
-	m_downloadRate = downloadRate;
+    m_downloadRate = downloadRate;
 }
 
 void Torrent::setUploadRate(ByteSize uploadRate)
 {
-	m_uploadRate = uploadRate;
+    m_uploadRate = uploadRate;
 }
 
 void Torrent::setChunks(int chunks)
 {
-	m_chunks = chunks;
+    m_chunks = chunks;
 }
 
 void Torrent::setChunkSize(ByteSize chunkSize)
 {
-	m_chunkSize = chunkSize;
+    m_chunkSize = chunkSize;
 }
 
 void Torrent::setUploaded(ByteSize uploaded)
 {
-	m_uploaded = uploaded;
+    m_uploaded = uploaded;
 }
 
 void Torrent::setDownloaded(ByteSize downloaded)
 {
-	m_downloaded = downloaded;
+    m_downloaded = downloaded;
 }
 
 void Torrent::setName(const QString & name)
 {
-	m_name = name;
+    m_name = name;
 }
 
 void Torrent::setSize(ByteSize size)
 {
-	m_size = size;
+    m_size = size;
 }
 
 void Torrent::setHash(const QString & hash)
 {
-	m_hash = hash;
+    m_hash = hash;
 }
 
 void Torrent::setState(TorrentState state)
 {
-	m_state = state;
+    m_state = state;
 }
 
 /*void Torrent::setRatio(double ratio)
 {
-	m_ratio = ratio;
+    m_ratio = ratio;
 }*/
 
 void Torrent::setBitField(const QBitArray & bitField)
@@ -275,7 +275,7 @@ void Torrent::setBitField(const QBitArray & bitField)
 
 void Torrent::setPriority(Priority priority)
 {
-	m_priority = priority;
+    m_priority = priority;
 }
 
 //#include "torrent.moc"

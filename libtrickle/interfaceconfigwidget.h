@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "trickle_export.h"
@@ -35,12 +35,12 @@ class InterfaceConfig;
 class TRICKLE_EXPORT InterfaceConfigWidget : public QWidget
 {
     Q_OBJECT
-	public:
+    public:
         InterfaceConfigWidget(QObject * parent, const QVariantList & args);
-		virtual ~InterfaceConfigWidget();
-		
-		//virtual QByteArray data() const = 0;
-		virtual void setConfig(InterfaceConfig * config);
+        virtual ~InterfaceConfigWidget();
+        
+        //virtual QByteArray data() const = 0;
+        virtual void setConfig(InterfaceConfig * config);
         virtual void clear() = 0;
         InterfaceConfig * genericConfig() const;
     private:

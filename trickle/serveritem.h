@@ -23,24 +23,24 @@
 #include <QTreeWidgetItem>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "server.h"
 
 class ServerItem : public QTreeWidgetItem
 {
-	public:
-		ServerItem(QTreeWidget * parent, const Server & server);
-		~ServerItem();
-		QVariant data(int column, int role) const;
-		void setData(int column, int role, const QVariant & value);
-		inline Server server() const { return m_server; }
-		inline void setServer(const Server & server) { m_server = server; }
-		
-		enum Column { Name, Host, Port, Type };
-	private:
-		Server m_server;
+    public:
+        ServerItem(QTreeWidget * parent, const Server & server);
+        ~ServerItem();
+        QVariant data(int column, int role) const;
+        void setData(int column, int role, const QVariant & value);
+        inline Server server() const { return m_server; }
+        inline void setServer(const Server & server) { m_server = server; }
+        
+        enum Column { Name, Host, Port, Type };
+    private:
+        Server m_server;
 };
 
 #endif

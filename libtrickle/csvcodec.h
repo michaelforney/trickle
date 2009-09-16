@@ -21,7 +21,7 @@
 #define CSVCODEC_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "trickle_export.h"
@@ -32,11 +32,11 @@ class QBuffer;
 
 class TRICKLE_EXPORT CSVCodec
 {
-	public:
-		static QVariant decode(const QByteArray & data);
-		static QByteArray encode(const QVariant & data);
-	private:
-		static QVariant decodeHelper(QBuffer * data);
+    public:
+        static QVariant decode(const QByteArray & data);
+        static QByteArray encode(const QVariant & data);
+    private:
+        static QVariant decodeHelper(QBuffer * data);
 };
 
 #endif

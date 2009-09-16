@@ -21,7 +21,7 @@
 #define FILEMODELITEM_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <QList>
@@ -35,36 +35,36 @@ class FileItem;
 
 class FileModelItem : public QObject
 {
-	public:
-		FileModelItem(FileModelItem * parent = 0);
-		FileModelItem(const QString & name, FileModelItem * parent = 0);
-		virtual ~FileModelItem();
-		
-		enum ItemType { File, Directory };
-		enum Priority { Skip, Normal, High };
-		
-		inline void setName(const QString & name) { m_name = name; };
-		inline void setParent(FileModelItem * parent) { m_parent = parent; }
-		
-		inline bool isFile() { return type() == FileModelItem::File; };
-		inline bool isDirectory() { return type() == FileModelItem::Directory; };
-		
-		DirectoryItem * toDirectory();
-		FileItem * toFile();
-		
-		inline QString name() const { return m_name; };
-		virtual ByteSize size() const = 0;
-		virtual ByteSize downloaded() const = 0;
-		virtual FileModelItem::ItemType type() const = 0;
-		virtual void changePriority(int priority) = 0;
-		virtual int priority() const = 0;
-		virtual int complete() const = 0;
-		
-		int row();
-		inline FileModelItem * parent() const { return m_parent; };
-	private:
-		FileModelItem * m_parent;
-		QString m_name;
+    public:
+        FileModelItem(FileModelItem * parent = 0);
+        FileModelItem(const QString & name, FileModelItem * parent = 0);
+        virtual ~FileModelItem();
+        
+        enum ItemType { File, Directory };
+        enum Priority { Skip, Normal, High };
+        
+        inline void setName(const QString & name) { m_name = name; };
+        inline void setParent(FileModelItem * parent) { m_parent = parent; }
+        
+        inline bool isFile() { return type() == FileModelItem::File; };
+        inline bool isDirectory() { return type() == FileModelItem::Directory; };
+        
+        DirectoryItem * toDirectory();
+        FileItem * toFile();
+        
+        inline QString name() const { return m_name; };
+        virtual ByteSize size() const = 0;
+        virtual ByteSize downloaded() const = 0;
+        virtual FileModelItem::ItemType type() const = 0;
+        virtual void changePriority(int priority) = 0;
+        virtual int priority() const = 0;
+        virtual int complete() const = 0;
+        
+        int row();
+        inline FileModelItem * parent() const { return m_parent; };
+    private:
+        FileModelItem * m_parent;
+        QString m_name;
 };
 
 #endif

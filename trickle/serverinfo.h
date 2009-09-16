@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Michael Forney                                  *
+ *   Copyright (C) 2007-2009 by Michael Forney                             *
  *   mforney@trickleproject.org                                            *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -23,7 +23,7 @@
 #include <QWidget>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_serverinfo.h"
@@ -35,15 +35,16 @@ class Server;
 
 class ServerInfo : public QWidget
 {
-	Q_OBJECT
-	public:
-		ServerInfo();
-		~ServerInfo();
-	public slots:
-		void interfaceChanged();
+    Q_OBJECT
+    public:
+        ServerInfo();
+        ~ServerInfo();
+    public slots:
+        void interfaceChanged();
         void clear();
-	private:
+    private:
         Ui::ServerInfo ui;
 };
 
 #endif
+

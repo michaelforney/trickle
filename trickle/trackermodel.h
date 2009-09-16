@@ -23,7 +23,7 @@
 #include <QAbstractItemModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "tracker.h"
@@ -36,26 +36,26 @@ class Interface;
 
 class TrackerModel : public QAbstractItemModel
 {
-	Q_OBJECT
-	public:
-		TrackerModel();
-		~TrackerModel();
-		
-		enum Column { TrackerUrl };
-		
-		QModelIndex index(int row, int column, const QModelIndex & parent) const;
-		QModelIndex parent(const QModelIndex & index) const;
-		int rowCount(const QModelIndex & parent) const;
-		int columnCount(const QModelIndex & parent) const;
-		QVariant data(const QModelIndex & item, int role) const;
-		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	public slots:
+    Q_OBJECT
+    public:
+        TrackerModel();
+        ~TrackerModel();
+        
+        enum Column { TrackerUrl };
+        
+        QModelIndex index(int row, int column, const QModelIndex & parent) const;
+        QModelIndex parent(const QModelIndex & index) const;
+        int rowCount(const QModelIndex & parent) const;
+        int columnCount(const QModelIndex & parent) const;
+        QVariant data(const QModelIndex & item, int role) const;
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    public slots:
         void setupInterfaceConnections(Interface * interface);
         void setTorrentHash(const QString & hash);
         void trackersUpdated(const QString & hash, const QMap<int, Tracker> & trackers);
-	private:
-		QStringList headers;
-		QMap<int, Tracker> trackerMap;
+    private:
+        QStringList headers;
+        QMap<int, Tracker> trackerMap;
         QString m_hash;
 };
 

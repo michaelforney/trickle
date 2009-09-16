@@ -23,11 +23,11 @@
 #include <kdemacros.h>
 
 #ifndef TRICKLE_EXPORT
-	#if defined(MAKE_TRICKLE_LIB)
-		#define TRICKLE_EXPORT KDE_EXPORT
-	#else
-		#define TRICKLE_EXPORT KDE_IMPORT
-	#endif
+    #if defined(MAKE_TRICKLE_LIB)
+        #define TRICKLE_EXPORT KDE_EXPORT
+    #else
+        #define TRICKLE_EXPORT KDE_IMPORT
+    #endif
 #endif
 
 #endif

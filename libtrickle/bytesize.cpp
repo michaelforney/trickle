@@ -21,22 +21,22 @@
 
 ByteSize::ByteSize()
 {
-	setBytes(0);
+    setBytes(0);
 }
 
 ByteSize::ByteSize(qint64 bytes)
 {
-	setBytes(bytes);
+    setBytes(bytes);
 }
 
 ByteSize::ByteSize(qint64 units, qint64 unitSize)
 {
-	setBytes(units * unitSize);
+    setBytes(units * unitSize);
 }
 
 ByteSize::ByteSize(qint64 units, ByteSize unitSize)
 {
-	setBytes(units * unitSize.bytes());
+    setBytes(units * unitSize.bytes());
 }
 
 ByteSize::~ByteSize()
@@ -46,39 +46,39 @@ ByteSize::~ByteSize()
 
 QString ByteSize::toString()
 {
-	int factor = 0;
-	qint64 tempBytes = bytes() * 100;
-	while (tempBytes > 102400)
-	{
-		factor++;
-		tempBytes /= 1024;
-	}
-	double unitBytes = static_cast<double>(tempBytes) / 100;
-	return QString("%1 %2").arg(QString::number(unitBytes, 'f', 2)).arg(unitString(factor));
+    int factor = 0;
+    qint64 tempBytes = bytes() * 100;
+    while (tempBytes > 102400)
+    {
+        factor++;
+        tempBytes /= 1024;
+    }
+    double unitBytes = static_cast<double>(tempBytes) / 100;
+    return QString("%1 %2").arg(QString::number(unitBytes, 'f', 2)).arg(unitString(factor));
 }
 
 QString ByteSize::unitString(int unit)
 {
-	switch (unit)
-	{
-		case B:
-			return QString("B");
-		case KB:
-			return QString("KB");
-		case MB:
-			return QString("MB");
-		case GB:
-			return QString("GB");
-		case TB:
-			return QString("TB");
-		default:
-			return QString();
-	}
+    switch (unit)
+    {
+        case B:
+            return QString("B");
+        case KB:
+            return QString("KB");
+        case MB:
+            return QString("MB");
+        case GB:
+            return QString("GB");
+        case TB:
+            return QString("TB");
+        default:
+            return QString();
+    }
 }
 
 ByteSize ByteSize::operator*(const ByteSize & other)
 {
-	return ByteSize(bytes() * other.bytes());
+    return ByteSize(bytes() * other.bytes());
 }
 
 qreal ByteSize::operator/(const ByteSize & other) const
@@ -88,25 +88,25 @@ qreal ByteSize::operator/(const ByteSize & other) const
 
 ByteSize ByteSize::operator-(const ByteSize & other)
 {
-	return ByteSize(bytes() - other.bytes());
+    return ByteSize(bytes() - other.bytes());
 }
 
 ByteSize ByteSize::operator+(const ByteSize & other)
 {
-	return ByteSize(bytes() + other.bytes());
+    return ByteSize(bytes() + other.bytes());
 }
 
 bool ByteSize::operator<(const ByteSize & other)
 {
-	return bytes() < other.bytes();
+    return bytes() < other.bytes();
 }
 
 bool ByteSize::operator>(const ByteSize & other)
 {
-	return bytes() > other.bytes();
+    return bytes() > other.bytes();
 }
 
 void ByteSize::operator+=(const ByteSize & other)
 {
-	m_bytes += other.bytes();
+    m_bytes += other.bytes();
 }

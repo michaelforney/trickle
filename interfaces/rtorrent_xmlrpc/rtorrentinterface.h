@@ -23,7 +23,7 @@
 #include "interface.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "torrent.h"
@@ -38,24 +38,24 @@ class rTorrentConfig;
 
 class rTorrentInterface : public Interface
 {
-	Q_OBJECT
+    Q_OBJECT
     public:
         enum rTorrentRequest { TorrentList, FileList, TrackerList, SetTorrentPriority };
-		rTorrentInterface(QObject * parent, const QVariantList & args);
-		~rTorrentInterface();
-		QString title() const { return "rTorrent XmlRpc Interface"; }
-		QString description() const { return "Interface to connect to rTorrent through XmlRpc"; }
-	public slots:
-		void setDownloadLimit(const ByteSize & size);
-		void setUploadLimit(const ByteSize & size);
+        rTorrentInterface(QObject * parent, const QVariantList & args);
+        ~rTorrentInterface();
+        QString title() const { return "rTorrent XmlRpc Interface"; }
+        QString description() const { return "Interface to connect to rTorrent through XmlRpc"; }
+    public slots:
+        void setDownloadLimit(const ByteSize & size);
+        void setUploadLimit(const ByteSize & size);
 
-		void startTorrent(const QString & hash);
-		void stopTorrent(const QString & hash);
+        void startTorrent(const QString & hash);
+        void stopTorrent(const QString & hash);
 
         void setPriority(const QString & hash, Torrent::Priority priority);
 
-		bool connectToServer();
-		void clear();
+        bool connectToServer();
+        void clear();
     protected slots:
         void updateTorrentList();
         void updateFileInfo(const QString & hash);

@@ -23,13 +23,13 @@
 #include <QListView>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 class SettingsView : public QListView
 {
-	public:
-		SettingsView(QWidget * parent = 0);
-		~SettingsView();
+    public:
+        SettingsView(QWidget * parent = 0);
+        ~SettingsView();
 
 };
 

@@ -23,7 +23,7 @@
 #include "interfaceconfigwidget.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_rtorrentconfigwidget.h"
@@ -32,19 +32,19 @@ class rTorrentConfig;
 
 class rTorrentConfigWidget : public InterfaceConfigWidget
 {
-	public:
+    public:
         rTorrentConfigWidget(QObject * parent, const QVariantList & args);
         ~rTorrentConfigWidget();
 
-		QByteArray data() const;
-		void setData(const QByteArray & data);
+        QByteArray data() const;
+        void setData(const QByteArray & data);
         void setConfig(InterfaceConfig * config);
         rTorrentConfig * config() const;
-		void clear();
+        void clear();
     protected:
         void updateWidgets();
-	private:
-		Ui::rTorrentConfigWidget ui;
+    private:
+        Ui::rTorrentConfigWidget ui;
 };
 
 #endif

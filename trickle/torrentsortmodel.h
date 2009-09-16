@@ -23,16 +23,16 @@
 #include <QSortFilterProxyModel>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 class TorrentSortModel : public QSortFilterProxyModel
 {
-	public:
-		TorrentSortModel();
-		~TorrentSortModel();
-		
-		bool lessThan(const QModelIndex & left, const QModelIndex & right) const;
+    public:
+        TorrentSortModel();
+        ~TorrentSortModel();
+        
+        bool lessThan(const QModelIndex & left, const QModelIndex & right) const;
 };
 
 #endif

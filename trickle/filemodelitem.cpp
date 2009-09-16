@@ -25,52 +25,52 @@
 FileModelItem::FileModelItem(FileModelItem * parent)
  : QObject(parent)
 {
-	setParent(parent);
+    setParent(parent);
 }
 
 FileModelItem::FileModelItem(const QString & name, FileModelItem * parent)
  : QObject(parent)
 {
-	setName(name);
-	setParent(parent);
+    setName(name);
+    setParent(parent);
 }
 
 FileModelItem::~FileModelItem()
 {
-	if (m_parent && m_parent->isDirectory())
-	{
-		m_parent->toDirectory()->removeChild(this);
-	}
+    if (m_parent && m_parent->isDirectory())
+    {
+        m_parent->toDirectory()->removeChild(this);
+    }
 }
 
 
 int FileModelItem::row()
 {
-	if (m_parent && m_parent->type() == Directory)
-	{
-		return m_parent->toDirectory()->childRow(this);
-	}
-	else
-	{
-		return 0;
-	}
+    if (m_parent && m_parent->type() == Directory)
+    {
+        return m_parent->toDirectory()->childRow(this);
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 DirectoryItem * FileModelItem::toDirectory()
 {
-	if (isDirectory())
-	{
-		return static_cast<DirectoryItem *>(this);
-	}
-	return 0;
+    if (isDirectory())
+    {
+        return static_cast<DirectoryItem *>(this);
+    }
+    return 0;
 }
 
 FileItem * FileModelItem::toFile()
 {
-	if (isFile())
-	{
-		return static_cast<FileItem *>(this);
-	}
-	return 0;
+    if (isFile())
+    {
+        return static_cast<FileItem *>(this);
+    }
+    return 0;
 }
 

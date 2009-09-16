@@ -22,7 +22,7 @@
 ServerEdit::ServerEdit(QWidget * parent)
  : QWidget(parent)
 {
-	ui.setupUi(this);
+    ui.setupUi(this);
 }
 
 ServerEdit::~ServerEdit()
@@ -31,25 +31,25 @@ ServerEdit::~ServerEdit()
 
 Server ServerEdit::server() const
 {
-	return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.pathEdit->text(), ui.portEdit->value(), ui.intervalEdit->value());
+    return Server(ui.nameEdit->text(), ui.hostEdit->text(), ui.pathEdit->text(), ui.portEdit->value(), ui.intervalEdit->value());
 }
 
 void ServerEdit::clear()
 {
-	ui.nameEdit->clear();
-	ui.intervalEdit->setValue(2000);
-	ui.portEdit->setValue(80);
-	ui.hostEdit->clear();
-	ui.pathEdit->setText("/RPC2");
+    ui.nameEdit->clear();
+    ui.intervalEdit->setValue(2000);
+    ui.portEdit->setValue(80);
+    ui.hostEdit->clear();
+    ui.pathEdit->setText("/RPC2");
 }
 
 void ServerEdit::setServer(const Server & server)
 {
-	ui.nameEdit->setText(server.name());
-	ui.intervalEdit->setValue(server.interval());
-	ui.portEdit->setValue(server.port());
-	ui.hostEdit->setText(server.host());
-	ui.pathEdit->setText(server.path());
+    ui.nameEdit->setText(server.name());
+    ui.intervalEdit->setValue(server.interval());
+    ui.portEdit->setValue(server.port());
+    ui.hostEdit->setText(server.host());
+    ui.pathEdit->setText(server.path());
 }
 
 #include "serveredit.moc"

@@ -23,7 +23,7 @@
 #include <QObject>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "server.h"
@@ -41,29 +41,29 @@ class QAuthenticator;
 
 class InterfaceManager : public QObject
 {
-	Q_OBJECT
-	public:
-		InterfaceManager();
-		~InterfaceManager();
-		static InterfaceManager * self();
+    Q_OBJECT
+    public:
+        InterfaceManager();
+        ~InterfaceManager();
+        static InterfaceManager * self();
 
-		void load();
-		QStringList names() const;
-		InterfaceConfigWidget * configWidget(const QString & name);
+        void load();
+        QStringList names() const;
+        InterfaceConfigWidget * configWidget(const QString & name);
         InterfaceConfig * config(const QString & name);
-		QString title(const QString & name);
-		QString description(const QString & name);
-		
-		static Interface * interface();
-		static Server server();
-	public slots:
-		void setServer(const Server & server);
-	signals:
-		void interfaceChanged(Interface * interface);
-	private:
-		Interface * m_interface;
-		Server m_server;
-		QMap<QString, KPluginFactory *> factories;
+        QString title(const QString & name);
+        QString description(const QString & name);
+        
+        static Interface * interface();
+        static Server server();
+    public slots:
+        void setServer(const Server & server);
+    signals:
+        void interfaceChanged(Interface * interface);
+    private:
+        Interface * m_interface;
+        Server m_server;
+        QMap<QString, KPluginFactory *> factories;
 };
 
 #endif

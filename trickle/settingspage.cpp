@@ -26,7 +26,7 @@
 SettingsPage::SettingsPage(QWidget * parent)
  : QWidget(parent)
 {
-	
+    
 }
 
 SettingsPage::~SettingsPage()

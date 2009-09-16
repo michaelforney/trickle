@@ -25,7 +25,7 @@
 ServerItem::ServerItem(QTreeWidget * parent, const Server & server)
  : QTreeWidgetItem(parent)
 {
-	setServer(server);
+    setServer(server);
 }
 
 ServerItem::~ServerItem()
@@ -34,57 +34,57 @@ ServerItem::~ServerItem()
 
 QVariant ServerItem::data(int column, int role) const
 {
-	switch(role)
-	{
-		case Qt::DisplayRole:
-		{
-			switch(column)
-			{
-				case Name:
-					return m_server.name();
-					break;
-				case Host:
-					return m_server.host();
-					break;
-				case Port:
-					return m_server.port();
-					break;
-				case Type:
-					return InterfaceManager::self()->title(m_server.type());
-					break;
-				default:
-					return QVariant();
-			}
-			break;
-		}
-		default:
-		{
-			return QVariant();
-		}
-	}
+    switch(role)
+    {
+        case Qt::DisplayRole:
+        {
+            switch(column)
+            {
+                case Name:
+                    return m_server.name();
+                    break;
+                case Host:
+                    return m_server.host();
+                    break;
+                case Port:
+                    return m_server.port();
+                    break;
+                case Type:
+                    return InterfaceManager::self()->title(m_server.type());
+                    break;
+                default:
+                    return QVariant();
+            }
+            break;
+        }
+        default:
+        {
+            return QVariant();
+        }
+    }
 }
 
 void ServerItem::setData(int column, int role, const QVariant & value)
 {
-	switch(role)
-	{
-		case Qt::DisplayRole:
-		{
-			switch(column)
-			{
-				case Name:
-					m_server.setName(value.toString());
-					break;
-				case Host:
-					m_server.setHost(value.toString());
-					break;
-				case Port:
-					m_server.setPort(value.toInt());
-					break;
-				case Type:
-					m_server.setType(value.toString());
-					break;
-			}
-		}
-	}
+    switch(role)
+    {
+        case Qt::DisplayRole:
+        {
+            switch(column)
+            {
+                case Name:
+                    m_server.setName(value.toString());
+                    break;
+                case Host:
+                    m_server.setHost(value.toString());
+                    break;
+                case Port:
+                    m_server.setPort(value.toInt());
+                    break;
+                case Type:
+                    m_server.setType(value.toString());
+                    break;
+            }
+        }
+    }
 }

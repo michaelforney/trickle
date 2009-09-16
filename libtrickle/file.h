@@ -21,7 +21,7 @@
 #define FILE_H
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "trickle_export.h"
@@ -32,14 +32,14 @@
 
 class TRICKLE_EXPORT File
 {
-	public:		
-		enum FilePriority { Off, Low, Medium, High };
+    public:        
+        enum FilePriority { Off, Low, Medium, High };
 
-		File(const QString & path, const ByteSize & size, int index, int completedChunks, FilePriority priority);
+        File(const QString & path, const ByteSize & size, int index, int completedChunks, FilePriority priority);
         File();
-		~File();
-		
-		
+        ~File();
+        
+        
         inline ByteSize size() const { return m_size; }
         inline int index() const { return m_index; }
         inline int completedChunks() const { return m_completedChunks; }
@@ -52,12 +52,12 @@ class TRICKLE_EXPORT File
         inline void setPriority(FilePriority priority) { m_priority = priority; }
         inline void setPath(const QString & path) { m_path = path; }
     private:
-		
-		FilePriority m_priority;
-		int m_completedChunks;
-		ByteSize m_size;
-		int m_index;
-		QString m_path;
+        
+        FilePriority m_priority;
+        int m_completedChunks;
+        ByteSize m_size;
+        int m_index;
+        QString m_path;
 };
 
 #endif

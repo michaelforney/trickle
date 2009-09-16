@@ -32,37 +32,37 @@ SettingsModel::~SettingsModel()
 
 QVariant SettingsModel::data(const QModelIndex & index, int role) const
 {
-	if (!index.isValid())
-	{
-		return QVariant();
-	}
-	
-	if (role == Qt::DisplayRole)
-	{
-		return pages[index.row()]->title();
-	}
-	else if (role == Qt::DecorationRole)
-	{
-		return pages[index.row()]->icon();
-	}
-	else
-	{
-		return QVariant();
-	}
+    if (!index.isValid())
+    {
+        return QVariant();
+    }
+    
+    if (role == Qt::DisplayRole)
+    {
+        return pages[index.row()]->title();
+    }
+    else if (role == Qt::DecorationRole)
+    {
+        return pages[index.row()]->icon();
+    }
+    else
+    {
+        return QVariant();
+    }
 }
 
 int SettingsModel::rowCount(const QModelIndex & parent) const
 {
-	if (parent.isValid())
-	{
-		return 0;
-	}
-	
-	return pages.size();
+    if (parent.isValid())
+    {
+        return 0;
+    }
+    
+    return pages.size();
 }
 
 void SettingsModel::addPage(SettingsPage * page)
 {
-	pages.append(page);
-	emit layoutChanged();
+    pages.append(page);
+    emit layoutChanged();
 }

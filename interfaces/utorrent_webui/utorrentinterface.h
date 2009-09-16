@@ -23,7 +23,7 @@
 #include "interface.h"
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include <KIO/Job>
@@ -34,8 +34,8 @@ class QHttp;
 
 class uTorrentInterface : public Interface
 {
-	Q_OBJECT
-	public:
+    Q_OBJECT
+    public:
         enum WebUiRequest { TorrentList, FileList };
         enum WebUiState
         {
@@ -50,24 +50,24 @@ class uTorrentInterface : public Interface
         };
         Q_DECLARE_FLAGS(WebUiStates, WebUiState)
         
-		uTorrentInterface(QObject * parent, const QVariantList & args);
-		~uTorrentInterface();
-		QString title() const { return "uTorrent WebUI Interface"; }
-		QString description() const { return "Interface to connect to uTorrent through the WebUI"; }
-	public slots:
-		void setDownloadLimit(const ByteSize & size);
-		void setUploadLimit(const ByteSize & size);
-		void startTorrent(const QString & hash);
-		void stopTorrent(const QString & hash);
-		void updateTorrentList();
-		void updateFileList(const QString & hash);
-		void update();
-		void clear();
-	private slots:
-		void jobFinished(KJob * job);
-	private:
-		QVariantMap config;
-		QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
+        uTorrentInterface(QObject * parent, const QVariantList & args);
+        ~uTorrentInterface();
+        QString title() const { return "uTorrent WebUI Interface"; }
+        QString description() const { return "Interface to connect to uTorrent through the WebUI"; }
+    public slots:
+        void setDownloadLimit(const ByteSize & size);
+        void setUploadLimit(const ByteSize & size);
+        void startTorrent(const QString & hash);
+        void stopTorrent(const QString & hash);
+        void updateTorrentList();
+        void updateFileList(const QString & hash);
+        void update();
+        void clear();
+    private slots:
+        void jobFinished(KJob * job);
+    private:
+        QVariantMap config;
+        QMap<KIO::StoredTransferJob *, WebUiRequest> jobs;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(uTorrentInterface::WebUiStates)

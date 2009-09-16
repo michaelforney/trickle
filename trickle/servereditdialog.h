@@ -23,7 +23,7 @@
 #include <QDialog>
 
 /**
-	@author Michael Forney <mforney@trickleproject.org>
+    @author Michael Forney <mforney@trickleproject.org>
 */
 
 #include "ui_servereditdialog.h"
@@ -32,18 +32,18 @@ class Server;
 
 class ServerEditDialog : public QDialog
 {
-	Q_OBJECT
-	public:
-		ServerEditDialog(QWidget * parent = 0);
-		~ServerEditDialog();
-		
-		Server server() const;
-	public slots:
-		void clear();
-		void setServer(const Server & server);
-		
-	private:
-		Ui::ServerEditDialog ui;	
+    Q_OBJECT
+    public:
+        ServerEditDialog(QWidget * parent = 0);
+        ~ServerEditDialog();
+        
+        Server server() const;
+    public slots:
+        void clear();
+        void setServer(const Server & server);
+        
+    private:
+        Ui::ServerEditDialog ui;    
 };
 
 #endif

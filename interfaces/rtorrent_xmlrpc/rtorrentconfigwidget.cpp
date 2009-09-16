@@ -37,7 +37,7 @@ rTorrentConfigWidget::~rTorrentConfigWidget()
 
 void rTorrentConfigWidget::clear()
 {
-	ui.pathEdit->setText("/RPC2");
+    ui.pathEdit->setText("/RPC2");
 }
 
 void rTorrentConfigWidget::setConfig(InterfaceConfig * rconfig)

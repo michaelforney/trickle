@@ -28,7 +28,7 @@
 Interface::Interface(InterfaceConfig * config, QObject * parent)
  : QObject(parent), m_timer(new QTimer()), m_config(config)
 {
-	connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 Interface::Interface(QObject * parent)
@@ -49,7 +49,7 @@ void Interface::setServer(const Server & server)
 
 void Interface::setInterval(int interval)
 {
-	m_timer->setInterval(interval);
+    m_timer->setInterval(interval);
     qDebug() << interval;
 }
 
@@ -63,19 +63,19 @@ bool Interface::start()
 
 bool Interface::stop()
 {
-	m_timer->stop();
-	return true;
+    m_timer->stop();
+    return true;
 }
 
 void Interface::reset()
 {
-	stop();
-	clear();
+    stop();
+    clear();
 }
 
 Server Interface::server() const
 {
-	return m_server;
+    return m_server;
 }
 
 void Interface::setConfig(InterfaceConfig * config)
