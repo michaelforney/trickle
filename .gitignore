@@ -1,0 +1,7 @@
+# gitignore for trickle
+.*.swp
+*~
+*.[oa]
+
+build/*
+
