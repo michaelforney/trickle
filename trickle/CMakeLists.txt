@@ -1,4 +1,4 @@
-SET(TrickleSources
+set(TrickleSources
     main.cpp
 	filemodel.cpp
 	directoryitem.cpp
@@ -16,7 +16,6 @@ SET(TrickleSources
 	fileview.cpp
 	servermodel.cpp
 	torrentsortmodel.cpp
-	filedelegate.cpp
 	serverinfo.cpp
 	serversettings.cpp
 	generalsettings.cpp
@@ -28,7 +27,7 @@ SET(TrickleSources
 	settingsbase.cpp
     bitarrayprogressbar.cpp
 )
-SET(TrickleUi
+set(TrickleUi
     serversettings.ui
 	generalsettings.ui
 	torrentinfo.ui
@@ -37,15 +36,16 @@ SET(TrickleUi
     serverinfo.ui
 	servereditdialog.ui
 )
-SET(TrickleKcfg settings.kcfgc)
+set(TrickleKcfg settings.kcfgc)
 
-KDE4_ADD_UI_FILES(TrickleSources ${TrickleUi})
-KDE4_ADD_KCFG_FILES(TrickleSources ${TrickleKcfg})
+kde4_add_ui_files(TrickleSources ${TrickleUi})
+kde4_add_kcfg_files(TrickleSources ${TrickleKcfg})
 
-KDE4_ADD_EXECUTABLE(trickle ${TrickleSources})
+kde4_add_executable(trickle ${TrickleSources})
 
-TARGET_LINK_LIBRARIES(trickle ${KDE4_KDEUI_LIBS} libtrickle)
+target_link_libraries(trickle ${KDE4_KDEUI_LIBS} libtrickle)
 
-INSTALL(FILES trickleui.rc DESTINATION ${DATA_INSTALL_DIR}/trickle)
-INSTALL(FILES trickle.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
-INSTALL(TARGETS trickle  ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(FILES trickleui.rc DESTINATION ${DATA_INSTALL_DIR}/trickle)
+install(FILES trickle.desktop DESTINATION ${XDG_APPS_INSTALL_DIR})
+install(TARGETS trickle  ${INSTALL_TARGETS_DEFAULT_ARGS})
+

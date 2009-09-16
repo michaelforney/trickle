@@ -28,7 +28,6 @@
 
 #include "fileview.h"
 #include "filemodel.h"
-#include "filedelegate.h"
 
 FileInfo::FileInfo()
  : QWidget()
