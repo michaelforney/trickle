@@ -1,13 +1,14 @@
-PROJECT(trickle)
+project(trickle)
 
-FIND_PACKAGE(KDE4 REQUIRED)
-INCLUDE(KDE4Defaults)
+find_package(KDE4 REQUIRED)
+include(KDE4Defaults)
 
-SET(TrickleIncludes ${CMAKE_SOURCE_DIR}/libtrickle)
+set(TrickleIncludes ${CMAKE_SOURCE_DIR}/libtrickle)
 
-INCLUDE_DIRECTORIES( ${KDE4_INCLUDES} ${QT_INCLUDES} ${TrickleIncludes})
+include_directories( ${KDE4_INCLUDES} ${QT_INCLUDES} ${TrickleIncludes})
 
-ADD_SUBDIRECTORY(libtrickle)
-ADD_SUBDIRECTORY(trickle)
-ADD_SUBDIRECTORY(interfaces)
-ADD_SUBDIRECTORY(icons)
+add_subdirectory(libtrickle)
+add_subdirectory(trickle)
+add_subdirectory(interfaces)
+add_subdirectory(icons)
+

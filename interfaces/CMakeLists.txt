@@ -1,2 +1,3 @@
-ADD_SUBDIRECTORY(rtorrent_xmlrpc)
-#ADD_SUBDIRECTORY(utorrent_webui)
+add_subdirectory(rtorrent_xmlrpc)
+#add_subdirectory(utorrent_webui)
+

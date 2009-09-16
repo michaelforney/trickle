@@ -1,11 +1,12 @@
-SET(rTorrentSources rtorrentinterface.cpp rtorrentconfig.cpp rtorrentconfigwidget.cpp)
-SET(rTorrentUi rtorrentconfigwidget.ui)
+set(rTorrentSources rtorrentinterface.cpp rtorrentconfig.cpp rtorrentconfigwidget.cpp)
+set(rTorrentUi rtorrentconfigwidget.ui)
 
-KDE4_ADD_UI_FILES(rTorrentSources ${rTorrentUi})
+kde4_add_ui_files(rTorrentSources ${rTorrentUi})
 
-KDE4_ADD_PLUGIN(trickle_rtorrent ${rTorrentSources}) 
+kde4_add_plugin(trickle_rtorrent ${rTorrentSources}) 
 
-TARGET_LINK_LIBRARIES(trickle_rtorrent ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} libtrickle)
+target_link_libraries(trickle_rtorrent ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} libtrickle)
 
-INSTALL(FILES trickle_rtorrent.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-INSTALL(TARGETS trickle_rtorrent DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES trickle_rtorrent.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(TARGETS trickle_rtorrent DESTINATION ${PLUGIN_INSTALL_DIR})
+

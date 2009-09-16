@@ -1,11 +1,12 @@
-SET(uTorrentSources utorrentinterface.cpp utorrentconfig.cpp)
-SET(uTorrentUi utorrentconfig.ui)
+set(uTorrentSources utorrentinterface.cpp utorrentconfig.cpp)
+set(uTorrentUi utorrentconfig.ui)
 
-KDE4_ADD_UI_FILES(uTorrentSources ${uTorrentUi})
+kde4_add_ui_files(uTorrentSources ${uTorrentUi})
 
-KDE4_ADD_PLUGIN(trickle_utorrent ${uTorrentSources}) 
+kde4_add_plugin(trickle_utorrent ${uTorrentSources}) 
 
-TARGET_LINK_LIBRARIES(trickle_utorrent ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} libtrickle)
+target_link_libraries(trickle_utorrent ${KDE4_KDEUI_LIBS} ${KDE4_KIO_LIBS} libtrickle)
 
-INSTALL(FILES trickle_utorrent.desktop DESTINATION ${SERVICES_INSTALL_DIR})
-INSTALL(TARGETS trickle_utorrent DESTINATION ${PLUGIN_INSTALL_DIR})
+install(FILES trickle_utorrent.desktop DESTINATION ${SERVICES_INSTALL_DIR})
+install(TARGETS trickle_utorrent DESTINATION ${PLUGIN_INSTALL_DIR})
+
