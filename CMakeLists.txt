@@ -1,7 +1,9 @@
 project(trickle)
-
 find_package(KDE4 REQUIRED)
 include(KDE4Defaults)
+
+option(ENABLE_RTORRENT      "Enable the rTorrent XmlRpc Interface"      ON)
+option(ENABLE_UTORRENT      "Enable the uTorrent WebUI Interface"       OFF)
 
 set(TrickleIncludes ${CMAKE_SOURCE_DIR}/libtrickle)
 
